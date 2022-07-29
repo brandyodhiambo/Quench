@@ -120,4 +120,7 @@ dependencies {
 
     // Insets
     implementation "com.google.accompanist:accompanist-insets:0.17.0"
+
+    //number picker
+    implementation "com.chargemap.compose:numberpicker:1.0.3"
 }

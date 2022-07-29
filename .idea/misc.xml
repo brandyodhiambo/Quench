@@ -3,7 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../layout/compose-model-1659072847828.xml" value="0.16101694915254236" />
         <entry key="app/src/main/res/font/nnn.xml" value="0.20104166666666667" />
+        <entry key="app/src/main/res/layout/time_picker.xml" value="0.171875" />
       </map>
     </option>
   </component>
