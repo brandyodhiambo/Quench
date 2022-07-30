@@ -9,7 +9,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.brandyodhiambo.quench.R
-import com.brandyodhiambo.quench.views.screens.destinations.SleepAndWakeTimeScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.Dispatchers
@@ -32,7 +31,7 @@ fun SplashScreen(
 
                 delay(3000)
                 navigator.popBackStack()
-                navigator.navigate(SleepAndWakeTimeScreenDestination)
+                navigator.navigate("SleepAndWakeTimeScreenDestination")
             }
         }
         Spacer(modifier = Modifier.height(32.dp))

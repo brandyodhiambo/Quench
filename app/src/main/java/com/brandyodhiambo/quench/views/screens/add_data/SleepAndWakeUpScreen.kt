@@ -21,42 +21,48 @@ import com.ramcosta.composedestinations.annotation.Destination
 @Destination
 @Composable
 fun SleepAndWakeTimeScreen() {
-   Column(
-       modifier = Modifier
-           .fillMaxSize()
-           .padding(8.dp),
-       horizontalAlignment = Alignment.CenterHorizontally
-   ) {
-       Spacer(modifier = Modifier.height(16.dp))
-       Text(
-           text = "What's your wake up time?",
-           fontSize = 24.sp,
-           color = blackColor
-       )
-       Spacer(modifier = Modifier.height(16.dp))
-       TimePickerInHours()
+  Box(
+      modifier = Modifier.fillMaxSize()
+  ) {
+      Column(
+          modifier = Modifier
+              .fillMaxSize()
+              .padding(8.dp),
+          horizontalAlignment = Alignment.CenterHorizontally,
+          verticalArrangement = Arrangement.Top
+      ) {
+          Spacer(modifier = Modifier.height(16.dp))
+          Text(
+              text = "What's your wake up time?",
+              fontSize = 24.sp,
+              color = blackColor
+          )
+          Spacer(modifier = Modifier.height(16.dp))
+          TimePickerInHours()
 
-       Spacer(modifier = Modifier.height(32.dp))
-       Text(
-           text = "What's your Sleeping time?",
-           fontSize = 24.sp,
-           color = blackColor
-       )
-       Spacer(modifier = Modifier.height(16.dp))
-       TimePickerInHours()
+          Spacer(modifier = Modifier.height(32.dp))
+          Text(
+              text = "What's your Sleeping time?",
+              fontSize = 24.sp,
+              color = blackColor
+          )
+          Spacer(modifier = Modifier.height(16.dp))
+          TimePickerInHours()
 
-       Spacer(modifier = Modifier.height(32.dp))
-       Button(
-           modifier = Modifier
-               .align(Alignment.End)
-               .fillMaxWidth(),
-           onClick = { /*TODO*/ },
-           shape = RoundedCornerShape(15.dp),
-           colors = ButtonDefaults.buttonColors(backgroundColor = primaryColor )
-       ) {
-           Text(text = "Next",Modifier.padding(4.dp), color = Color.White)
-       }
-   }
+          Spacer(modifier = Modifier.height(32.dp))
+      }
+     Row(verticalAlignment = Alignment.Bottom){
+         Button(
+             modifier = Modifier
+                 .fillMaxWidth(),
+             onClick = { /*TODO*/ },
+             shape = RoundedCornerShape(15.dp),
+             colors = ButtonDefaults.buttonColors(backgroundColor = primaryColor )
+         ) {
+             Text(text = "Next",Modifier.padding(4.dp), color = Color.White)
+         }
+     }
+  }
 }
 
 @Composable
@@ -72,14 +78,14 @@ fun TimePickerInHours() {
             Text(
                 modifier = Modifier.padding(horizontal = 8.dp),
                 textAlign = TextAlign.Center,
-                text = "hours"
+                text = ":"
             )
         },
         minutesDivider = {
             Text(
                 modifier = Modifier.padding(horizontal = 8.dp),
                 textAlign = TextAlign.Center,
-                text = "minutes"
+                text = " "
             )
         }
     )
