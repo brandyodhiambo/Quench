@@ -11,11 +11,15 @@ import com.brandyodhiambo.quench.views.ui.theme.primaryColor
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.pagerTabIndicatorOffset
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun CustomTab(tabs:List<TabItem>,pagerState: PagerState) {
+fun CustomTab(
+    tabs: List<TabItem>,
+    pagerState: PagerState,
+) {
     val scope = rememberCoroutineScope()
 
     TabRow(

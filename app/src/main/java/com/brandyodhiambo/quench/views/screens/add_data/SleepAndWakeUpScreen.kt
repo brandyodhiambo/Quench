@@ -10,24 +10,28 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.brandyodhiambo.quench.views.screens.destinations.HomeScreenDestination
 import com.brandyodhiambo.quench.views.ui.theme.blackColor
 import com.brandyodhiambo.quench.views.ui.theme.primaryColor
 import com.chargemap.compose.numberpicker.AMPMHours
 import com.chargemap.compose.numberpicker.Hours
 import com.chargemap.compose.numberpicker.HoursNumberPicker
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 
 @Destination
 @Composable
-fun SleepAndWakeTimeScreen() {
+fun SleepAndWakeTimeScreen(
+    navigator: DestinationsNavigator
+) {
   Box(
       modifier = Modifier.fillMaxSize()
   ) {
       Column(
           modifier = Modifier
               .fillMaxSize()
-              .padding(8.dp),
+              .padding(16.dp),
           horizontalAlignment = Alignment.CenterHorizontally,
           verticalArrangement = Arrangement.Top
       ) {
@@ -51,17 +55,21 @@ fun SleepAndWakeTimeScreen() {
 
           Spacer(modifier = Modifier.height(32.dp))
       }
-     Row(verticalAlignment = Alignment.Bottom){
-         Button(
-             modifier = Modifier
-                 .fillMaxWidth(),
-             onClick = { /*TODO*/ },
-             shape = RoundedCornerShape(15.dp),
-             colors = ButtonDefaults.buttonColors(backgroundColor = primaryColor )
-         ) {
-             Text(text = "Next",Modifier.padding(4.dp), color = Color.White)
-         }
-     }
+      Column(
+          modifier = Modifier.fillMaxSize().padding(bottom = 16.dp, start = 16.dp, end = 16.dp),
+          verticalArrangement = Arrangement.Bottom
+      ) {
+          Button(
+              modifier = Modifier
+                  .fillMaxWidth(),
+              onClick = { navigator.navigate(HomeScreenDestination) },
+              shape = RoundedCornerShape(15.dp),
+              colors = ButtonDefaults.buttonColors(backgroundColor = primaryColor )
+          ) {
+              Text(text = "Next",Modifier.padding(4.dp), color = Color.White)
+          }
+      }
+
   }
 }
 

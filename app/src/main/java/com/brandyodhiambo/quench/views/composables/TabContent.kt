@@ -11,6 +11,6 @@ import com.google.accompanist.pager.PagerState
 @Composable
 fun TabContent(tabs:List<TabItem>,pagerState: PagerState) {
     HorizontalPager(count = tabs.size, state = pagerState) { page ->
-        tabs[page].destination
+        tabs[page].screen()
     }
 }
