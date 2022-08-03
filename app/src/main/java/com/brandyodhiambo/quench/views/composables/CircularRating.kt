@@ -4,11 +4,13 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
@@ -23,11 +25,12 @@ import com.brandyodhiambo.quench.views.ui.theme.primaryColor
 fun CircularRating(
     modifier: Modifier = Modifier,
     percentage: Float,
+    drunk: Int,
     number: Int = 10,
     fontSize: TextUnit = 16.sp,
-    radius: Dp = 70.dp,
+    radius: Dp = 100.dp,
     color: Color = primaryColor,
-    strokeWidth: Dp = 3.dp,
+    strokeWidth: Dp = 8.dp,
     animationDuration: Int = 1000,
     animDelay: Int = 0
 ) {
@@ -57,17 +60,27 @@ fun CircularRating(
         ) {
             drawArc(
                 color = color,
-                startAngle = -90f,
+                startAngle = 90f,
                 sweepAngle = (360 * (currentPercentage.value * 0.1)).toFloat(),
                 useCenter = false,
-                style = Stroke(strokeWidth.toPx(), cap = StrokeCap.Round)
+                style = Stroke(strokeWidth.toPx(), cap = StrokeCap.Round),
             )
         }
-        Text(
-            text = "${(currentPercentage.value * number).toInt()}%",
-            color = primaryColor,
-            fontSize = fontSize,
-            fontWeight = FontWeight.Bold
-        )
+     Column(
+         horizontalAlignment = Alignment.CenterHorizontally
+     ) {
+         Text(
+             text = "$drunk /2600 ml",
+             color = primaryColor,
+             fontSize = fontSize,
+             fontWeight = FontWeight.Bold
+         )
+         Text(
+             text = " You have completed ${(currentPercentage.value * number).toInt()}% of daily target",
+             color = Color.Gray,
+             fontSize = 12.sp,
+             fontWeight = FontWeight.Normal
+         )
+     }
     }
 }

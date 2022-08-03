@@ -116,7 +116,7 @@ fun WaterRecord() {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(280.dp)
+            .height(350.dp)
             .padding(start = 16.dp, end = 16.dp),
         elevation = 4.dp
     ) {
@@ -127,7 +127,7 @@ fun WaterRecord() {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(modifier = Modifier.height(8.dp))
-            CircularRating(percentage = 7f)
+            CircularRating(percentage = 7f, drunk = 800)
             Spacer(modifier = Modifier.height(8.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -138,7 +138,8 @@ fun WaterRecord() {
                         .size(100.dp)
                         .padding(16.dp),
                     backgroundColor = lightBlue,
-                    shape = CircleShape
+                    shape = CircleShape,
+                    elevation = 8.dp
                 ) {
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
@@ -155,7 +156,8 @@ fun WaterRecord() {
                         .size(100.dp)
                         .padding(16.dp),
                     backgroundColor = lightBlue,
-                    shape = CircleShape
+                    shape = CircleShape,
+                    elevation = 8.dp
                 ) {
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
@@ -178,7 +180,7 @@ fun WaterIntakeTimeAndLevel(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 8.dp, start = 16.dp, end = 16.dp)
+            .padding(top = 8.dp, start = 16.dp, end = 16.dp, bottom = 8.dp)
     ) {
         Row(
             modifier = Modifier
@@ -203,6 +205,7 @@ fun WaterIntakeTimeAndLevel(
                     Icon(painter = painterResource(id = R.drawable.ic_chevron), tint = Color.Gray, contentDescription = null )
                 }
             }
+
         }
         Spacer(modifier = Modifier.height(8.dp))
     }
