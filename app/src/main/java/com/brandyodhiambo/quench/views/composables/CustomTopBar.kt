@@ -27,7 +27,6 @@ fun CustomTopBar(tabs:List<TabItem>, pagerState: PagerState) {
     ) {
         TopAppBar(
             title = { Text(
-                modifier = Modifier.fillMaxWidth(),
                 text = "Quench",
                 fontSize = 30.sp,
                 textAlign = TextAlign.Center
