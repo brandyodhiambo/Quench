@@ -28,32 +28,32 @@ import com.ramcosta.composedestinations.annotation.Destination
 fun HomeScreen() {
 
     val waterleveltime = listOf(
-        Intake("100 Ml","12:30 Pm"),
-        Intake("100 Ml","12:30 Pm"),
-        Intake("100 Ml","12:30 Pm"),
-        Intake("100 Ml","12:30 Pm"),
+        Intake("100 Ml", "12:30 Pm"),
+        Intake("100 Ml", "12:30 Pm"),
+        Intake("100 Ml", "12:30 Pm"),
+        Intake("100 Ml", "12:30 Pm"),
     )
-   Scaffold(
-       backgroundColor = primaryColor
-   ) { paddingValues ->
-       Box(
-           modifier = Modifier
-               .fillMaxSize()
-               .padding(paddingValues)
-       ) {
-            LazyColumn{
+    Scaffold(
+        backgroundColor = primaryColor
+    ) { paddingValues ->
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+        ) {
+            LazyColumn {
                 item {
                     WaterIntake()
                 }
                 item {
                     WaterRecord()
                 }
-                items(waterleveltime){ intake->
+                items(waterleveltime) { intake ->
                     WaterIntakeTimeAndLevel(intake = intake)
                 }
             }
-       }
-   }
+        }
+    }
 }
 
 
@@ -77,13 +77,21 @@ fun WaterIntake() {
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Image(painter = painterResource(id = R.drawable.ic_glass), contentDescription = null)
+                Image(
+                    painter = painterResource(id = R.drawable.ic_glass),
+                    contentDescription = null
+                )
                 Spacer(modifier = Modifier.width(8.dp))
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(text = "Ideal water intake", fontSize = 14.sp, color = Color.Gray)
-                    Text(text = "2810 ml", fontSize = 16.sp, color = Color.Gray, fontWeight = FontWeight.Bold)
+                    Text(
+                        text = "2810 ml",
+                        fontSize = 16.sp,
+                        color = Color.Gray,
+                        fontWeight = FontWeight.Bold
+                    )
                 }
             }
             Divider(
@@ -103,7 +111,12 @@ fun WaterIntake() {
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(text = "Water intake goal", fontSize = 14.sp, color = Color.Gray)
-                    Text(text = "2400 ml", fontSize = 16.sp, color = Color.Gray, fontWeight = FontWeight.Bold)
+                    Text(
+                        text = "2400 ml",
+                        fontSize = 16.sp,
+                        color = Color.Gray,
+                        fontWeight = FontWeight.Bold
+                    )
                 }
             }
         }
@@ -145,9 +158,12 @@ fun WaterRecord() {
                         horizontalAlignment = Alignment.CenterHorizontally,
                         modifier = Modifier.padding(4.dp)
                     ) {
-                        Image(painter = painterResource(id = R.drawable.ic_clock), contentDescription = null )
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_clock),
+                            contentDescription = null
+                        )
                         Spacer(modifier = Modifier.height(8.dp))
-                        Text(text =" 12:04 AM", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                        Text(text = " 12:04 AM", fontSize = 12.sp, fontWeight = FontWeight.Bold)
                     }
                 }
 
@@ -163,9 +179,12 @@ fun WaterRecord() {
                         horizontalAlignment = Alignment.CenterHorizontally,
                         modifier = Modifier.padding(4.dp)
                     ) {
-                        Image(painter = painterResource(id = R.drawable.ic_glass), contentDescription = null )
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_glass),
+                            contentDescription = null
+                        )
                         Spacer(modifier = Modifier.height(8.dp))
-                        Text(text =" 100 Ml", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                        Text(text = " 100 Ml", fontSize = 12.sp, fontWeight = FontWeight.Bold)
                     }
                 }
             }
@@ -193,7 +212,10 @@ fun WaterIntakeTimeAndLevel(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Image(painter = painterResource(id = R.drawable.ic_glass), contentDescription = null)
+                Image(
+                    painter = painterResource(id = R.drawable.ic_glass),
+                    contentDescription = null
+                )
                 Text(text = intake.level, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
             }
             Row(
@@ -202,7 +224,11 @@ fun WaterIntakeTimeAndLevel(
             ) {
                 Text(text = intake.time, fontSize = 14.sp, color = Color.Gray)
                 IconButton(onClick = { /*TODO*/ }) {
-                    Icon(painter = painterResource(id = R.drawable.ic_chevron), tint = Color.Gray, contentDescription = null )
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_chevron),
+                        tint = Color.Gray,
+                        contentDescription = null
+                    )
                 }
             }
 
@@ -210,7 +236,8 @@ fun WaterIntakeTimeAndLevel(
         Spacer(modifier = Modifier.height(8.dp))
     }
 }
+
 data class Intake(
-    val level:String,
-    val time:String
+    val level: String,
+    val time: String
 )
