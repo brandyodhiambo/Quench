@@ -53,6 +53,7 @@ fun StatisticsScreen() {
                         elevation = 4.dp
                     ) {
                         BarChart(
+                            modifier = Modifier.fillMaxSize().padding(16.dp),
                             barChartData = barChartDataMonths,
                             verticalAxisValues = verticalAxisValues,
                         )
@@ -90,7 +91,6 @@ fun Last7DayGoals() {
         elevation = 4.dp
     ) {
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.padding(8.dp)
         ) {
             Text(
@@ -172,12 +172,12 @@ fun DrinkWaterReport() {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
+            .padding(top = 8.dp, start = 16.dp, end = 16.dp)
         ,
         elevation = 4.dp
     ){
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally
+            modifier = Modifier.padding(8.dp)
         ) {
             Text(
                 text = "Drink Water Report",
