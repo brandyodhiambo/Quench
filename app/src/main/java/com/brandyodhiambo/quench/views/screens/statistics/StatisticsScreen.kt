@@ -9,9 +9,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Card
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,10 +21,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.brandyodhiambo.quench.views.composables.barChartDataMonths
 import com.brandyodhiambo.quench.views.composables.verticalAxisValues
+import com.brandyodhiambo.quench.views.ui.theme.blackColor
 import com.brandyodhiambo.quench.views.ui.theme.primaryColor
 import com.mahmoud.composecharts.barchart.BarChart
 import com.ramcosta.composedestinations.annotation.Destination
@@ -58,7 +62,7 @@ fun StatisticsScreen() {
                     Last7DayGoals()
                 }
                 item {
-
+                    DrinkWaterReport()
                 }
             }
 
@@ -163,12 +167,11 @@ fun BlackCup() {
         )
     }
 }
-
 @Composable
 fun DrinkWaterReport() {
     Card(
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxWidth()
             .padding(16.dp)
         ,
         elevation = 4.dp
@@ -182,6 +185,117 @@ fun DrinkWaterReport() {
                 fontWeight = FontWeight.SemiBold,
                 color = primaryColor
             )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Icon(imageVector = Icons.Default.DateRange, tint = primaryColor, contentDescription = null )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = "Week Avarage",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        color = blackColor
+                    )
+
+                }
+                Text(
+                    text = "1850ml/day",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color = primaryColor
+                )
+            }
+            Divider(modifier = Modifier.height(1.dp).padding(start = 8.dp, end = 8.dp), color = Color.Gray, thickness = 1.dp)
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Icon(imageVector = Icons.Default.DateRange, tint = primaryColor, contentDescription = null )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = "Monthly Avarage",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        color = blackColor
+                    )
+
+                }
+                Text(
+                    text = "1450ml/day",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color = primaryColor
+                )
+            }
+            Divider(modifier = Modifier.height(1.dp).padding(start = 8.dp, end = 8.dp), color = Color.Gray, thickness = 1.dp)
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Icon(imageVector = Icons.Default.Star, tint = primaryColor, contentDescription = null )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = "Avarage Completion",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        color = blackColor
+                    )
+
+                }
+                Text(
+                    text = "55%",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color = primaryColor
+                )
+            }
+            Divider(modifier = Modifier.height(1.dp).padding(start = 8.dp, end = 8.dp), color = Color.Gray, thickness = 1.dp)
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Icon(imageVector = Icons.Default.AccountCircle, tint = primaryColor, contentDescription = null )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = "Drink Frequency",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        color = blackColor
+                    )
+
+                }
+                Text(
+                    text = "5 Times/day",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color = primaryColor
+                )
+            }
         }
     }
 }
