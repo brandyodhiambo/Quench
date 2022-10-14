@@ -23,32 +23,34 @@ import com.brandyodhiambo.quench.R
 import com.brandyodhiambo.quench.views.ui.theme.blackColor
 import com.brandyodhiambo.quench.views.ui.theme.primaryColor
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Destination
 @Composable
-fun SettingScreen() {
-  Scaffold(
-      backgroundColor = primaryColor
-  ) { paddingValues ->
-      Box(
-          modifier = Modifier
-              .fillMaxSize()
-              .padding(paddingValues)
-      ){
-          LazyColumn{
-              item {
-                UnitsWaterIntake()
-              }
-              item {
-                  Goals()
-              }
-              item {
-                  ReminderWaterIntake()
-              }
-          }
-      }
-  }
+fun SettingScreen()
+{
+    Scaffold(
+        backgroundColor = primaryColor
+    ) { paddingValues ->
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+        ) {
+            LazyColumn {
+                item {
+                    UnitsWaterIntake()
+                }
+                item {
+                    Goals()
+                }
+                item {
+                        ReminderWaterIntake()
+                }
+            }
+        }
+    }
 }
 
 @Composable
@@ -56,10 +58,9 @@ fun UnitsWaterIntake() {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 8.dp, start = 16.dp, end = 16.dp)
-        ,
+            .padding(top = 8.dp, start = 16.dp, end = 16.dp),
         elevation = 4.dp
-    ){
+    ) {
         Column(
             modifier = Modifier.padding(8.dp)
         ) {
@@ -88,9 +89,11 @@ fun UnitsWaterIntake() {
                     color = primaryColor
                 )
             }
-            Divider(modifier = Modifier
-                .height(1.dp)
-                .padding(start = 8.dp, end = 8.dp), color = Color.Gray, thickness = 1.dp)
+            Divider(
+                modifier = Modifier
+                    .height(1.dp)
+                    .padding(start = 8.dp, end = 8.dp), color = Color.Gray, thickness = 1.dp
+            )
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -116,9 +119,11 @@ fun UnitsWaterIntake() {
                     color = primaryColor
                 )
             }
-            Divider(modifier = Modifier
-                .height(1.dp)
-                .padding(start = 8.dp, end = 8.dp), color = Color.Gray, thickness = 1.dp)
+            Divider(
+                modifier = Modifier
+                    .height(1.dp)
+                    .padding(start = 8.dp, end = 8.dp), color = Color.Gray, thickness = 1.dp
+            )
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -144,9 +149,11 @@ fun UnitsWaterIntake() {
                     color = primaryColor
                 )
             }
-            Divider(modifier = Modifier
-                .height(1.dp)
-                .padding(start = 8.dp, end = 8.dp), color = Color.Gray, thickness = 1.dp)
+            Divider(
+                modifier = Modifier
+                    .height(1.dp)
+                    .padding(start = 8.dp, end = 8.dp), color = Color.Gray, thickness = 1.dp
+            )
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -181,10 +188,9 @@ fun ReminderWaterIntake() {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 8.dp, start = 16.dp, end = 16.dp, bottom = 16.dp)
-        ,
+            .padding(top = 8.dp, start = 16.dp, end = 16.dp, bottom = 16.dp),
         elevation = 4.dp
-    ){
+    ) {
         Column(
             modifier = Modifier.padding(8.dp)
         ) {
@@ -206,12 +212,17 @@ fun ReminderWaterIntake() {
                     )
 
                 }
-                Image(painter = painterResource(id = R.drawable.ic_chevron_right), contentDescription = null)
+                Image(
+                    painter = painterResource(id = R.drawable.ic_chevron_right),
+                    contentDescription = null
+                )
 
             }
-            Divider(modifier = Modifier
-                .height(1.dp)
-                .padding(start = 8.dp, end = 8.dp), color = Color.Gray, thickness = 1.dp)
+            Divider(
+                modifier = Modifier
+                    .height(1.dp)
+                    .padding(start = 8.dp, end = 8.dp), color = Color.Gray, thickness = 1.dp
+            )
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -230,12 +241,17 @@ fun ReminderWaterIntake() {
                     )
 
                 }
-                Image(painter = painterResource(id = R.drawable.ic_chevron_right), contentDescription = null)
+                Image(
+                    painter = painterResource(id = R.drawable.ic_chevron_right),
+                    contentDescription = null
+                )
 
             }
-            Divider(modifier = Modifier
-                .height(1.dp)
-                .padding(start = 8.dp, end = 8.dp), color = Color.Gray, thickness = 1.dp)
+            Divider(
+                modifier = Modifier
+                    .height(1.dp)
+                    .padding(start = 8.dp, end = 8.dp), color = Color.Gray, thickness = 1.dp
+            )
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -254,12 +270,17 @@ fun ReminderWaterIntake() {
                     )
 
                 }
-                Image(painter = painterResource(id = R.drawable.ic_chevron_right), contentDescription = null)
+                Image(
+                    painter = painterResource(id = R.drawable.ic_chevron_right),
+                    contentDescription = null
+                )
 
             }
-            Divider(modifier = Modifier
-                .height(1.dp)
-                .padding(start = 8.dp, end = 8.dp), color = Color.Gray, thickness = 1.dp)
+            Divider(
+                modifier = Modifier
+                    .height(1.dp)
+                    .padding(start = 8.dp, end = 8.dp), color = Color.Gray, thickness = 1.dp
+            )
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -278,7 +299,41 @@ fun ReminderWaterIntake() {
                     )
 
                 }
-               Image(painter = painterResource(id = R.drawable.ic_chevron_right), contentDescription = null)
+                Image(
+                    painter = painterResource(id = R.drawable.ic_chevron_right),
+                    contentDescription = null
+                )
+            }
+            Divider(
+                modifier = Modifier
+                    .height(1.dp)
+                    .padding(start = 8.dp, end = 8.dp), color = Color.Gray, thickness = 1.dp
+            )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Text(
+                        text = "Notifications",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        color = blackColor
+                    )
+
+                }
+                IconButton(onClick = { }) {
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_chevron_right),
+                        contentDescription = null
+                    )
+
+                }
             }
         }
     }
@@ -289,10 +344,9 @@ fun Goals() {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 8.dp, start = 16.dp, end = 16.dp)
-        ,
+            .padding(top = 8.dp, start = 16.dp, end = 16.dp),
         elevation = 4.dp
-    ){
+    ) {
         Column(
             modifier = Modifier.padding(8.dp)
         ) {
@@ -324,12 +378,17 @@ fun Goals() {
                         fontWeight = FontWeight.SemiBold,
                         color = primaryColor
                     )
-                    Image(painter = painterResource(id = R.drawable.ic_chevron_right), contentDescription = null)
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_chevron_right),
+                        contentDescription = null
+                    )
                 }
             }
-            Divider(modifier = Modifier
-                .height(1.dp)
-                .padding(start = 8.dp, end = 8.dp), color = Color.Gray, thickness = 1.dp)
+            Divider(
+                modifier = Modifier
+                    .height(1.dp)
+                    .padding(start = 8.dp, end = 8.dp), color = Color.Gray, thickness = 1.dp
+            )
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -358,12 +417,17 @@ fun Goals() {
                         fontWeight = FontWeight.SemiBold,
                         color = primaryColor
                     )
-                    Image(painter = painterResource(id = R.drawable.ic_chevron_right), contentDescription = null)
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_chevron_right),
+                        contentDescription = null
+                    )
                 }
             }
-            Divider(modifier = Modifier
-                .height(1.dp)
-                .padding(start = 8.dp, end = 8.dp), color = Color.Gray, thickness = 1.dp)
+            Divider(
+                modifier = Modifier
+                    .height(1.dp)
+                    .padding(start = 8.dp, end = 8.dp), color = Color.Gray, thickness = 1.dp
+            )
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -383,18 +447,21 @@ fun Goals() {
                     )
 
                 }
-               Row(
-                   verticalAlignment = Alignment.CenterVertically,
-                   horizontalArrangement = Arrangement.SpaceBetween
-               ) {
-                   Text(
-                       text = "English",
-                       fontSize = 16.sp,
-                       fontWeight = FontWeight.SemiBold,
-                       color = primaryColor
-                   )
-                   Image(painter = painterResource(id = R.drawable.ic_chevron_right), contentDescription = null)
-               }
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = "English",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        color = primaryColor
+                    )
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_chevron_right),
+                        contentDescription = null
+                    )
+                }
             }
         }
     }
