@@ -53,7 +53,6 @@ fun NotificationScreen(
         Day("Thursday", true),
         Day("Friday", true),
         Day("Saturday", true),
-        Day("Sunday", false),
     )
 
     val reminder = listOf(
