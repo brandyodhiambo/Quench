@@ -27,60 +27,61 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 fun SleepAndWakeTimeScreen(
     navigator: DestinationsNavigator
 ) {
-  Box(
-      modifier = Modifier.fillMaxSize()
-  ) {
-      Column(
-          modifier = Modifier
-              .fillMaxSize()
-              .padding(16.dp),
-          horizontalAlignment = Alignment.CenterHorizontally,
-          verticalArrangement = Arrangement.Top
-      ) {
-          Spacer(modifier = Modifier.height(16.dp))
-          Text(
-              text = "What's your wake up time?",
-              fontSize = 24.sp,
-              color = blackColor
-          )
-          Spacer(modifier = Modifier.height(16.dp))
-          TimePickerInHours()
+    Box(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Top
+        ) {
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(
+                text = "What's your wake up time?",
+                fontSize = 24.sp,
+                color = blackColor
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            TimePickerInHours()
 
-          Spacer(modifier = Modifier.height(32.dp))
-          Text(
-              text = "What's your Sleeping time?",
-              fontSize = 24.sp,
-              color = blackColor
-          )
-          Spacer(modifier = Modifier.height(16.dp))
-          TimePickerInHours()
+            Spacer(modifier = Modifier.height(32.dp))
+            Text(
+                text = "What's your Sleeping time?",
+                fontSize = 24.sp,
+                color = blackColor
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            TimePickerInHours()
 
-          Spacer(modifier = Modifier.height(32.dp))
-      }
-      Column(
-          modifier = Modifier.fillMaxSize().padding(bottom = 16.dp, start = 16.dp, end = 16.dp),
-          verticalArrangement = Arrangement.Bottom
-      ) {
-          Button(
-              modifier = Modifier
-                  .fillMaxWidth(),
-              onClick = {
-                  navigator.navigate(MainScreenDestination)
-                 // navigator.navigate(NotificationScreenDestination)
-                        },
-              shape = RoundedCornerShape(15.dp),
-              colors = ButtonDefaults.buttonColors(backgroundColor = primaryColor )
-          ) {
-              Text(text = "Next",Modifier.padding(4.dp), color = Color.White)
-          }
-      }
+            Spacer(modifier = Modifier.height(32.dp))
+        }
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(bottom = 16.dp, start = 16.dp, end = 16.dp),
+            verticalArrangement = Arrangement.Bottom
+        ) {
+            Button(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                onClick = {
+                    navigator.navigate(MainScreenDestination)
+                },
+                shape = RoundedCornerShape(15.dp),
+                colors = ButtonDefaults.buttonColors(backgroundColor = primaryColor)
+            ) {
+                Text(text = "Next", Modifier.padding(8.dp), color = Color.White)
+            }
+        }
 
-  }
+    }
 }
 
 @Composable
 fun TimePickerInHours() {
-    var pickerValue by remember { mutableStateOf<Hours>(AMPMHours(0, 0, AMPMHours.DayTime.AM )) }
+    var pickerValue by remember { mutableStateOf<Hours>(AMPMHours(0, 0, AMPMHours.DayTime.AM)) }
     HoursNumberPicker(
         dividersColor = blackColor,
         value = pickerValue,
