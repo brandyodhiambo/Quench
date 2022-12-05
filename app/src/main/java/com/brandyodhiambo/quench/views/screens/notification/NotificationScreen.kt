@@ -53,6 +53,7 @@ fun NotificationScreen(
         Day("Thursday", true),
         Day("Friday", true),
         Day("Saturday", true),
+        Day("Sunday", false),
     )
 
     val reminder = listOf(
@@ -136,6 +137,7 @@ fun AddReminder() {
 @Composable
 fun ReminderNotificationTime(reminder: Reminder) {
     Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxSize()
             .background(
@@ -147,55 +149,60 @@ fun ReminderNotificationTime(reminder: Reminder) {
             )
             .padding(start = 16.dp, end = 16.dp),
     ) {
-        Column(
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(8.dp)
+                .padding(8.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                text = reminder.time,
-                color = Color.Black,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.SemiBold
-            )
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+            Column(
+                  modifier = Modifier
+                      .padding(8.dp)
             ) {
+                Text(
+                    text = reminder.time,
+                    color = if (reminder.isOn){Color.Black} else{Color.Gray},
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.SemiBold
+                )
                 LazyRow(
-                    modifier = Modifier
-                        .fillMaxWidth(.8f),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
                     items(reminder.days) { day ->
                         WeeksReminder(day = day, reminder = reminder)
                     }
                 }
-                // Switch
-                Icon(
-                    modifier = Modifier
-                        .size(50.dp)
-                        .clickable {
 
-                        },
-                    painter = painterResource(
-                        id = if (reminder.isOn) {
-                            R.drawable.ic_toggle_on
-                        } else {
-                            R.drawable.ic_toggle_off
-                        }
-                    ),
-                    tint = if (reminder.isOn) {
-                        primaryColor
-                    } else {
-                        Color.Gray
-                    },
-                    contentDescription = null
-                )
             }
+            // Switch
+            Icon(
+                modifier = Modifier
+                    .size(50.dp)
+                    .clickable {
+
+                    },
+                painter = painterResource(
+                    id = if (reminder.isOn) {
+                        R.drawable.ic_toggle_on
+                    } else {
+                        R.drawable.ic_toggle_off
+                    }
+                ),
+                tint = if (reminder.isOn) {
+                    primaryColor
+                } else {
+                    Color.Gray
+                },
+                contentDescription = null
+            )
+
         }
-        Divider(color = Color.LightGray, thickness = 1.dp)
+
+        Divider(
+            color = Color.Gray,
+            thickness = 1.dp,
+            modifier = Modifier.fillMaxWidth()
+        )
     }
 
 
@@ -206,20 +213,20 @@ fun WeeksReminder(day: Day, reminder: Reminder) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        DayIsOn(day = day)
+        DayIsOn(day = day, reminder = reminder)
 
     }
 }
 
 @Composable
-fun DayIsOn(day: Day) {
+fun DayIsOn(day: Day,reminder: Reminder) {
     Box(
         modifier = Modifier
             .padding(4.dp)
             .size(25.dp)
             .border(
                 border = BorderStroke(
-                    2.dp, color = if (day.isOn) {
+                    2.dp, color = if (day.isOn && reminder.isOn) {
                         primaryColor
                     } else {
                         Color.Gray
