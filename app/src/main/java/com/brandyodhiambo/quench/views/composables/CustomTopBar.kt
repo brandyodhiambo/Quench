@@ -37,7 +37,10 @@ fun CustomTopBar(tabs:List<TabItem>, pagerState: PagerState) {
             elevation = 4.dp
         )
         CustomTab(tabs = tabs, pagerState = pagerState)
-        TabContent(tabs = tabs, pagerState = pagerState)
+        TabContent(
+            tabs = tabs,
+            pagerState = pagerState
+        )
     }
 
 

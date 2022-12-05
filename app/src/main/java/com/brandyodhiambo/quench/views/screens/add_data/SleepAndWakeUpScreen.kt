@@ -11,6 +11,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.brandyodhiambo.quench.views.screens.destinations.HomeScreenDestination
+import com.brandyodhiambo.quench.views.screens.destinations.MainScreenDestination
+import com.brandyodhiambo.quench.views.screens.destinations.NotificationScreenDestination
 import com.brandyodhiambo.quench.views.ui.theme.blackColor
 import com.brandyodhiambo.quench.views.ui.theme.primaryColor
 import com.chargemap.compose.numberpicker.AMPMHours
@@ -62,7 +64,10 @@ fun SleepAndWakeTimeScreen(
           Button(
               modifier = Modifier
                   .fillMaxWidth(),
-              onClick = { navigator.navigate(HomeScreenDestination) },
+              onClick = {
+                  navigator.navigate(MainScreenDestination)
+                 // navigator.navigate(NotificationScreenDestination)
+                        },
               shape = RoundedCornerShape(15.dp),
               colors = ButtonDefaults.buttonColors(backgroundColor = primaryColor )
           ) {
@@ -75,7 +80,7 @@ fun SleepAndWakeTimeScreen(
 
 @Composable
 fun TimePickerInHours() {
-    var pickerValue by remember { mutableStateOf<Hours>(AMPMHours(9, 12, AMPMHours.DayTime.PM )) }
+    var pickerValue by remember { mutableStateOf<Hours>(AMPMHours(0, 0, AMPMHours.DayTime.AM )) }
     HoursNumberPicker(
         dividersColor = blackColor,
         value = pickerValue,
