@@ -2,6 +2,7 @@ package com.brandyodhiambo.quench.views.screens.settings
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
@@ -26,6 +27,7 @@ import androidx.compose.ui.window.Dialog
 import com.brandyodhiambo.quench.R
 import com.brandyodhiambo.quench.views.screens.destinations.NotificationScreenDestination
 import com.brandyodhiambo.quench.views.screens.dialogs.IdealIntakeGoalDialog
+import com.brandyodhiambo.quench.views.screens.dialogs.WaterIntakeDialog
 import com.brandyodhiambo.quench.views.screens.notification.NotificationScreen
 import com.brandyodhiambo.quench.views.ui.theme.blackColor
 import com.brandyodhiambo.quench.views.ui.theme.primaryColor
@@ -39,6 +41,9 @@ fun SettingScreen(
     navigator: DestinationsNavigator
 )
 {
+    val openIntakeGoal = remember {
+        mutableStateOf(false)
+    }
     Scaffold(
         backgroundColor = primaryColor
     ) { paddingValues ->
@@ -52,13 +57,18 @@ fun SettingScreen(
                     UnitsWaterIntake()
                 }
                 item {
-                    Goals()
+                    Goals(openDialog = openIntakeGoal)
                 }
                 item {
                         ReminderWaterIntake(navigator = navigator)
                 }
-            }
 
+            }
+            if (openIntakeGoal.value){
+                Dialog(onDismissRequest = { openIntakeGoal.value }) {
+                    WaterIntakeDialog(openCustomDialog = openIntakeGoal)
+                }
+            }
         }
     }
 }
@@ -364,7 +374,7 @@ fun ReminderWaterIntake(navigator: DestinationsNavigator) {
 }
 
 @Composable
-fun Goals() {
+fun Goals(openDialog:MutableState<Boolean>) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -433,7 +443,10 @@ fun Goals() {
                 }
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.clickable {
+                       openDialog.value = true
+                    }
                 ) {
                     Text(
                         text = "2400ml",
