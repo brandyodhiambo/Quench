@@ -10,6 +10,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.brandyodhiambo.quench.R
 import com.brandyodhiambo.quench.views.screens.destinations.SleepAndWakeTimeScreenDestination
+import com.brandyodhiambo.quench.views.screens.dialogs.Loader
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.Dispatchers
@@ -36,9 +37,6 @@ fun SplashScreen(
             }
         }
         Spacer(modifier = Modifier.height(32.dp))
-        Image(
-            painter = painterResource(id = R.drawable.ic_blue_mineral_water),
-            contentDescription = null
-        )
+        Loader()
     }
 }

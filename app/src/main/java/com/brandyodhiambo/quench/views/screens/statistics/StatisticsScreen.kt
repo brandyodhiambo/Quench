@@ -30,12 +30,15 @@ import com.brandyodhiambo.quench.views.ui.theme.blackColor
 import com.brandyodhiambo.quench.views.ui.theme.primaryColor
 import com.mahmoud.composecharts.barchart.BarChart
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Destination
 @Composable
-fun StatisticsScreen() {
+fun StatisticsScreen(
+    navigator: DestinationsNavigator
+) {
     Scaffold(
         backgroundColor = primaryColor
     ) { paddingValues ->
@@ -123,7 +126,7 @@ fun WeeksAcheive(
         }else{
             BlackCup()
         }
-        Text(text =weeks.day, fontSize = 16.sp, fontWeight = FontWeight.SemiBold )
+        Text(text =weeks.day, fontSize = 16.sp, fontWeight = FontWeight.W400 )
     }
 }
 @Composable
@@ -200,7 +203,7 @@ fun DrinkWaterReport() {
                     Text(
                         text = "Week Avarage",
                         fontSize = 16.sp,
-                        fontWeight = FontWeight.SemiBold,
+                        fontWeight = FontWeight.W400,
                         color = blackColor
                     )
 
@@ -208,7 +211,7 @@ fun DrinkWaterReport() {
                 Text(
                     text = "1850ml/day",
                     fontSize = 16.sp,
-                    fontWeight = FontWeight.SemiBold,
+                    fontWeight = FontWeight.W400,
                     color = primaryColor
                 )
             }
@@ -228,7 +231,7 @@ fun DrinkWaterReport() {
                     Text(
                         text = "Monthly Avarage",
                         fontSize = 16.sp,
-                        fontWeight = FontWeight.SemiBold,
+                        fontWeight = FontWeight.W400,
                         color = blackColor
                     )
 
@@ -236,7 +239,7 @@ fun DrinkWaterReport() {
                 Text(
                     text = "1450ml/day",
                     fontSize = 16.sp,
-                    fontWeight = FontWeight.SemiBold,
+                    fontWeight = FontWeight.W400,
                     color = primaryColor
                 )
             }
@@ -256,7 +259,7 @@ fun DrinkWaterReport() {
                     Text(
                         text = "Avarage Completion",
                         fontSize = 16.sp,
-                        fontWeight = FontWeight.SemiBold,
+                        fontWeight = FontWeight.W400,
                         color = blackColor
                     )
 
@@ -264,7 +267,7 @@ fun DrinkWaterReport() {
                 Text(
                     text = "55%",
                     fontSize = 16.sp,
-                    fontWeight = FontWeight.SemiBold,
+                    fontWeight = FontWeight.W400,
                     color = primaryColor
                 )
             }
@@ -284,7 +287,7 @@ fun DrinkWaterReport() {
                     Text(
                         text = "Drink Frequency",
                         fontSize = 16.sp,
-                        fontWeight = FontWeight.SemiBold,
+                        fontWeight = FontWeight.W400,
                         color = blackColor
                     )
 
@@ -292,7 +295,7 @@ fun DrinkWaterReport() {
                 Text(
                     text = "5 Times/day",
                     fontSize = 16.sp,
-                    fontWeight = FontWeight.SemiBold,
+                    fontWeight = FontWeight.W400,
                     color = primaryColor
                 )
             }

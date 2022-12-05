@@ -28,7 +28,7 @@ fun CircularRating(
     drunk: Int,
     number: Int = 10,
     fontSize: TextUnit = 16.sp,
-    radius: Dp = 100.dp,
+    radius: Dp = 110.dp,
     color: Color = primaryColor,
     strokeWidth: Dp = 8.dp,
     animationDuration: Int = 1000,

@@ -10,8 +10,13 @@ import com.google.accompanist.pager.PagerState
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun TabContent(tabs:List<TabItem>,pagerState: PagerState) {
+fun TabContent(
+    tabs: List<TabItem>,
+    pagerState: PagerState,
+) {
     HorizontalPager(count = tabs.size, state = pagerState) { page ->
-        tabs[page].screen()
+        tabs[page].screen(
+            onClick = {  }
+        )
     }
 }
