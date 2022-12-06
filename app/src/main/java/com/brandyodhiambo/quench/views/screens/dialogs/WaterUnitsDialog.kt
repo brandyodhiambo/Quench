@@ -53,6 +53,7 @@ fun WaterUnitsDialog(openDialog:MutableState<Boolean>) {
                         selected = isSelectedItem(item),
                         onClick = null
                     )
+                    Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = item,
                         modifier = Modifier.fillMaxWidth()

@@ -1,14 +1,11 @@
 package com.brandyodhiambo.quench.views.screens.splash
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.brandyodhiambo.quench.R
 import com.brandyodhiambo.quench.views.screens.destinations.SleepAndWakeTimeScreenDestination
 import com.brandyodhiambo.quench.views.screens.dialogs.Loader
 import com.ramcosta.composedestinations.annotation.Destination

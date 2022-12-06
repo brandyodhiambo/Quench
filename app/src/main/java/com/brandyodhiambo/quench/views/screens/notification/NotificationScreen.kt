@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.brandyodhiambo.quench.R
 import com.brandyodhiambo.quench.utils.toInitials
+import com.brandyodhiambo.quench.views.screens.destinations.AddReminderScreenDestination
 import com.brandyodhiambo.quench.views.screens.settings.SettingScreen
 import com.brandyodhiambo.quench.views.screens.statistics.BlackCup
 import com.brandyodhiambo.quench.views.screens.statistics.GoldCup
@@ -92,7 +93,7 @@ fun NotificationScreen(
                 modifier = Modifier.padding(start = 16.dp, top = 8.dp, end = 16.dp)
             ) {
                 item {
-                    AddReminder()
+                    AddReminder(navigator = navigator)
                 }
                 items(reminder) { reminder ->
                     ReminderNotificationTime(reminder = reminder)
@@ -105,7 +106,7 @@ fun NotificationScreen(
 
 
 @Composable
-fun AddReminder() {
+fun AddReminder(navigator: DestinationsNavigator) {
     Card(
         modifier = Modifier
             .fillMaxWidth(),
@@ -125,7 +126,7 @@ fun AddReminder() {
                 fontSize = 16.sp,
                 fontWeight = FontWeight.SemiBold
             )
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(onClick = { navigator.navigate(AddReminderScreenDestination) }) {
                 Icon(imageVector = Icons.Default.Add, tint = Color.Gray, contentDescription = null)
             }
         }

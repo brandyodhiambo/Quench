@@ -235,7 +235,7 @@ fun ReminderWaterIntake(navigator: DestinationsNavigator) {
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
-                        text = "Reminder Schedule",
+                        text = "Reminder Mode",
                         fontSize = 16.sp,
                         fontWeight = FontWeight.W400,
                         color = blackColor
@@ -270,7 +270,7 @@ fun ReminderWaterIntake(navigator: DestinationsNavigator) {
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
-                        text = "Reminder Mode",
+                        text = "Reminder Sound",
                         fontSize = 16.sp,
                         fontWeight = FontWeight.W400,
                         color = blackColor
