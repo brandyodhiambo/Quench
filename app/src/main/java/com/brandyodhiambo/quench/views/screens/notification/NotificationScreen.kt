@@ -44,7 +44,7 @@ import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator.na
 @Destination
 @Composable
 fun NotificationScreen(
-    navigator: DestinationsNavigator
+    navigator: DestinationsNavigator,
 ) {
 
     val days = listOf(
@@ -137,73 +137,80 @@ fun AddReminder(navigator: DestinationsNavigator) {
 
 @Composable
 fun ReminderNotificationTime(reminder: Reminder) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
+
+    Card(
         modifier = Modifier
-            .fillMaxSize()
-            .background(
-                if (reminder.isOn) {
-                    Color.White
-                } else {
-                    Color.LightGray
-                }
-            )
-            .padding(start = 16.dp, end = 16.dp),
+            .fillMaxWidth()
+            .padding(bottom = 8.dp),
+        elevation = 4.dp,
+        shape = RoundedCornerShape(8.dp),
     ) {
-        Row(
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column(
-                  modifier = Modifier
-                      .padding(8.dp)
-            ) {
-                Text(
-                    text = reminder.time,
-                    color = if (reminder.isOn){Color.Black} else{Color.Gray},
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.SemiBold
-                )
-                LazyRow(
-                ) {
-                    items(reminder.days) { day ->
-                        WeeksReminder(day = day, reminder = reminder)
+                .fillMaxSize()
+                .background(
+                    if (reminder.isOn) {
+                        Color.White
+                    } else {
+                        Color.LightGray
                     }
+                )
+                .padding(4.dp),
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column(
+                    modifier = Modifier
+                        .padding(8.dp)
+                ) {
+                    Text(
+                        text = reminder.time,
+                        color = if (reminder.isOn) {
+                            Color.Black
+                        } else {
+                            Color.Gray
+                        },
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                    LazyRow(
+                    ) {
+                        items(reminder.days) { day ->
+                            WeeksReminder(day = day, reminder = reminder)
+                        }
+                    }
+
                 }
+                // Switch
+                Icon(
+                    modifier = Modifier
+                        .size(50.dp)
+                        .clickable {
+
+                        },
+                    painter = painterResource(
+                        id = if (reminder.isOn) {
+                            R.drawable.ic_toggle_on
+                        } else {
+                            R.drawable.ic_toggle_off
+                        }
+                    ),
+                    tint = if (reminder.isOn) {
+                        primaryColor
+                    } else {
+                        Color.Gray
+                    },
+                    contentDescription = null
+                )
 
             }
-            // Switch
-            Icon(
-                modifier = Modifier
-                    .size(50.dp)
-                    .clickable {
-
-                    },
-                painter = painterResource(
-                    id = if (reminder.isOn) {
-                        R.drawable.ic_toggle_on
-                    } else {
-                        R.drawable.ic_toggle_off
-                    }
-                ),
-                tint = if (reminder.isOn) {
-                    primaryColor
-                } else {
-                    Color.Gray
-                },
-                contentDescription = null
-            )
-
         }
-
-        Divider(
-            color = Color.Gray,
-            thickness = 1.dp,
-            modifier = Modifier.fillMaxWidth()
-        )
     }
 
 
@@ -220,7 +227,7 @@ fun WeeksReminder(day: Day, reminder: Reminder) {
 }
 
 @Composable
-fun DayIsOn(day: Day,reminder: Reminder) {
+fun DayIsOn(day: Day, reminder: Reminder) {
     Box(
         modifier = Modifier
             .padding(4.dp)
@@ -250,10 +257,10 @@ fun DayIsOn(day: Day,reminder: Reminder) {
 data class Reminder(
     val time: String,
     val days: List<Day>,
-    val isOn: Boolean
+    val isOn: Boolean,
 )
 
 data class Day(
     val day: String,
-    val isOn: Boolean
+    val isOn: Boolean,
 )
