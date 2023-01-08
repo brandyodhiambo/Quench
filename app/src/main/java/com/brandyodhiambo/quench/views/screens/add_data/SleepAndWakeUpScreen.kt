@@ -84,6 +84,10 @@ fun TimePickerInHours() {
         value = pickerValue,
         onValueChange = {
             pickerValue = it
+            val hours = it.hours
+            val minutes = it.minutes
+            val amPm = if(hours < 12) "AM" else "PM"
+            // Update the hours, minutes, and AM/PM fields here
         },
         hoursDivider = {
             Text(
