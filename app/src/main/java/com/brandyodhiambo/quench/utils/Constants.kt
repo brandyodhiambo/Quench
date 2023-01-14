@@ -9,4 +9,6 @@ object Constants {
     const val SELECTED_DRINK_TABLE = "selected_drink_table"
     const val LEVEL_TABLE = "level_table"
     const val REPORT_TABLE = "report_table"
+
+    const val DATABASE_NAME = "quench_db"
 }
