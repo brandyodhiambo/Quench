@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.brandyodhiambo.quench.R
 import com.brandyodhiambo.quench.utils.toInitials
+import com.brandyodhiambo.quench.views.screens.destinations.AddReminderScreenDestination
 import com.brandyodhiambo.quench.views.screens.settings.SettingScreen
 import com.brandyodhiambo.quench.views.screens.statistics.BlackCup
 import com.brandyodhiambo.quench.views.screens.statistics.GoldCup
@@ -43,7 +44,7 @@ import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator.na
 @Destination
 @Composable
 fun NotificationScreen(
-    navigator: DestinationsNavigator
+    navigator: DestinationsNavigator,
 ) {
 
     val days = listOf(
@@ -92,7 +93,7 @@ fun NotificationScreen(
                 modifier = Modifier.padding(start = 16.dp, top = 8.dp, end = 16.dp)
             ) {
                 item {
-                    AddReminder()
+                    AddReminder(navigator = navigator)
                 }
                 items(reminder) { reminder ->
                     ReminderNotificationTime(reminder = reminder)
@@ -105,7 +106,7 @@ fun NotificationScreen(
 
 
 @Composable
-fun AddReminder() {
+fun AddReminder(navigator: DestinationsNavigator) {
     Card(
         modifier = Modifier
             .fillMaxWidth(),
@@ -125,7 +126,7 @@ fun AddReminder() {
                 fontSize = 16.sp,
                 fontWeight = FontWeight.SemiBold
             )
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(onClick = { navigator.navigate(AddReminderScreenDestination) }) {
                 Icon(imageVector = Icons.Default.Add, tint = Color.Gray, contentDescription = null)
             }
         }
@@ -136,42 +137,55 @@ fun AddReminder() {
 
 @Composable
 fun ReminderNotificationTime(reminder: Reminder) {
-    Column(
+
+    Card(
         modifier = Modifier
-            .fillMaxSize()
-            .background(
-                if (reminder.isOn) {
-                    Color.White
-                } else {
-                    Color.LightGray
-                }
-            )
-            .padding(start = 16.dp, end = 16.dp),
+            .fillMaxWidth()
+            .padding(bottom = 8.dp),
+        elevation = 4.dp,
+        shape = RoundedCornerShape(8.dp),
     ) {
         Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp)
+                .fillMaxSize()
+                .background(
+                    if (reminder.isOn) {
+                        Color.White
+                    } else {
+                        Color.LightGray
+                    }
+                )
+                .padding(4.dp),
         ) {
-            Text(
-                text = reminder.time,
-                color = Color.Black,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.SemiBold
-            )
             Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                LazyRow(
+                Column(
                     modifier = Modifier
-                        .fillMaxWidth(.8f),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceEvenly
+                        .padding(8.dp)
                 ) {
-                    items(reminder.days) { day ->
-                        WeeksReminder(day = day, reminder = reminder)
+                    Text(
+                        text = reminder.time,
+                        color = if (reminder.isOn) {
+                            Color.Black
+                        } else {
+                            Color.Gray
+                        },
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                    LazyRow(
+                    ) {
+                        items(reminder.days) { day ->
+                            WeeksReminder(day = day, reminder = reminder)
+                        }
                     }
+
                 }
                 // Switch
                 Icon(
@@ -194,9 +208,9 @@ fun ReminderNotificationTime(reminder: Reminder) {
                     },
                     contentDescription = null
                 )
+
             }
         }
-        Divider(color = Color.LightGray, thickness = 1.dp)
     }
 
 
@@ -207,20 +221,20 @@ fun WeeksReminder(day: Day, reminder: Reminder) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        DayIsOn(day = day)
+        DayIsOn(day = day, reminder = reminder)
 
     }
 }
 
 @Composable
-fun DayIsOn(day: Day) {
+fun DayIsOn(day: Day, reminder: Reminder) {
     Box(
         modifier = Modifier
             .padding(4.dp)
             .size(25.dp)
             .border(
                 border = BorderStroke(
-                    2.dp, color = if (day.isOn) {
+                    2.dp, color = if (day.isOn && reminder.isOn) {
                         primaryColor
                     } else {
                         Color.Gray
@@ -243,10 +257,10 @@ fun DayIsOn(day: Day) {
 data class Reminder(
     val time: String,
     val days: List<Day>,
-    val isOn: Boolean
+    val isOn: Boolean,
 )
 
 data class Day(
     val day: String,
-    val isOn: Boolean
+    val isOn: Boolean,
 )

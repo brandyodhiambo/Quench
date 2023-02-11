@@ -1,15 +1,16 @@
 package com.brandyodhiambo.quench.views.screens.settings
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
+import android.media.MediaPlayer
+import android.media.RingtoneManager
+import android.net.Uri
+import android.provider.MediaStore
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -17,33 +18,40 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import androidx.test.core.app.ApplicationProvider
+import androidx.test.core.app.ApplicationProvider.getApplicationContext
 import com.brandyodhiambo.quench.R
 import com.brandyodhiambo.quench.views.screens.destinations.NotificationScreenDestination
 import com.brandyodhiambo.quench.views.screens.dialogs.IdealIntakeGoalDialog
-import com.brandyodhiambo.quench.views.screens.dialogs.WaterIntakeDialog
 import com.brandyodhiambo.quench.views.screens.notification.NotificationScreen
 import com.brandyodhiambo.quench.views.ui.theme.blackColor
 import com.brandyodhiambo.quench.views.ui.theme.primaryColor
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
+
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Destination
 @Composable
 fun SettingScreen(
     navigator: DestinationsNavigator
-)
-{
-    val openIntakeGoal = remember {
-        mutableStateOf(false)
-    }
+) {
+    val openIntakeDialog = remember { mutableStateOf(false) }
+    val openGenderDialog = remember { mutableStateOf(false) }
+    val openTimeDialog = remember { mutableStateOf(false) }
+    val openWaterUnitDialog = remember { mutableStateOf(false) }
+    val openWeightUnitDialog = remember { mutableStateOf(false) }
+
+
+
+
+
     Scaffold(
         backgroundColor = primaryColor
     ) { paddingValues ->
@@ -54,27 +62,62 @@ fun SettingScreen(
         ) {
             LazyColumn {
                 item {
-                    UnitsWaterIntake()
+                    UnitsWaterIntake(
+                        openTimeFormatDialog = openTimeDialog,
+                        openWaterUnitDialog = openWaterUnitDialog,
+                        openWeightUnitDialog = openWeightUnitDialog
+                    )
                 }
                 item {
-                    Goals(openDialog = openIntakeGoal)
+                    Goals(
+                        openDialog = openIntakeDialog,
+                        openGenderDialog = openGenderDialog
+                    )
                 }
                 item {
-                        ReminderWaterIntake(navigator = navigator)
+                    ReminderWaterIntake(navigator = navigator)
                 }
+            }
 
-            }
-            if (openIntakeGoal.value){
-                Dialog(onDismissRequest = { openIntakeGoal.value }) {
-                    WaterIntakeDialog(openCustomDialog = openIntakeGoal)
+            if (openIntakeDialog.value) {
+                Dialog(onDismissRequest = { openIntakeDialog.value }) {
+                    WaterIntakeDialog(openCustomDialog = openIntakeDialog)
                 }
             }
+
+            if (openGenderDialog.value) {
+                Dialog(onDismissRequest = { openGenderDialog.value }) {
+                    GenderDialog(openDialog = openGenderDialog)
+                }
+            }
+            if (openTimeDialog.value) {
+                Dialog(onDismissRequest = { openTimeDialog.value }) {
+                    TimeFormatDialog(openDialog = openTimeDialog)
+                }
+            }
+
+            if (openWaterUnitDialog.value) {
+                Dialog(onDismissRequest = { openWaterUnitDialog.value }) {
+                    WaterUnitsDialog(openDialog = openWaterUnitDialog)
+                }
+            }
+
+            if(openWeightUnitDialog.value){
+                Dialog(onDismissRequest = { openWeightUnitDialog.value }) {
+                    WeighUnitDialog(openDialog = openWeightUnitDialog)
+                }
+            }
+
         }
     }
 }
 
 @Composable
-fun UnitsWaterIntake() {
+fun UnitsWaterIntake(
+    openTimeFormatDialog: MutableState<Boolean>,
+    openWaterUnitDialog: MutableState<Boolean>,
+    openWeightUnitDialog: MutableState<Boolean>,
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -87,27 +130,26 @@ fun UnitsWaterIntake() {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp),
+                    .padding(8.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Text(
-                        text = "Water Unit",
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.W400,
-                        color = blackColor
-                    )
-
-                }
                 Text(
-                    text = "ml",
+                    text = "Water Unit",
                     fontSize = 16.sp,
-                    fontWeight = FontWeight.W300,
-                    color = primaryColor
+                    fontWeight = FontWeight.W400,
+                    color = blackColor
                 )
+
+                TextButton(onClick = { openWaterUnitDialog.value = true }) {
+                    Text(
+                        text = "ml",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.W300,
+                        color = primaryColor
+                    )
+                }
+
             }
             Divider(
                 modifier = Modifier
@@ -117,27 +159,26 @@ fun UnitsWaterIntake() {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp),
+                    .padding(8.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Text(
-                        text = "Weight Unit",
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.W400,
-                        color = blackColor
-                    )
-
-                }
                 Text(
-                    text = "Kg",
+                    text = "Weight Unit",
                     fontSize = 16.sp,
-                    fontWeight = FontWeight.W300,
-                    color = primaryColor
+                    fontWeight = FontWeight.W400,
+                    color = blackColor
                 )
+
+                TextButton(onClick = { openWeightUnitDialog.value = true }) {
+                    Text(
+                        text = "Kg",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.W300,
+                        color = primaryColor
+                    )
+                }
+
             }
             Divider(
                 modifier = Modifier
@@ -147,57 +188,25 @@ fun UnitsWaterIntake() {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp),
+                    .padding(8.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Text(
-                        text = "Time Format",
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.W400,
-                        color = blackColor
-                    )
-
-                }
                 Text(
-                    text = "12 hours",
+                    text = "Time Format",
                     fontSize = 16.sp,
-                    fontWeight = FontWeight.W300,
-                    color = primaryColor
+                    fontWeight = FontWeight.W400,
+                    color = blackColor
                 )
-            }
-            Divider(
-                modifier = Modifier
-                    .height(1.dp)
-                    .padding(start = 8.dp, end = 8.dp), color = Color.Gray, thickness = 1.dp
-            )
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
+                TextButton(onClick = {  openTimeFormatDialog.value = true }) {
                     Text(
-                        text = "Date Format",
+                        text = "12 hours",
                         fontSize = 16.sp,
-                        fontWeight = FontWeight.W400,
-                        color = blackColor
+                        fontWeight = FontWeight.W300,
+                        color = primaryColor,
                     )
-
                 }
-                Text(
-                    text = "dd/mm/yy",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.W300,
-                    color = primaryColor
-                )
+
             }
         }
     }
@@ -205,6 +214,7 @@ fun UnitsWaterIntake() {
 
 @Composable
 fun ReminderWaterIntake(navigator: DestinationsNavigator) {
+    val context = LocalContext.current
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -225,14 +235,17 @@ fun ReminderWaterIntake(navigator: DestinationsNavigator) {
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
-                        text = "Reminder Schedule",
+                        text = "Reminder Mode",
                         fontSize = 16.sp,
                         fontWeight = FontWeight.W400,
                         color = blackColor
                     )
 
                 }
-                IconButton(onClick = { }) {
+                IconButton(onClick = {
+
+
+                }) {
                     Image(
                         painter = painterResource(id = R.drawable.ic_chevron_right),
                         contentDescription = null
@@ -264,7 +277,11 @@ fun ReminderWaterIntake(navigator: DestinationsNavigator) {
                     )
 
                 }
-                IconButton(onClick = { }) {
+                IconButton(onClick = {
+                    val intent = Intent(MediaStore.INTENT_ACTION_MUSIC_PLAYER)
+                    context.startActivity(intent)
+
+                }) {
                     Image(
                         painter = painterResource(id = R.drawable.ic_chevron_right),
                         contentDescription = null
@@ -272,69 +289,6 @@ fun ReminderWaterIntake(navigator: DestinationsNavigator) {
 
                 }
 
-            }
-            Divider(
-                modifier = Modifier
-                    .height(1.dp)
-                    .padding(start = 8.dp, end = 8.dp), color = Color.Gray, thickness = 1.dp
-            )
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Text(
-                        text = "Reminder Mode",
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.W400,
-                        color = blackColor
-                    )
-
-                }
-                IconButton(onClick = { }) {
-                    Image(
-                        painter = painterResource(id = R.drawable.ic_chevron_right),
-                        contentDescription = null
-                    )
-
-                }
-
-            }
-            Divider(
-                modifier = Modifier
-                    .height(1.dp)
-                    .padding(start = 8.dp, end = 8.dp), color = Color.Gray, thickness = 1.dp
-            )
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Text(
-                        text = "Reminder",
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.W400,
-                        color = blackColor
-                    )
-
-                }
-                IconButton(onClick = { }) {
-                    Image(
-                        painter = painterResource(id = R.drawable.ic_chevron_right),
-                        contentDescription = null
-                    )
-
-                }
             }
             Divider(
                 modifier = Modifier
@@ -374,7 +328,10 @@ fun ReminderWaterIntake(navigator: DestinationsNavigator) {
 }
 
 @Composable
-fun Goals(openDialog:MutableState<Boolean>) {
+fun Goals(
+    openDialog: MutableState<Boolean>,
+    openGenderDialog: MutableState<Boolean>,
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -404,7 +361,10 @@ fun Goals(openDialog:MutableState<Boolean>) {
                 }
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.clickable {
+                        openGenderDialog.value = true
+                    }
                 ) {
                     Text(
                         text = "Male",
@@ -445,51 +405,11 @@ fun Goals(openDialog:MutableState<Boolean>) {
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween,
                     modifier = Modifier.clickable {
-                       openDialog.value = true
+                        openDialog.value = true
                     }
                 ) {
                     Text(
                         text = "2400ml",
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.W300,
-                        color = primaryColor
-                    )
-                    Image(
-                        painter = painterResource(id = R.drawable.ic_chevron_right),
-                        contentDescription = null
-                    )
-                }
-            }
-            Divider(
-                modifier = Modifier
-                    .height(1.dp)
-                    .padding(start = 8.dp, end = 8.dp), color = Color.Gray, thickness = 1.dp
-            )
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text(
-                        text = "Language",
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.W400,
-                        color = blackColor
-                    )
-
-                }
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text(
-                        text = "English",
                         fontSize = 16.sp,
                         fontWeight = FontWeight.W300,
                         color = primaryColor
