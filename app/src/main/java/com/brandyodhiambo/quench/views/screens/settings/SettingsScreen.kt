@@ -1,13 +1,10 @@
 package com.brandyodhiambo.quench.views.screens.settings
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
-import android.media.MediaPlayer
-import android.media.RingtoneManager
-import android.net.Uri
 import android.provider.MediaStore
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
@@ -24,17 +21,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import androidx.test.core.app.ApplicationProvider
-import androidx.test.core.app.ApplicationProvider.getApplicationContext
 import com.brandyodhiambo.quench.R
 import com.brandyodhiambo.quench.views.screens.destinations.NotificationScreenDestination
-import com.brandyodhiambo.quench.views.screens.dialogs.IdealIntakeGoalDialog
-import com.brandyodhiambo.quench.views.screens.notification.NotificationScreen
+import com.brandyodhiambo.quench.views.screens.dialogs.*
 import com.brandyodhiambo.quench.views.ui.theme.blackColor
 import com.brandyodhiambo.quench.views.ui.theme.primaryColor
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Destination
@@ -47,10 +40,6 @@ fun SettingScreen(
     val openTimeDialog = remember { mutableStateOf(false) }
     val openWaterUnitDialog = remember { mutableStateOf(false) }
     val openWeightUnitDialog = remember { mutableStateOf(false) }
-
-
-
-
 
     Scaffold(
         backgroundColor = primaryColor
@@ -102,12 +91,11 @@ fun SettingScreen(
                 }
             }
 
-            if(openWeightUnitDialog.value){
+            if (openWeightUnitDialog.value) {
                 Dialog(onDismissRequest = { openWeightUnitDialog.value }) {
                     WeighUnitDialog(openDialog = openWeightUnitDialog)
                 }
             }
-
         }
     }
 }
@@ -116,7 +104,7 @@ fun SettingScreen(
 fun UnitsWaterIntake(
     openTimeFormatDialog: MutableState<Boolean>,
     openWaterUnitDialog: MutableState<Boolean>,
-    openWeightUnitDialog: MutableState<Boolean>,
+    openWeightUnitDialog: MutableState<Boolean>
 ) {
     Card(
         modifier = Modifier
@@ -149,12 +137,13 @@ fun UnitsWaterIntake(
                         color = primaryColor
                     )
                 }
-
             }
             Divider(
                 modifier = Modifier
                     .height(1.dp)
-                    .padding(start = 8.dp, end = 8.dp), color = Color.Gray, thickness = 1.dp
+                    .padding(start = 8.dp, end = 8.dp),
+                color = Color.Gray,
+                thickness = 1.dp
             )
             Row(
                 modifier = Modifier
@@ -178,12 +167,13 @@ fun UnitsWaterIntake(
                         color = primaryColor
                     )
                 }
-
             }
             Divider(
                 modifier = Modifier
                     .height(1.dp)
-                    .padding(start = 8.dp, end = 8.dp), color = Color.Gray, thickness = 1.dp
+                    .padding(start = 8.dp, end = 8.dp),
+                color = Color.Gray,
+                thickness = 1.dp
             )
             Row(
                 modifier = Modifier
@@ -198,15 +188,14 @@ fun UnitsWaterIntake(
                     fontWeight = FontWeight.W400,
                     color = blackColor
                 )
-                TextButton(onClick = {  openTimeFormatDialog.value = true }) {
+                TextButton(onClick = { openTimeFormatDialog.value = true }) {
                     Text(
                         text = "12 hours",
                         fontSize = 16.sp,
                         fontWeight = FontWeight.W300,
-                        color = primaryColor,
+                        color = primaryColor
                     )
                 }
-
             }
         }
     }
@@ -232,7 +221,7 @@ fun ReminderWaterIntake(navigator: DestinationsNavigator) {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Row(
-                    verticalAlignment = Alignment.CenterVertically,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
                         text = "Reminder Mode",
@@ -240,24 +229,21 @@ fun ReminderWaterIntake(navigator: DestinationsNavigator) {
                         fontWeight = FontWeight.W400,
                         color = blackColor
                     )
-
                 }
                 IconButton(onClick = {
-
-
                 }) {
                     Image(
                         painter = painterResource(id = R.drawable.ic_chevron_right),
                         contentDescription = null
                     )
-
                 }
-
             }
             Divider(
                 modifier = Modifier
                     .height(1.dp)
-                    .padding(start = 8.dp, end = 8.dp), color = Color.Gray, thickness = 1.dp
+                    .padding(start = 8.dp, end = 8.dp),
+                color = Color.Gray,
+                thickness = 1.dp
             )
             Row(
                 modifier = Modifier
@@ -267,7 +253,7 @@ fun ReminderWaterIntake(navigator: DestinationsNavigator) {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Row(
-                    verticalAlignment = Alignment.CenterVertically,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
                         text = "Reminder Sound",
@@ -275,25 +261,23 @@ fun ReminderWaterIntake(navigator: DestinationsNavigator) {
                         fontWeight = FontWeight.W400,
                         color = blackColor
                     )
-
                 }
                 IconButton(onClick = {
                     val intent = Intent(MediaStore.INTENT_ACTION_MUSIC_PLAYER)
                     context.startActivity(intent)
-
                 }) {
                     Image(
                         painter = painterResource(id = R.drawable.ic_chevron_right),
                         contentDescription = null
                     )
-
                 }
-
             }
             Divider(
                 modifier = Modifier
                     .height(1.dp)
-                    .padding(start = 8.dp, end = 8.dp), color = Color.Gray, thickness = 1.dp
+                    .padding(start = 8.dp, end = 8.dp),
+                color = Color.Gray,
+                thickness = 1.dp
             )
             Row(
                 modifier = Modifier
@@ -303,7 +287,7 @@ fun ReminderWaterIntake(navigator: DestinationsNavigator) {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Row(
-                    verticalAlignment = Alignment.CenterVertically,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
                         text = "Notifications",
@@ -311,7 +295,6 @@ fun ReminderWaterIntake(navigator: DestinationsNavigator) {
                         fontWeight = FontWeight.W400,
                         color = blackColor
                     )
-
                 }
                 IconButton(onClick = {
                     navigator.navigate(NotificationScreenDestination)
@@ -320,7 +303,6 @@ fun ReminderWaterIntake(navigator: DestinationsNavigator) {
                         painter = painterResource(id = R.drawable.ic_chevron_right),
                         contentDescription = null
                     )
-
                 }
             }
         }
@@ -330,7 +312,7 @@ fun ReminderWaterIntake(navigator: DestinationsNavigator) {
 @Composable
 fun Goals(
     openDialog: MutableState<Boolean>,
-    openGenderDialog: MutableState<Boolean>,
+    openGenderDialog: MutableState<Boolean>
 ) {
     Card(
         modifier = Modifier
@@ -349,7 +331,7 @@ fun Goals(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Row(
-                    verticalAlignment = Alignment.CenterVertically,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
                         text = "Gender",
@@ -357,7 +339,6 @@ fun Goals(
                         fontWeight = FontWeight.W400,
                         color = blackColor
                     )
-
                 }
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -381,7 +362,9 @@ fun Goals(
             Divider(
                 modifier = Modifier
                     .height(1.dp)
-                    .padding(start = 8.dp, end = 8.dp), color = Color.Gray, thickness = 1.dp
+                    .padding(start = 8.dp, end = 8.dp),
+                color = Color.Gray,
+                thickness = 1.dp
             )
             Row(
                 modifier = Modifier
@@ -391,7 +374,7 @@ fun Goals(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Row(
-                    verticalAlignment = Alignment.CenterVertically,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
                         text = "Intake Goal",
@@ -399,7 +382,6 @@ fun Goals(
                         fontWeight = FontWeight.W400,
                         color = blackColor
                     )
-
                 }
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
