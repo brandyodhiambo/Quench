@@ -23,8 +23,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.brandyodhiambo.designsystem.theme.primaryColor
 import com.brandyodhiambo.quench.R
-import com.brandyodhiambo.quench.views.ui.theme.primaryColor
 
 @Composable
 fun CongratulationsDialog(
@@ -37,12 +37,12 @@ fun CongratulationsDialog(
         elevation = 8.dp
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth()
         ) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(300.dp),
+                    .height(300.dp)
             ) {
                 Image(
                     modifier = Modifier
@@ -90,9 +90,9 @@ fun CongratulationsDialog(
                                     )
                                     .show()
                             }
-                        },
+                        }
 
-                    )
+                )
                 Image(
                     painter = painterResource(id = R.drawable.twitter),
                     contentDescription = null,
@@ -117,10 +117,9 @@ fun CongratulationsDialog(
                                     )
                                     .show()
                             }
-                        },
+                        }
 
-
-                    )
+                )
                 Image(
                     painter = painterResource(id = R.drawable.whatsapp),
                     contentDescription = null,
@@ -142,9 +141,9 @@ fun CongratulationsDialog(
                                     )
                                     .show()
                             }
-                        },
+                        }
 
-                    )
+                )
 
                 Image(
                     painter = painterResource(id = R.drawable.ic_more),
@@ -162,11 +161,9 @@ fun CongratulationsDialog(
                             )
                             sendIntent.type = "text/plain"
                             context.startActivity(sendIntent)
-                        },
+                        }
 
-
-                    )
-
+                )
             }
 
             Row(
@@ -176,11 +173,9 @@ fun CongratulationsDialog(
                     .background(Color.White),
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
-
                 TextButton(onClick = {
                     openDialogCustom.value = false
                 }) {
-
                     Text(
                         "Cancel",
                         fontWeight = FontWeight.Bold,
@@ -199,11 +194,6 @@ fun CongratulationsDialog(
                     )
                 }
             }
-
-
         }
-
     }
-
-
 }

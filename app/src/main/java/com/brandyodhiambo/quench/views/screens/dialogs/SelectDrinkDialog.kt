@@ -24,7 +24,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.brandyodhiambo.quench.R
-import com.brandyodhiambo.quench.views.ui.theme.primaryColor
+import com.brandyodhiambo.designsystem.theme.primaryColor
 
 
 val selectedDrinks = listOf(

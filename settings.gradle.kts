@@ -16,3 +16,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Quench"
 include(":app")
+include(":designsystem")

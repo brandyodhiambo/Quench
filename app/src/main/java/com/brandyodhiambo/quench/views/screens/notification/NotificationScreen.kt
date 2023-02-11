@@ -13,32 +13,20 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.brandyodhiambo.quench.R
 import com.brandyodhiambo.quench.utils.toInitials
 import com.brandyodhiambo.quench.views.screens.destinations.AddReminderScreenDestination
-import com.brandyodhiambo.quench.views.screens.settings.SettingScreen
-import com.brandyodhiambo.quench.views.screens.statistics.BlackCup
-import com.brandyodhiambo.quench.views.screens.statistics.GoldCup
-import com.brandyodhiambo.quench.views.screens.statistics.WeeksAcheive
-import com.brandyodhiambo.quench.views.screens.statistics.weekAchiement
-import com.brandyodhiambo.quench.views.ui.theme.primaryColor
+import com.brandyodhiambo.designsystem.theme.primaryColor
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator.navigateUp
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Destination

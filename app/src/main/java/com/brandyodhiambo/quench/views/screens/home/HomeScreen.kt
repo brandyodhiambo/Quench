@@ -1,6 +1,5 @@
 package com.brandyodhiambo.quench.views.screens.home
 
-import com.brandyodhiambo.quench.R
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -24,13 +23,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import com.brandyodhiambo.designsystem.components.CircularButton
+import com.brandyodhiambo.designsystem.theme.lightBlue
+import com.brandyodhiambo.designsystem.theme.primaryColor
+import com.brandyodhiambo.quench.R
 import com.brandyodhiambo.quench.views.composables.CircularRating
 import com.brandyodhiambo.quench.views.screens.dialogs.*
-import com.brandyodhiambo.quench.views.ui.theme.lightBlue
-import com.brandyodhiambo.quench.views.ui.theme.primaryColor
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Destination
@@ -38,7 +38,6 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 fun HomeScreen(
     navigator: DestinationsNavigator
 ) {
-
     val openTimeDialog = remember { mutableStateOf(false) }
     val waterIntakeDialog = remember { mutableStateOf(false) }
     val idealWaterIntakeDialog = remember { mutableStateOf(false) }
@@ -47,7 +46,7 @@ fun HomeScreen(
         Intake("100 Ml", "12:30 Pm"),
         Intake("300 Ml", "18:30 Pm"),
         Intake("250 Ml", "11:30 Pm"),
-        Intake("150 Ml", "19:30 Pm"),
+        Intake("150 Ml", "19:30 Pm")
     )
     Scaffold(
         backgroundColor = primaryColor
@@ -59,10 +58,16 @@ fun HomeScreen(
         ) {
             LazyColumn {
                 item {
-                    WaterIntake(openDialog = waterIntakeDialog, idealWaterDialog = idealWaterIntakeDialog)
+                    WaterIntake(
+                        openDialog = waterIntakeDialog,
+                        idealWaterDialog = idealWaterIntakeDialog
+                    )
                 }
                 item {
-                    WaterRecord(openDialog = openTimeDialog,selectedDrinkDialog = selectedDrinkDialog)
+                    WaterRecord(
+                        openDialog = openTimeDialog,
+                        selectedDrinkDialog = selectedDrinkDialog
+                    )
                 }
                 item {
                     Spacer(modifier = Modifier.height(8.dp))
@@ -72,45 +77,42 @@ fun HomeScreen(
                 }
             }
 
-
             if (openTimeDialog.value) {
                 Dialog(onDismissRequest = { openTimeDialog.value }) {
                     TimeSetterDialog(openDialogCustom = openTimeDialog)
-                    //CongratulationsDialog(openDialogCustom = openTimeDialog)
+                    // CongratulationsDialog(openDialogCustom = openTimeDialog)
                 }
             }
 
-            if (waterIntakeDialog.value){
+            if (waterIntakeDialog.value) {
                 Dialog(onDismissRequest = { waterIntakeDialog.value }) {
                     WaterIntakeDialog(openCustomDialog = waterIntakeDialog)
                 }
             }
 
-            if (idealWaterIntakeDialog.value){
+            if (idealWaterIntakeDialog.value) {
                 Dialog(onDismissRequest = { idealWaterIntakeDialog.value }) {
                     IdealIntakeGoalDialog(idealCustomDialog = idealWaterIntakeDialog)
                 }
             }
 
-            if (selectedDrinkDialog.value){
+            if (selectedDrinkDialog.value) {
                 Dialog(onDismissRequest = { selectedDrinkDialog.value }) {
                     SelectDrinkComposable(openDialog = selectedDrinkDialog)
                 }
             }
-
-
         }
     }
 }
 
-
 @Composable
-fun WaterIntake(openDialog: MutableState<Boolean>,idealWaterDialog: MutableState<Boolean>) {
+fun WaterIntake(openDialog: MutableState<Boolean>, idealWaterDialog: MutableState<Boolean>) {
     Card(
         modifier = Modifier
             .height(100.dp)
             .padding(16.dp)
-            .fillMaxWidth(), elevation = 4.dp
+            .fillMaxWidth(),
+        elevation = 4.dp
     ) {
         Row(
             modifier = Modifier
@@ -124,14 +126,15 @@ fun WaterIntake(openDialog: MutableState<Boolean>,idealWaterDialog: MutableState
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.ic_glass), contentDescription = null
+                    painter = painterResource(id = R.drawable.ic_glass),
+                    contentDescription = null
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier.clickable {
                         idealWaterDialog.value = true
-                    },
+                    }
                 ) {
                     Text(text = "Ideal water intake", fontSize = 14.sp, color = Color.Gray)
                     Text(
@@ -159,11 +162,13 @@ fun WaterIntake(openDialog: MutableState<Boolean>,idealWaterDialog: MutableState
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier.clickable {
                         openDialog.value = true
-                    },
+                    }
                 ) {
-                    Text(text = "Water intake goal",
+                    Text(
+                        text = "Water intake goal",
                         fontSize = 14.sp,
-                        color = Color.Gray)
+                        color = Color.Gray
+                    )
                     Text(
                         text = "2400 ml",
                         fontSize = 16.sp,
@@ -176,9 +181,8 @@ fun WaterIntake(openDialog: MutableState<Boolean>,idealWaterDialog: MutableState
     }
 }
 
-
 @Composable
-fun WaterRecord(openDialog:MutableState<Boolean>,selectedDrinkDialog:MutableState<Boolean>) {
+fun WaterRecord(openDialog: MutableState<Boolean>, selectedDrinkDialog: MutableState<Boolean>) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -196,78 +200,35 @@ fun WaterRecord(openDialog:MutableState<Boolean>,selectedDrinkDialog:MutableStat
             CircularRating(percentage = 7f, drunk = 800)
             Spacer(modifier = Modifier.height(8.dp))
             Row(
-                modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                Card(
+                CircularButton(
                     backgroundColor = lightBlue,
-                    shape = CircleShape,
-                    elevation = 8.dp,
-                    modifier = Modifier
-                        .size(100.dp)
-                        .padding(12.dp)
-                        .clickable {
-                            openDialog.value = true
-                        },
-                ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center,
-                        modifier = Modifier.padding(4.dp)
-                    ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.ic_clock),
-                            contentDescription = null
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(text = " 12:04 AM", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                    icon = R.drawable.ic_clock,
+                    title = "12:04 AM",
+                    onClick = {
+                        openDialog.value = true
                     }
-                }
-                Card(
-                    modifier = Modifier
-                        .size(100.dp)
-                        .padding(12.dp)
-                        .clickable {
-                            //Todo
-                        },
+                )
+                CircularButton(
                     backgroundColor = lightBlue,
-                    shape = CircleShape,
-                    elevation = 8.dp
-                ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center,
-                        modifier = Modifier.padding(4.dp)
-                    ) {
-                        Image(imageVector = Icons.Default.Add, contentDescription = null)
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(text = " Add Level", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                    icon = R.drawable.ic_glass,
+                    title = "Add Level",
+                    onClick = {
+                       // Todo
                     }
-                }
+                )
 
-                Card(
-                    modifier = Modifier
-                        .size(100.dp)
-                        .padding(12.dp)
-                        .clickable {
-                            selectedDrinkDialog.value = true
-                        },
+                CircularButton(
                     backgroundColor = lightBlue,
-                    shape = CircleShape,
-                    elevation = 8.dp
-                ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center,
-                        modifier = Modifier.padding(4.dp)
-                    ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.ic_glass),
-                            contentDescription = null
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(text = " 100 Ml", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                    icon = R.drawable.ic_glass,
+                    title = "100 Ml",
+                    onClick = {
+                        selectedDrinkDialog.value = true
                     }
-                }
+                )
+
             }
         }
     }
@@ -296,7 +257,8 @@ fun WaterIntakeTimeAndLevel(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.ic_glass), contentDescription = null
+                    painter = painterResource(id = R.drawable.ic_glass),
+                    contentDescription = null
                 )
                 Text(text = intake.level, fontSize = 16.sp, fontWeight = FontWeight.W400)
             }
@@ -318,15 +280,15 @@ fun WaterIntakeTimeAndLevel(
                     )
                 }
             }
-
         }
         Divider(
-            thickness = 1.dp, color = Color.Gray
+            thickness = 1.dp,
+            color = Color.Gray
         )
     }
-
 }
 
 data class Intake(
-    val level: String, val time: String
+    val level: String,
+    val time: String
 )

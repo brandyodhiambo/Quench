@@ -24,8 +24,8 @@ import androidx.compose.ui.window.Dialog
 import com.brandyodhiambo.quench.R
 import com.brandyodhiambo.quench.views.screens.destinations.NotificationScreenDestination
 import com.brandyodhiambo.quench.views.screens.dialogs.*
-import com.brandyodhiambo.quench.views.ui.theme.blackColor
-import com.brandyodhiambo.quench.views.ui.theme.primaryColor
+import com.brandyodhiambo.designsystem.theme.blackColor
+import com.brandyodhiambo.designsystem.theme.primaryColor
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 

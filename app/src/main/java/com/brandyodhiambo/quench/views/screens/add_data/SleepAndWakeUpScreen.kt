@@ -11,8 +11,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.brandyodhiambo.quench.views.screens.destinations.MainScreenDestination
-import com.brandyodhiambo.quench.views.ui.theme.blackColor
-import com.brandyodhiambo.quench.views.ui.theme.primaryColor
+import com.brandyodhiambo.designsystem.theme.blackColor
+import com.brandyodhiambo.designsystem.theme.primaryColor
 import com.chargemap.compose.numberpicker.AMPMHours
 import com.chargemap.compose.numberpicker.Hours
 import com.chargemap.compose.numberpicker.HoursNumberPicker

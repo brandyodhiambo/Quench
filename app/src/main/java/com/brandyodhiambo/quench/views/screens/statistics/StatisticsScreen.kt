@@ -21,13 +21,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.brandyodhiambo.quench.views.composables.barChartDataMonths
 import com.brandyodhiambo.quench.views.composables.verticalAxisValues
-import com.brandyodhiambo.quench.views.ui.theme.blackColor
-import com.brandyodhiambo.quench.views.ui.theme.primaryColor
+import com.brandyodhiambo.designsystem.theme.blackColor
+import com.brandyodhiambo.designsystem.theme.primaryColor
 import com.mahmoud.composecharts.barchart.BarChart
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator

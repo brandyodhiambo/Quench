@@ -1,7 +1,6 @@
 package com.brandyodhiambo.quench.views.screens.notification
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -13,14 +12,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.brandyodhiambo.quench.R
 import com.brandyodhiambo.quench.views.screens.dialogs.RepeatModeDialog
-import com.brandyodhiambo.quench.views.screens.dialogs.WeighUnitDialog
-import com.brandyodhiambo.quench.views.ui.theme.blackColor
+import com.brandyodhiambo.designsystem.theme.blackColor
 import com.chargemap.compose.numberpicker.AMPMHours
 import com.chargemap.compose.numberpicker.Hours
 import com.chargemap.compose.numberpicker.HoursNumberPicker

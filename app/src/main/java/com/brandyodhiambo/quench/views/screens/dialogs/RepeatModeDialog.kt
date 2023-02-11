@@ -14,24 +14,20 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.brandyodhiambo.quench.views.ui.theme.primaryColor
-
-
+import com.brandyodhiambo.designsystem.theme.primaryColor
 
 @Composable
-fun RepeatModeDialog(openDialog:MutableState<Boolean>) {
+fun RepeatModeDialog(openDialog: MutableState<Boolean>) {
     val selectedValue = remember { mutableStateOf("") }
 
     val isSelectedItem: (String) -> Boolean = { selectedValue.value == it }
     val onChangeState: (String) -> Unit = { selectedValue.value = it }
 
-    val items = listOf("Once", "Daily","Mon to Fri")
+    val items = listOf("Once", "Daily", "Mon to Fri")
 
     Card(
         shape = RoundedCornerShape(12.dp),
@@ -41,8 +37,9 @@ fun RepeatModeDialog(openDialog:MutableState<Boolean>) {
         Column(
             Modifier
                 .padding(8.dp)
-                .background(Color.White)) {
-           // Text(text = "Selected Time format: ${selectedValue.value.ifEmpty { "NONE" }}", modifier = Modifier.padding(8.dp))
+                .background(Color.White)
+        ) {
+            // Text(text = "Selected Time format: ${selectedValue.value.ifEmpty { "NONE" }}", modifier = Modifier.padding(8.dp))
             items.forEach { item ->
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -73,11 +70,9 @@ fun RepeatModeDialog(openDialog:MutableState<Boolean>) {
                     .background(Color.White),
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
-
                 TextButton(onClick = {
                     openDialog.value = false
                 }) {
-
                     Text(
                         "Cancel",
                         fontWeight = FontWeight.Bold,
@@ -97,6 +92,5 @@ fun RepeatModeDialog(openDialog:MutableState<Boolean>) {
                 }
             }
         }
-
     }
 }

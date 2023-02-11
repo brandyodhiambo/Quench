@@ -1,4 +1,4 @@
-package com.brandyodhiambo.quench.views.ui.theme
+package com.brandyodhiambo.designsystem.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme

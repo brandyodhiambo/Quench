@@ -18,16 +18,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.brandyodhiambo.designsystem.theme.primaryColor
 import com.brandyodhiambo.quench.R
-import com.brandyodhiambo.quench.views.ui.theme.GoldColor
-import com.brandyodhiambo.quench.views.ui.theme.primaryColor
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun IdealIntakeGoalDialog(modifier:Modifier = Modifier,idealCustomDialog:MutableState<Boolean>) {
+fun IdealIntakeGoalDialog(modifier: Modifier = Modifier, idealCustomDialog: MutableState<Boolean>) {
     Card(
         shape = RoundedCornerShape(10.dp),
-        modifier = Modifier.padding(10.dp,5.dp,10.dp,10.dp),
+        modifier = Modifier.padding(10.dp, 5.dp, 10.dp, 10.dp),
         elevation = 8.dp
 
     ) {
@@ -86,8 +85,7 @@ fun IdealIntakeGoalDialog(modifier:Modifier = Modifier,idealCustomDialog:Mutable
                         )
                     )
 
-
-                    val options = listOf("ml", "l", "liters" )
+                    val options = listOf("ml", "l", "liters")
                     var expanded by remember { mutableStateOf(false) }
                     var selectedOptionText by remember { mutableStateOf(options[0]) }
 
@@ -141,11 +139,9 @@ fun IdealIntakeGoalDialog(modifier:Modifier = Modifier,idealCustomDialog:Mutable
                     .background(Color.White),
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
-
                 TextButton(onClick = {
                     idealCustomDialog.value = false
                 }) {
-
                     Text(
                         "Cancel",
                         fontWeight = FontWeight.Bold,
@@ -165,6 +161,5 @@ fun IdealIntakeGoalDialog(modifier:Modifier = Modifier,idealCustomDialog:Mutable
                 }
             }
         }
-
     }
 }

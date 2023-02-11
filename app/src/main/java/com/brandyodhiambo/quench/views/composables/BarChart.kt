@@ -1,7 +1,6 @@
 package com.brandyodhiambo.quench.views.composables
 
-import androidx.compose.ui.graphics.Color
-import com.brandyodhiambo.quench.views.ui.theme.primaryColor
+import com.brandyodhiambo.designsystem.theme.primaryColor
 import com.mahmoud.composecharts.barchart.BarChartEntity
 
 
