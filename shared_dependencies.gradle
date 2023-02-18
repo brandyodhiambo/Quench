@@ -70,6 +70,5 @@ dependencies {
 
     implementation("com.airbnb.android:lottie-compose:${Versions.lottie_version}")
 
-    // charts
-    implementation("com.github.MahmoudIbrahim3:android-compose-charts:1.2.2")
+
 }
