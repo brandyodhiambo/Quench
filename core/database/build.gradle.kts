@@ -1,6 +1,12 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-kapt")
+    id("dagger.hilt.android.plugin")
+}
+
+apply {
+    from("$rootDir/shared_dependencies.gradle")
 }
 
 android {
@@ -34,11 +40,10 @@ android {
 }
 
 dependencies {
+    // Room
+    implementation("androidx.room:room-runtime:${Versions.room_version}")
+    kapt("androidx.room:room-compiler:${Versions.room_version}")
 
-    implementation("androidx.core:core-ktx:1.7.0")
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.8.0")
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    // Kotlin Extensions and Coroutines support for Room
+    implementation("androidx.room:room-ktx:${Versions.room_version}")
 }

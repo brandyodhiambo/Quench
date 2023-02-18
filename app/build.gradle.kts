@@ -66,4 +66,11 @@ android {
 
 dependencies {
     implementation(project(":designsystem"))
+
+    // RamCosta Navigation
+    implementation("io.github.raamcosta.compose-destinations:core:1.5.20-beta")
+    ksp("io.github.raamcosta.compose-destinations:ksp:1.5.15-beta")
+
+    // Navigation animation
+    implementation("com.google.accompanist:accompanist-navigation-animation:0.24.7-alpha")
 }
