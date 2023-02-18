@@ -15,17 +15,9 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling:${Versions.compose_version}")
     debugImplementation("androidx.compose.ui:ui-test-manifest:${Versions.compose_version}")
 
-    // Room
 
-    implementation("androidx.room:room-runtime:${Versions.room_version}}")
-    kapt("androidx.room:room-compiler:${Versions.room_version}")
 
-    // work-manager
 
-    implementation("androidx.work:work-runtime-ktx:${Versions.work_version}")
-
-    // Kotlin Extensions and Coroutines support for Room
-    implementation("androidx.room:room-ktx:2.4.3")
 
     // Compose dependencies
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1")
@@ -50,12 +42,7 @@ dependencies {
     // Timber
     implementation("com.jakewharton.timber:timber:5.0.1")
 
-    // RamCosta Navigation
-    implementation("io.github.raamcosta.compose-destinations:core:1.5.20-beta")
-    ksp("io.github.raamcosta.compose-destinations:ksp:1.5.15-beta")
 
-    // Navigation animation
-    implementation("com.google.accompanist:accompanist-navigation-animation:0.24.7-alpha")
 
     // Accompanist System UI controller
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.24.10-beta")
