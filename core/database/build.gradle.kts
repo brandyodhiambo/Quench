@@ -11,11 +11,11 @@ apply {
 
 android {
     namespace = "com.brandyodhiambo.database"
-    compileSdk = 33
+    compileSdk = AndroidConfig.compileSdk
 
     defaultConfig {
-        minSdk = 24
-        targetSdk = 33
+        minSdk = AndroidConfig.minSdk
+        targetSdk = AndroidConfig.targetSdk
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -40,6 +40,9 @@ android {
 }
 
 dependencies {
+
+    implementation(project(":core:common"))
+
     // Room
     implementation("androidx.room:room-runtime:${Versions.room_version}")
     kapt("androidx.room:room-compiler:${Versions.room_version}")

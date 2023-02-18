@@ -13,12 +13,11 @@ apply {
 
 android {
     namespace = "com.brandyodhiambo.statistics"
-    compileSdk = 33
-
+    compileSdk = AndroidConfig.compileSdk
 
     defaultConfig {
-        minSdk = 24
-        targetSdk = 33
+        minSdk = AndroidConfig.minSdk
+        targetSdk = AndroidConfig.targetSdk
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -37,18 +36,30 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+    buildFeatures {
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = Versions.compose_version
+    }
     kotlinOptions {
         jvmTarget = "1.8"
     }
 }
 
 dependencies {
+    implementation(project(":designsystem"))
+    implementation(project(":core:common"))
+
     // RamCosta Navigation
     implementation("io.github.raamcosta.compose-destinations:core:1.5.20-beta")
     ksp("io.github.raamcosta.compose-destinations:ksp:1.5.15-beta")
 
     // Navigation animation
     implementation("com.google.accompanist:accompanist-navigation-animation:0.24.7-alpha")
+
+    // charts
+    implementation("com.github.MahmoudIbrahim3:android-compose-charts:1.2.2")
 }
 
 kotlin {
