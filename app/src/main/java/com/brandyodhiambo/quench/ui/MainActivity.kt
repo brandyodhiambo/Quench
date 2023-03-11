@@ -38,10 +38,9 @@ class MainActivity : ComponentActivity() {
 
 
         splashScreen.setKeepOnScreenCondition{
-            viewModel.uiState.value.isLoading
+            viewModel.uiState.value.isSuccessful
         }
 
-        WindowCompat.setDecorFitsSystemWindows(window, false)
 
         setContent {
             QuenchTheme {
