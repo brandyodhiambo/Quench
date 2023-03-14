@@ -47,4 +47,8 @@ android {
     }
 }
 
-dependencies {}
+dependencies {
+    implementation ("androidx.compose.animation:animation:1.3.3")
+    implementation ("androidx.compose.animation:animation-core:1.3.3")
+    implementation ("androidx.compose.animation:animation-graphics:1.3.3")
+}

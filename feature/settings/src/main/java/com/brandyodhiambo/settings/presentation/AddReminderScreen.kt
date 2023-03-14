@@ -16,19 +16,25 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.brandyodhiambo.common.R
+import com.brandyodhiambo.designsystem.components.NotificationSwitcher
 import com.brandyodhiambo.designsystem.theme.blackColor
-import com.brandyodhiambo.quench.views.screens.dialogs.RepeatModeDialog
+import com.brandyodhiambo.settings.presentation.component.CustomReminderDialog
 import com.chargemap.compose.numberpicker.AMPMHours
 import com.chargemap.compose.numberpicker.Hours
 import com.chargemap.compose.numberpicker.HoursNumberPicker
 import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+
+
+interface AddReminderNavigator{
+    fun navigateUp()
+}
+
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Destination
 @Composable
 fun AddReminderScreen(
-    navigator: DestinationsNavigator
+    navigator: AddReminderNavigator
 ) {
     val repeateModeDialog = remember { mutableStateOf(false) }
     Scaffold(
@@ -37,7 +43,9 @@ fun AddReminderScreen(
         }
     ) {
         Column(
-            modifier = Modifier.fillMaxSize().padding(start = 16.dp, end = 16.dp),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(start = 16.dp, end = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             ReminderTimePickerInHours()
@@ -103,9 +111,55 @@ fun AddReminderScreen(
                     }
                 }
             }
+
+            Spacer(modifier = Modifier.height(8.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "Vibrate when alarm sounds",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.W400,
+                    color = blackColor
+                )
+                NotificationSwitcher(
+                    isOn = true,
+                    size = 35.dp,
+                    padding = 5.dp,
+                    onToggle = {
+                    }
+                )
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "Delete after goes off",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.W400,
+                    color = blackColor
+                )
+                NotificationSwitcher(
+                    isOn = false,
+                    size = 35.dp,
+                    padding = 5.dp,
+                    onToggle = {
+                    }
+                )
+            }
+
+
+
             if (repeateModeDialog.value) {
                 Dialog(onDismissRequest = { repeateModeDialog.value }) {
-                    RepeatModeDialog(openDialog = repeateModeDialog)
+                    val repeatMode = listOf("Once", "Mon to Fri", "Daily", "Custom")
+                    CustomReminderDialog(openDialog = repeateModeDialog, items = repeatMode, title = "Repeat Mode")
                 }
             }
         }
@@ -113,7 +167,7 @@ fun AddReminderScreen(
 }
 
 @Composable
-fun TopAppBarAddReminder(navigator: DestinationsNavigator) {
+fun TopAppBarAddReminder(navigator: AddReminderNavigator) {
     TopAppBar(
         title = {
             Text(text = "Add Reminder", color = Color.Black, fontSize = 16.sp)
@@ -134,26 +188,33 @@ fun TopAppBarAddReminder(navigator: DestinationsNavigator) {
 
 @Composable
 fun ReminderTimePickerInHours() {
-    var pickerValue by remember { mutableStateOf<Hours>(AMPMHours(0, 0, AMPMHours.DayTime.AM)) }
-    HoursNumberPicker(
-        dividersColor = blackColor,
-        value = pickerValue,
-        onValueChange = {
-            pickerValue = it
-        },
-        hoursDivider = {
-            Text(
-                modifier = Modifier.padding(horizontal = 8.dp),
-                textAlign = TextAlign.Center,
-                text = ":"
-            )
-        },
-        minutesDivider = {
-            Text(
-                modifier = Modifier.padding(horizontal = 8.dp),
-                textAlign = TextAlign.Center,
-                text = " "
-            )
-        }
-    )
+    Column(
+        modifier = Modifier.fillMaxWidth().height(200.dp).padding(16.dp),
+        verticalArrangement = Arrangement.Top,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        var pickerValue by remember { mutableStateOf<Hours>(AMPMHours(0, 0, AMPMHours.DayTime.AM)) }
+        HoursNumberPicker(
+            dividersColor = blackColor,
+            value = pickerValue,
+            onValueChange = {
+                pickerValue = it
+            },
+            hoursDivider = {
+                Text(
+                    modifier = Modifier.padding(horizontal = 8.dp),
+                    textAlign = TextAlign.Center,
+                    text = ":"
+                )
+            },
+            minutesDivider = {
+                Text(
+                    modifier = Modifier.padding(horizontal = 8.dp),
+                    textAlign = TextAlign.Center,
+                    text = " "
+                )
+            }
+        )
+
+    }
 }

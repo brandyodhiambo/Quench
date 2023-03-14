@@ -3,6 +3,7 @@ package com.brandyodhiambo.quench.navigation
 
 import com.brandyodhiambo.home.presentation.destinations.HomeScreenDestination
 import com.brandyodhiambo.quench.ui.destinations.MainScreenDestination
+import com.brandyodhiambo.settings.presentation.destinations.AddReminderScreenDestination
 import com.brandyodhiambo.settings.presentation.destinations.NotificationScreenDestination
 import com.brandyodhiambo.settings.presentation.destinations.SettingScreenDestination
 import com.brandyodhiambo.statistics.presentation.destinations.StatisticsScreenDestination
@@ -18,7 +19,8 @@ object NavGraphs {
         override val destinationsByRoute = listOf<DestinationSpec<*>>(
             HomeScreenDestination,
             MainScreenDestination,
-            NotificationScreenDestination
+            NotificationScreenDestination,
+            AddReminderScreenDestination
         ).routedIn(this).associateBy { it.route }
     }
 
@@ -35,7 +37,8 @@ object NavGraphs {
         override val startRoute: Route = SettingScreenDestination routedIn this
         override val destinationsByRoute = listOf<DestinationSpec<*>>(
             SettingScreenDestination,
-            NotificationScreenDestination
+            NotificationScreenDestination,
+            AddReminderScreenDestination
         ).routedIn(this).associateBy { it.route }
     }
 

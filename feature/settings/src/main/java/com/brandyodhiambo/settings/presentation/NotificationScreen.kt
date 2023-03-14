@@ -16,19 +16,23 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.brandyodhiambo.common.R
 import com.brandyodhiambo.common.domain.model.Day
 import com.brandyodhiambo.common.util.toInitials
+import com.brandyodhiambo.designsystem.components.NotificationSwitcher
 import com.brandyodhiambo.designsystem.theme.primaryColor
+import com.brandyodhiambo.quench.views.screens.dialogs.Loader
+import com.brandyodhiambo.settings.R
 import com.ramcosta.composedestinations.annotation.Destination
 
 interface NotificationNavigator {
     fun navigateToReminderScreen()
+
+    fun popBackStack()
+
 }
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -62,7 +66,9 @@ fun NotificationScreen(
                 title = { Text(text = "Notification", color = Color.White, fontSize = 16.sp) },
                 backgroundColor = primaryColor,
                 navigationIcon = {
-                    IconButton(onClick = { /*navigator.navigateUp()*/ }) {
+                    IconButton(onClick = {
+                        navigator.popBackStack()
+                    }) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
                             tint = Color.White,
@@ -83,8 +89,14 @@ fun NotificationScreen(
                 item {
                     AddReminder(navigator = navigator)
                 }
-                items(reminder) { reminder ->
-                    ReminderNotificationTime(reminder = reminder)
+                if(reminder.isEmpty()){
+                    item {
+                        Loader(compositions = R.raw.clock)
+                    }
+                } else {
+                    items(reminder) { reminder ->
+                        ReminderNotificationTime(reminder = reminder)
+                    }
                 }
             }
         }
@@ -170,24 +182,13 @@ fun ReminderNotificationTime(reminder: Reminder) {
                     }
                 }
                 // Switch
-                Icon(
-                    modifier = Modifier
-                        .size(50.dp)
-                        .clickable {
-                        },
-                    painter = painterResource(
-                        id = if (reminder.isOn) {
-                            R.drawable.ic_toggle_on
-                        } else {
-                            R.drawable.ic_toggle_off
-                        }
-                    ),
-                    tint = if (reminder.isOn) {
-                        primaryColor
-                    } else {
-                        Color.Gray
-                    },
-                    contentDescription = null
+                NotificationSwitcher(
+                    isOn = reminder.isOn,
+                    size = 30.dp,
+                    padding = 5.dp,
+                    onToggle = {
+                        !reminder.isOn
+                    }
                 )
             }
         }
@@ -199,37 +200,33 @@ fun WeeksReminder(day: Day, reminder: Reminder) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        DayIsOn(day = day, reminder = reminder)
+        Box(
+            modifier = Modifier
+                .padding(4.dp)
+                .size(25.dp)
+                .border(
+                    border = BorderStroke(
+                        2.dp,
+                        color = if (day.isOn && reminder.isOn) {
+                            primaryColor
+                        } else {
+                            Color.Gray
+                        }
+                    ),
+                    shape = CircleShape
+                ),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = day.day.toInitials(),
+                fontSize = 12.sp,
+                textAlign = TextAlign.Center,
+                fontWeight = FontWeight.SemiBold
+            )
+        }
     }
 }
 
-@Composable
-fun DayIsOn(day: Day, reminder: Reminder) {
-    Box(
-        modifier = Modifier
-            .padding(4.dp)
-            .size(25.dp)
-            .border(
-                border = BorderStroke(
-                    2.dp,
-                    color = if (day.isOn && reminder.isOn) {
-                        primaryColor
-                    } else {
-                        Color.Gray
-                    }
-                ),
-                shape = CircleShape
-            ),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = day.day.toInitials(),
-            fontSize = 12.sp,
-            textAlign = TextAlign.Center,
-            fontWeight = FontWeight.SemiBold
-        )
-    }
-}
 
 data class Reminder(
     val time: String,

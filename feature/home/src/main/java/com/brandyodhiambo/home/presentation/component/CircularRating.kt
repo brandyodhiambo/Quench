@@ -1,4 +1,4 @@
-package com.brandyodhiambo.quench.views.composables
+package com.brandyodhiambo.home.presentation.component
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -7,7 +7,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -19,12 +24,14 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.brandyodhiambo.designsystem.theme.primaryColor
+import com.brandyodhiambo.designsystem.theme.roboto
 
 @Composable
 fun CircularRating(
     modifier: Modifier = Modifier,
     percentage: Float,
     drunk: Int,
+    goal: Int,
     number: Int = 10,
     fontSize: TextUnit = 16.sp,
     radius: Dp = 110.dp,
@@ -69,15 +76,17 @@ fun CircularRating(
          horizontalAlignment = Alignment.CenterHorizontally
      ) {
          Text(
-             text = "$drunk /2600 ml",
+             text = "$drunk /$goal ml",
              color = primaryColor,
              fontSize = fontSize,
+             fontFamily = roboto,
              fontWeight = FontWeight.Bold
          )
          Text(
              text = " You have completed ${(currentPercentage.value * number).toInt()}% of daily target",
              color = Color.Gray,
              fontSize = 12.sp,
+             fontFamily = roboto,
              fontWeight = FontWeight.Normal
          )
      }
