@@ -3,7 +3,15 @@ package com.brandyodhiambo.home.presentation.component
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -11,7 +19,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,6 +39,7 @@ import androidx.compose.ui.unit.sp
 import com.brandyodhiambo.common.R
 import com.brandyodhiambo.designsystem.theme.blackColor
 import com.brandyodhiambo.designsystem.theme.primaryColor
+import com.brandyodhiambo.designsystem.theme.roboto
 import com.chargemap.compose.numberpicker.AMPMHours
 import com.chargemap.compose.numberpicker.Hours
 import com.chargemap.compose.numberpicker.HoursNumberPicker
@@ -73,7 +87,8 @@ fun TimeSetterDialog(modifier: Modifier = Modifier, openDialogCustom: MutableSta
                         .padding(top = 5.dp)
                         .fillMaxWidth(),
                     maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
+                    fontFamily = roboto,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 TimePickerForDialogInHours()
@@ -81,26 +96,33 @@ fun TimeSetterDialog(modifier: Modifier = Modifier, openDialogCustom: MutableSta
                     Modifier
                         .fillMaxWidth()
                         .padding(top = 10.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
                         text = "Reminder Time",
                         fontSize = 14.sp,
+                        fontFamily = roboto,
                         modifier = Modifier
                             .padding(top = 5.dp),
                         fontWeight = FontWeight.Bold,
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis
                     )
-                    Text(
-                        text = "All Day",
-                        fontSize = 12.sp,
-                        modifier = Modifier
-                            .padding(top = 5.dp),
-                        fontWeight = FontWeight.W100,
-                        maxLines = 2,
-                        overflow = TextOverflow.Ellipsis
-                    )
+                    TextButton(onClick = { /*TODO*/ }) {
+                        Text(
+                            text = "All Day",
+                            color = primaryColor,
+                            fontSize = 12.sp,
+                            fontFamily = roboto,
+                            modifier = Modifier
+                                .padding(top = 5.dp),
+                            fontWeight = FontWeight.W100,
+                            maxLines = 2,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }
+
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 LazyRow(
@@ -110,7 +132,10 @@ fun TimeSetterDialog(modifier: Modifier = Modifier, openDialogCustom: MutableSta
                     items(selectedDays) { singleDay ->
                         DayItem(
                             color = if (singleDay.isSelected) primaryColor else blackColor,
-                            text = singleDay.day
+                            text = singleDay.day,
+                            onClick = {
+                                singleDay.isSelected = !singleDay.isSelected
+                            }
                         )
                     }
                 }
@@ -131,6 +156,7 @@ fun TimeSetterDialog(modifier: Modifier = Modifier, openDialogCustom: MutableSta
                     Text(
                         "Cancel",
                         fontWeight = FontWeight.Bold,
+                        fontFamily = roboto,
                         color = Color.Black,
                         modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
                     )
@@ -141,6 +167,7 @@ fun TimeSetterDialog(modifier: Modifier = Modifier, openDialogCustom: MutableSta
                     Text(
                         "Okay",
                         fontWeight = FontWeight.ExtraBold,
+                        fontFamily = roboto,
                         color = primaryColor,
                         modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
                     )
@@ -178,13 +205,16 @@ fun TimePickerForDialogInHours() {
 }
 
 @Composable
-fun DayItem(color: Color, text: String) {
+fun DayItem(color: Color, text: String, onClick: () -> Unit = {}) {
     Card(
         shape = CircleShape,
         border = BorderStroke(2.dp, color = color),
         modifier = Modifier
             .size(40.dp)
-            .padding(4.dp),
+            .padding(4.dp)
+            .clickable {
+                onClick()
+            },
         elevation = 8.dp
     ) {
         Column(
@@ -196,6 +226,7 @@ fun DayItem(color: Color, text: String) {
                 textAlign = TextAlign.Center,
                 color = color,
                 fontSize = 14.sp,
+                fontFamily = roboto,
                 fontWeight = FontWeight.Bold
             )
         }
@@ -207,5 +238,5 @@ fun DayItem(color: Color, text: String) {
 
 data class Days(
     val day: String,
-    val isSelected: Boolean
+    var isSelected: Boolean,
 )

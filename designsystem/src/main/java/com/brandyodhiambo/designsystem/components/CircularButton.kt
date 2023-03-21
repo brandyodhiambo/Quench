@@ -19,6 +19,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.brandyodhiambo.designsystem.theme.roboto
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -47,7 +48,7 @@ fun CircularButton(
                 contentDescription = null
             )
             Spacer(modifier = Modifier.height(8.dp))
-            Text(text = title, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+            Text(text = title, fontSize = 12.sp,  fontFamily = roboto,fontWeight = FontWeight.Bold)
         }
     }
 }

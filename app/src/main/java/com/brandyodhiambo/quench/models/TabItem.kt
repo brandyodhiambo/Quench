@@ -12,7 +12,7 @@ typealias ComposableFun = @Composable (onClick: () -> Unit) -> Unit
 
 sealed class TabItem(var icon: Int, var title: String, var screen: ComposableFun) {
     data class Home(val navigator: DestinationsNavigator) :
-        TabItem(R.drawable.ic_home, "Home", { HomeScreen(navigator = navigator) })
+        TabItem(R.drawable.ic_home, "Home", { HomeScreen() })
 
     data class Statistic(val navigator: DestinationsNavigator) :
         TabItem(R.drawable.ic_statistics, "Statistic", { StatisticsScreen(navigator = navigator) })

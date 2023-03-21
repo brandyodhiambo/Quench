@@ -1,4 +1,4 @@
-package com.brandyodhiambo.quench.views.screens.dialogs
+package com.brandyodhiambo.common.presentation.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

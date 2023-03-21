@@ -20,6 +20,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.brandyodhiambo.designsystem.theme.primaryColor
+import com.brandyodhiambo.designsystem.theme.roboto
 import com.brandyodhiambo.quench.models.TabItem
 import com.brandyodhiambo.settings.presentation.SettingsNavigator
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -56,7 +57,8 @@ fun MainScreen(
                     Text(
                         text = "Quench",
                         fontSize = 30.sp,
-                        textAlign = TextAlign.Center
+                        textAlign = TextAlign.Center,
+                        fontFamily = roboto
                     )
                 },
                 modifier = Modifier.fillMaxWidth(),
@@ -118,7 +120,7 @@ fun CustomTab(
                         pagerState.animateScrollToPage(index)
                     }
                 },
-                text = { Text(text = tabItem.title) }
+                text = { Text(text = tabItem.title,fontFamily = roboto) }
             )
         }
     }

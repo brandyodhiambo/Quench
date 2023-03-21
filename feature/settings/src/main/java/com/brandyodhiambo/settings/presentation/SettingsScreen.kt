@@ -22,9 +22,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.brandyodhiambo.common.R
+import com.brandyodhiambo.common.presentation.component.WaterIntakeDialog
 import com.brandyodhiambo.designsystem.theme.blackColor
 import com.brandyodhiambo.designsystem.theme.primaryColor
-import com.brandyodhiambo.quench.views.screens.dialogs.*
+import com.brandyodhiambo.settings.presentation.component.CustomReminderDialog
 import com.ramcosta.composedestinations.annotation.Destination
 
 interface SettingsNavigator {
@@ -78,24 +79,28 @@ fun SettingScreen(
 
             if (openGenderDialog.value) {
                 Dialog(onDismissRequest = { openGenderDialog.value }) {
-                    GenderDialog(openDialog = openGenderDialog)
+                    val gender = listOf("Male","Female","Other")
+                    CustomReminderDialog(openDialog = openGenderDialog, items = gender, title = "Gender")
                 }
             }
             if (openTimeDialog.value) {
                 Dialog(onDismissRequest = { openTimeDialog.value }) {
-                    TimeFormatDialog(openDialog = openTimeDialog)
+                    val time = listOf("12 Hour","24 Hour")
+                    CustomReminderDialog(openDialog = openTimeDialog, items = time, title = "Time Format")
                 }
             }
 
             if (openWaterUnitDialog.value) {
                 Dialog(onDismissRequest = { openWaterUnitDialog.value }) {
-                    WaterUnitsDialog(openDialog = openWaterUnitDialog)
+                    val waterUnit = listOf("ml","oz","cup","pint","gallon","liter")
+                    CustomReminderDialog(openDialog = openWaterUnitDialog, items = waterUnit, title = "Water Unit")
                 }
             }
 
             if (openWeightUnitDialog.value) {
                 Dialog(onDismissRequest = { openWeightUnitDialog.value }) {
-                    WeighUnitDialog(openDialog = openWeightUnitDialog)
+                    val weightUnit = listOf("kg","lb","oz")
+                    CustomReminderDialog(openDialog = openWeightUnitDialog, items = weightUnit, title = "Weight Unit")
                 }
             }
         }

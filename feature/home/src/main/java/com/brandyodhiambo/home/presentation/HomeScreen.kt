@@ -21,22 +21,21 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.brandyodhiambo.common.R
+import com.brandyodhiambo.common.presentation.component.WaterIntakeDialog
 import com.brandyodhiambo.designsystem.components.CircularButton
 import com.brandyodhiambo.designsystem.theme.lightBlue
 import com.brandyodhiambo.designsystem.theme.primaryColor
+import com.brandyodhiambo.designsystem.theme.roboto
+import com.brandyodhiambo.home.presentation.component.CircularRating
 import com.brandyodhiambo.home.presentation.component.SelectDrinkComposable
 import com.brandyodhiambo.home.presentation.component.TimeSetterDialog
-import com.brandyodhiambo.quench.views.composables.CircularRating
 import com.brandyodhiambo.quench.views.screens.dialogs.IdealIntakeGoalDialog
-import com.brandyodhiambo.quench.views.screens.dialogs.WaterIntakeDialog
 import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Destination
 @Composable
 fun HomeScreen(
-    navigator: DestinationsNavigator
 ) {
     val openTimeDialog = remember { mutableStateOf(false) }
     val waterIntakeDialog = remember { mutableStateOf(false) }
@@ -79,7 +78,7 @@ fun HomeScreen(
 
             if (openTimeDialog.value) {
                 Dialog(onDismissRequest = { openTimeDialog.value }) {
-                    TimeSetterDialog(openDialogCustom = openTimeDialog)
+                   TimeSetterDialog(openDialogCustom = openTimeDialog)
                     // CongratulationsDialog(openDialogCustom = openTimeDialog)
                 }
             }
@@ -98,7 +97,9 @@ fun HomeScreen(
 
             if (selectedDrinkDialog.value) {
                 Dialog(onDismissRequest = { selectedDrinkDialog.value }) {
-                    SelectDrinkComposable(openDialog = selectedDrinkDialog)
+                    SelectDrinkComposable(openDialog = selectedDrinkDialog, onClick = {
+                        //TODO: set the selected drink
+                    })
                 }
             }
         }
@@ -136,12 +137,13 @@ fun WaterIntake(openDialog: MutableState<Boolean>, idealWaterDialog: MutableStat
                         idealWaterDialog.value = true
                     }
                 ) {
-                    Text(text = "Ideal water intake", fontSize = 14.sp, color = Color.Gray)
+                    Text(text = "Ideal water intake", fontSize = 14.sp, color = Color.Gray,fontFamily = roboto)
                     Text(
                         text = "2810 ml",
                         fontSize = 16.sp,
                         color = Color.Gray,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
+                        fontFamily = roboto
                     )
                 }
             }
@@ -167,13 +169,15 @@ fun WaterIntake(openDialog: MutableState<Boolean>, idealWaterDialog: MutableStat
                     Text(
                         text = "Water intake goal",
                         fontSize = 14.sp,
-                        color = Color.Gray
+                        color = Color.Gray,
+                        fontFamily = roboto
                     )
                     Text(
                         text = "2400 ml",
                         fontSize = 16.sp,
                         color = Color.Gray,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
+                        fontFamily = roboto
                     )
                 }
             }
@@ -182,7 +186,10 @@ fun WaterIntake(openDialog: MutableState<Boolean>, idealWaterDialog: MutableStat
 }
 
 @Composable
-fun WaterRecord(openDialog: MutableState<Boolean>, selectedDrinkDialog: MutableState<Boolean>) {
+fun WaterRecord(
+    openDialog: MutableState<Boolean>,
+    selectedDrinkDialog: MutableState<Boolean>,
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -197,7 +204,8 @@ fun WaterRecord(openDialog: MutableState<Boolean>, selectedDrinkDialog: MutableS
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(modifier = Modifier.height(8.dp))
-            CircularRating(percentage = 7f, drunk = 800)
+            val per = 2400f/800f
+            CircularRating(percentage = per, drunk = 800, goal = 2400)
             Spacer(modifier = Modifier.height(8.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -219,7 +227,6 @@ fun WaterRecord(openDialog: MutableState<Boolean>, selectedDrinkDialog: MutableS
                         // Todo
                     }
                 )
-
                 CircularButton(
                     backgroundColor = lightBlue,
                     icon = R.drawable.ic_glass,
@@ -259,7 +266,7 @@ fun WaterIntakeTimeAndLevel(
                     painter = painterResource(id = R.drawable.ic_glass),
                     contentDescription = null
                 )
-                Text(text = intake.level, fontSize = 16.sp, fontWeight = FontWeight.W400)
+                Text(text = intake.level, fontFamily = roboto, fontSize = 16.sp, fontWeight = FontWeight.W400)
             }
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -269,6 +276,7 @@ fun WaterIntakeTimeAndLevel(
                     text = intake.time,
                     fontSize = 14.sp,
                     color = Color.Gray,
+                    fontFamily = roboto,
                     fontWeight = FontWeight.W300
                 )
                 IconButton(onClick = { /*TODO*/ }) {

@@ -14,11 +14,12 @@ import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
-import com.brandyodhiambo.quench.R
 
 @Composable
-fun Loader() {
-    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.water_drops))
+fun Loader(
+    compositions: Int,
+) {
+    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(compositions))
     val progress by animateLottieCompositionAsState(composition)
 
     Column(
