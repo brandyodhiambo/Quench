@@ -24,8 +24,6 @@ import com.brandyodhiambo.common.domain.model.Day
 import com.brandyodhiambo.common.util.toInitials
 import com.brandyodhiambo.designsystem.components.NotificationSwitcher
 import com.brandyodhiambo.designsystem.theme.primaryColor
-import com.brandyodhiambo.quench.views.screens.dialogs.Loader
-import com.brandyodhiambo.settings.R
 import com.ramcosta.composedestinations.annotation.Destination
 
 interface NotificationNavigator {
@@ -91,7 +89,7 @@ fun NotificationScreen(
                 }
                 if(reminder.isEmpty()){
                     item {
-                        Loader(compositions = R.raw.clock)
+                        //Loader(compositions = R.raw.clock)
                     }
                 } else {
                     items(reminder) { reminder ->
