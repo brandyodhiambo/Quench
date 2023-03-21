@@ -97,7 +97,9 @@ fun HomeScreen(
 
             if (selectedDrinkDialog.value) {
                 Dialog(onDismissRequest = { selectedDrinkDialog.value }) {
-                    SelectDrinkComposable(openDialog = selectedDrinkDialog)
+                    SelectDrinkComposable(openDialog = selectedDrinkDialog, onClick = {
+                        //TODO: set the selected drink
+                    })
                 }
             }
         }
@@ -184,7 +186,10 @@ fun WaterIntake(openDialog: MutableState<Boolean>, idealWaterDialog: MutableStat
 }
 
 @Composable
-fun WaterRecord(openDialog: MutableState<Boolean>, selectedDrinkDialog: MutableState<Boolean>) {
+fun WaterRecord(
+    openDialog: MutableState<Boolean>,
+    selectedDrinkDialog: MutableState<Boolean>,
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -222,7 +227,6 @@ fun WaterRecord(openDialog: MutableState<Boolean>, selectedDrinkDialog: MutableS
                         // Todo
                     }
                 )
-
                 CircularButton(
                     backgroundColor = lightBlue,
                     icon = R.drawable.ic_glass,

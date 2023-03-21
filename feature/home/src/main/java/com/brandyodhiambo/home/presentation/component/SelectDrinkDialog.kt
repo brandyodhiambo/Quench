@@ -2,7 +2,14 @@ package com.brandyodhiambo.home.presentation.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -72,7 +79,8 @@ val selectedDrinks = listOf(
 @Composable
 fun SelectDrinkComposable(
     modifier: Modifier = Modifier,
-    openDialog: MutableState<Boolean>
+    openDialog: MutableState<Boolean>,
+    onClick: () -> Unit
 ) {
     Card(
         shape = RoundedCornerShape(10.dp),
@@ -96,7 +104,7 @@ fun SelectDrinkComposable(
             Spacer(modifier = Modifier.height(12.dp))
             LazyVerticalGrid(columns = GridCells.Fixed(count = 4)) {
                 items(selectedDrinks) { selected ->
-                    SelectCard(selectDrink = selected)
+                    SelectCard(selectDrink = selected,onClick = onClick)
                 }
             }
 
@@ -133,9 +141,12 @@ fun SelectDrinkComposable(
 }
 
 @Composable
-fun SelectCard(selectDrink: SelectDrink) {
+fun SelectCard(selectDrink: SelectDrink,onClick:() -> Unit) {
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.clickable {
+            onClick
+        }
     ) {
         Image(
             painter = painterResource(id = selectDrink.icon),
