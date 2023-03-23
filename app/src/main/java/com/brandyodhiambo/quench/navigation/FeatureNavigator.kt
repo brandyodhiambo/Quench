@@ -1,8 +1,8 @@
 package com.brandyodhiambo.quench.navigation
 
 import androidx.navigation.NavController
-import com.brandyodhiambo.home.presentation.SleepAndWakeUpScreenScreenNavigator
 import com.brandyodhiambo.home.presentation.destinations.SleepAndWakeTimeScreenDestination
+import com.brandyodhiambo.home.presentation.sleep_wake_screen.SleepAndWakeUpScreenScreenNavigator
 import com.brandyodhiambo.quench.ui.destinations.MainScreenDestination
 import com.brandyodhiambo.quench.ui.splash.SplashScreenNavigator
 import com.brandyodhiambo.settings.presentation.AddReminderNavigator

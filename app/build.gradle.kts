@@ -74,7 +74,7 @@ dependencies {
     implementation(project(":feature:settings"))
 
     // RamCosta Navigation
-    implementation("io.github.raamcosta.compose-destinations:core:1.5.20-beta")
+    implementation("io.github.raamcosta.compose-destinations:core:1.7.32-beta")
     ksp("io.github.raamcosta.compose-destinations:ksp:1.5.15-beta")
 
     // Navigation animation

@@ -27,7 +27,9 @@ object DatabaseModule {
         )
             .fallbackToDestructiveMigration()
             .build()
-
-
     }
+
+    @Provides
+    @Singleton
+    fun provideSleepTimeDao(database: QuenchDatabase) = database.sleepTimeDao()
 }

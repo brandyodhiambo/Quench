@@ -50,6 +50,7 @@ android {
 dependencies {
     implementation(project(":designsystem"))
     implementation(project(":core:common"))
+    implementation(project(":core:database"))
 
     // RamCosta Navigation
     implementation("io.github.raamcosta.compose-destinations:core:1.5.20-beta")

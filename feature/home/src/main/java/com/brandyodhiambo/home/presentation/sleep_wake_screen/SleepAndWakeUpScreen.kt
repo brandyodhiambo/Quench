@@ -1,4 +1,4 @@
-package com.brandyodhiambo.home.presentation
+package com.brandyodhiambo.home.presentation.sleep_wake_screen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -23,12 +23,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.brandyodhiambo.common.domain.model.SleepTime
 import com.brandyodhiambo.designsystem.theme.blackColor
 import com.brandyodhiambo.designsystem.theme.primaryColor
 import com.chargemap.compose.numberpicker.AMPMHours
 import com.chargemap.compose.numberpicker.Hours
 import com.chargemap.compose.numberpicker.HoursNumberPicker
 import com.ramcosta.composedestinations.annotation.Destination
+import timber.log.Timber
 
 interface SleepAndWakeUpScreenScreenNavigator {
     fun navigateToMainScreen()
@@ -38,7 +41,8 @@ interface SleepAndWakeUpScreenScreenNavigator {
 @Destination
 @Composable
 fun SleepAndWakeTimeScreen(
-    navigator: SleepAndWakeUpScreenScreenNavigator
+    navigator: SleepAndWakeUpScreenScreenNavigator,
+    viewModel: SleepWakeViewModel = hiltViewModel(),
 ) {
     Box(
         modifier = Modifier.fillMaxSize()
@@ -57,7 +61,7 @@ fun SleepAndWakeTimeScreen(
                 color = blackColor
             )
             Spacer(modifier = Modifier.height(16.dp))
-            TimePickerInHours()
+            //WakeTimePickerInHours(viewModel = viewModel)
 
             Spacer(modifier = Modifier.height(32.dp))
             Text(
@@ -66,7 +70,7 @@ fun SleepAndWakeTimeScreen(
                 color = blackColor
             )
             Spacer(modifier = Modifier.height(16.dp))
-            TimePickerInHours()
+            SleepTimePickerInHours(viewModel = viewModel)
 
             Spacer(modifier = Modifier.height(32.dp))
         }
@@ -80,6 +84,13 @@ fun SleepAndWakeTimeScreen(
                 modifier = Modifier
                     .fillMaxWidth(),
                 onClick = {
+                    viewModel.insertSleepTime(
+                        SleepTime(
+                            viewModel.sleepSelectedTime.value.hours,
+                            viewModel.sleepSelectedTime.value.minutes,
+                            viewModel.sleepSelectedTime.value.amPm
+                        )
+                    )
                     navigator.popBackStack()
                     navigator.navigateToMainScreen()
                 },
@@ -93,13 +104,57 @@ fun SleepAndWakeTimeScreen(
 }
 
 @Composable
-fun TimePickerInHours() {
+fun SleepTimePickerInHours(viewModel: SleepWakeViewModel) {
     var pickerValue by remember { mutableStateOf<Hours>(AMPMHours(0, 0, AMPMHours.DayTime.AM)) }
     HoursNumberPicker(
         dividersColor = blackColor,
         value = pickerValue,
+        hoursRange = 0..23,
         onValueChange = {
             pickerValue = it
+            var ampm = ""
+            ampm = if(it.hours<=12){
+                "AM"
+            } else{
+                "PM"
+            }
+            viewModel.onTimeSleepSelected(it.hours, it.minutes, ampm)
+            Timber.d("Time selected: ${it.hours}:${it.minutes} $ampm")
+        },
+        hoursDivider = {
+            Text(
+                modifier = Modifier.padding(horizontal = 8.dp),
+                textAlign = TextAlign.Center,
+                text = ":"
+            )
+        },
+        minutesDivider = {
+            Text(
+                modifier = Modifier.padding(horizontal = 8.dp),
+                textAlign = TextAlign.Center,
+                text = " "
+            )
+        },
+    )
+}
+
+/*@Composable
+fun WakeTimePickerInHours(viewModel: SleepWakeViewModel) {
+    var pickerValue by remember { mutableStateOf<Hours>(AMPMHours(0, 0, AMPMHours.DayTime.AM)) }
+    HoursNumberPicker(
+        dividersColor = blackColor,
+        value = pickerValue,
+        hoursRange = 0..23,
+        onValueChange = {
+            pickerValue = it
+            var ampm = ""
+            if(it.hours<=12){
+                ampm = "AM"
+            } else{
+                ampm = "PM"
+            }
+            viewModel.onTimeSleepSelected(it.hours, it.minutes, ampm)
+            Timber.d("Time selected: ${it.hours}:${it.minutes} $ampm")
         },
         hoursDivider = {
             Text(
@@ -116,4 +171,4 @@ fun TimePickerInHours() {
             )
         }
     )
-}
+}*/

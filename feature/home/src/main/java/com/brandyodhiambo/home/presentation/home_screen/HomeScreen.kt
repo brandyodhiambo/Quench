@@ -1,4 +1,4 @@
-package com.brandyodhiambo.home.presentation
+package com.brandyodhiambo.home.presentation.home_screen
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image

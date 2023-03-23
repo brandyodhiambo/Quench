@@ -1,7 +1,7 @@
 package com.brandyodhiambo.quench.models
 
 import androidx.compose.runtime.Composable
-import com.brandyodhiambo.home.presentation.HomeScreen
+import com.brandyodhiambo.home.presentation.home_screen.HomeScreen
 import com.brandyodhiambo.quench.R
 import com.brandyodhiambo.settings.presentation.SettingScreen
 import com.brandyodhiambo.settings.presentation.SettingsNavigator
