@@ -25,9 +25,9 @@ class SleepTimeRepositoryImpl(
         )
     }
 
-    override fun getSleepTime(): LiveData<SleepTime> {
+    override fun getSleepTime(): LiveData<SleepTime?> {
         return Transformations.map(sleepTimeDao.getSleepTime()){ sleepTimeEntity ->
-            sleepTimeEntity.toSleepTime()
+            sleepTimeEntity?.toSleepTime()
         }
     }
 

@@ -32,4 +32,8 @@ object DatabaseModule {
     @Provides
     @Singleton
     fun provideSleepTimeDao(database: QuenchDatabase) = database.sleepTimeDao()
+
+    @Provides
+    @Singleton
+    fun provideWakeTimeDao(database: QuenchDatabase) = database.wakeTimeDao()
 }

@@ -5,20 +5,29 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.brandyodhiambo.common.domain.model.SleepTime
+import com.brandyodhiambo.common.domain.model.WakeTime
 import com.brandyodhiambo.common.domain.repository.SleepTimeRepository
+import com.brandyodhiambo.common.domain.repository.WakeTimeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SleepWakeViewModel @Inject constructor(
-    private val sleepTimeRepository: SleepTimeRepository
+    private val sleepTimeRepository: SleepTimeRepository,
+    private val wakeTimeRepository: WakeTimeRepository
 ):ViewModel() {
 
     private val _sleepSelectedTime = mutableStateOf(SleepTime(0, 0, ""))
     var sleepSelectedTime: MutableState<SleepTime> = _sleepSelectedTime
     fun onTimeSleepSelected(hours: Int, minutes: Int, amPm: String) {
         _sleepSelectedTime.value = SleepTime(hours, minutes, amPm)
+    }
+
+    private val _wakeSelectedTime = mutableStateOf(WakeTime(0, 0, ""))
+    var wakeSelectedTime: MutableState<WakeTime> = _wakeSelectedTime
+    fun onTimeWakeSelected(hours: Int, minutes: Int, amPm: String) {
+        _wakeSelectedTime.value = WakeTime(hours, minutes, amPm)
     }
 
     val sleepTime = sleepTimeRepository.getSleepTime()
@@ -46,5 +55,34 @@ class SleepWakeViewModel @Inject constructor(
             sleepTimeRepository.dellAllSleepTimes()
         }
     }
+
+    // Wake Time
+    val wakeTime = wakeTimeRepository.getWakeTime()
+
+    fun insertWakeTime(wakeTime: WakeTime) {
+        viewModelScope.launch {
+            wakeTimeRepository.insertWakeTime(wakeTime)
+        }
+    }
+
+    fun updateWakeTime(wakeTime: WakeTime) {
+        viewModelScope.launch {
+            wakeTimeRepository.updateWakeTime(wakeTime)
+        }
+    }
+
+    fun deleteWakeTime(wakeTime: WakeTime) {
+        viewModelScope.launch {
+            wakeTimeRepository.deleteWakeTime(wakeTime)
+        }
+    }
+
+    fun deleteAllWakeTimes() {
+        viewModelScope.launch {
+            wakeTimeRepository.dellAllWakeTimes()
+        }
+    }
+
+
 
 }

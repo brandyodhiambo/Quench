@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.brandyodhiambo.common.domain.model.SleepTime
+import com.brandyodhiambo.common.domain.model.WakeTime
 import com.brandyodhiambo.designsystem.theme.blackColor
 import com.brandyodhiambo.designsystem.theme.primaryColor
 import com.chargemap.compose.numberpicker.AMPMHours
@@ -44,6 +45,7 @@ fun SleepAndWakeTimeScreen(
     navigator: SleepAndWakeUpScreenScreenNavigator,
     viewModel: SleepWakeViewModel = hiltViewModel(),
 ) {
+
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -61,7 +63,7 @@ fun SleepAndWakeTimeScreen(
                 color = blackColor
             )
             Spacer(modifier = Modifier.height(16.dp))
-            //WakeTimePickerInHours(viewModel = viewModel)
+            WakeTimePickerInHours(viewModel = viewModel)
 
             Spacer(modifier = Modifier.height(32.dp))
             Text(
@@ -91,6 +93,15 @@ fun SleepAndWakeTimeScreen(
                             viewModel.sleepSelectedTime.value.amPm
                         )
                     )
+
+                    viewModel.insertWakeTime(
+                        WakeTime(
+                            viewModel.wakeSelectedTime.value.hours,
+                            viewModel.wakeSelectedTime.value.minutes,
+                            viewModel.wakeSelectedTime.value.amPm
+                        )
+                    )
+
                     navigator.popBackStack()
                     navigator.navigateToMainScreen()
                 },
@@ -113,7 +124,7 @@ fun SleepTimePickerInHours(viewModel: SleepWakeViewModel) {
         onValueChange = {
             pickerValue = it
             var ampm = ""
-            ampm = if(it.hours<=12){
+            ampm = if(it.hours in 0..12){
                 "AM"
             } else{
                 "PM"
@@ -138,7 +149,7 @@ fun SleepTimePickerInHours(viewModel: SleepWakeViewModel) {
     )
 }
 
-/*@Composable
+@Composable
 fun WakeTimePickerInHours(viewModel: SleepWakeViewModel) {
     var pickerValue by remember { mutableStateOf<Hours>(AMPMHours(0, 0, AMPMHours.DayTime.AM)) }
     HoursNumberPicker(
@@ -148,13 +159,13 @@ fun WakeTimePickerInHours(viewModel: SleepWakeViewModel) {
         onValueChange = {
             pickerValue = it
             var ampm = ""
-            if(it.hours<=12){
-                ampm = "AM"
+            ampm = if(it.hours in 0..12){
+                "AM"
             } else{
-                ampm = "PM"
+                "PM"
             }
-            viewModel.onTimeSleepSelected(it.hours, it.minutes, ampm)
-            Timber.d("Time selected: ${it.hours}:${it.minutes} $ampm")
+            viewModel.onTimeWakeSelected(it.hours, it.minutes, ampm)
+            Timber.d("Wake Time selected: ${it.hours}:${it.minutes} $ampm")
         },
         hoursDivider = {
             Text(
@@ -171,4 +182,4 @@ fun WakeTimePickerInHours(viewModel: SleepWakeViewModel) {
             )
         }
     )
-}*/
+}

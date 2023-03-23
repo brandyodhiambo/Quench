@@ -7,7 +7,7 @@ interface SleepTimeRepository {
 
     suspend fun insertSleepTime(sleepTime: SleepTime)
     suspend fun updateSleepTime(sleepTime: SleepTime)
-    fun getSleepTime(): LiveData<SleepTime>
+    fun getSleepTime(): LiveData<SleepTime?>
     suspend fun deleteSleepTime(sleepTime: SleepTime)
     suspend fun dellAllSleepTimes()
 }
