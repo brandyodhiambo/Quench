@@ -1,9 +1,22 @@
 package com.brandyodhiambo.home.presentation
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -16,12 +29,16 @@ import com.chargemap.compose.numberpicker.AMPMHours
 import com.chargemap.compose.numberpicker.Hours
 import com.chargemap.compose.numberpicker.HoursNumberPicker
 import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+
+interface SleepAndWakeUpScreenScreenNavigator {
+    fun navigateToMainScreen()
+    fun popBackStack()
+}
 
 @Destination
 @Composable
 fun SleepAndWakeTimeScreen(
-    navigator: DestinationsNavigator
+    navigator: SleepAndWakeUpScreenScreenNavigator
 ) {
     Box(
         modifier = Modifier.fillMaxSize()
@@ -63,7 +80,8 @@ fun SleepAndWakeTimeScreen(
                 modifier = Modifier
                     .fillMaxWidth(),
                 onClick = {
-                    // navigator.navigate(MainScreenDestination)
+                    navigator.popBackStack()
+                    navigator.navigateToMainScreen()
                 },
                 shape = RoundedCornerShape(15.dp),
                 colors = ButtonDefaults.buttonColors(backgroundColor = primaryColor)

@@ -81,5 +81,5 @@ dependencies {
     implementation("com.google.accompanist:accompanist-navigation-animation:0.24.7-alpha")
 
     //Splash Api dependency
-    implementation("androidx.core:core-splashscreen:1.0.0-beta02")
+    implementation("androidx.core:core-splashscreen:1.0.0")
 }

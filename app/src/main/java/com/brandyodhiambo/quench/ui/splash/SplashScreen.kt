@@ -10,17 +10,24 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.brandyodhiambo.home.presentation.destinations.SleepAndWakeTimeScreenDestination
+import com.brandyodhiambo.quench.R
+import com.brandyodhiambo.quench.views.screens.dialogs.Loader
 import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 
-@Destination(start = true)
+
+interface SplashScreenNavigator {
+    fun navigateToSleepWakeTimeScreen()
+    fun popBackStack()
+    fun navigateToMainScreen()
+
+}
 @Composable
+@Destination(start = true)
 fun SplashScreen(
-    navigator: DestinationsNavigator
+    navigator: SplashScreenNavigator
 ) {
     Column(
         Modifier
@@ -32,10 +39,10 @@ fun SplashScreen(
             withContext(Dispatchers.Main) {
                 delay(3000)
                 navigator.popBackStack()
-                navigator.navigate(SleepAndWakeTimeScreenDestination)
+                navigator.navigateToSleepWakeTimeScreen()
             }
         }
         Spacer(modifier = Modifier.height(32.dp))
-        //Loader(R.raw.quench)
+        Loader(R.raw.water_drops)
     }
 }

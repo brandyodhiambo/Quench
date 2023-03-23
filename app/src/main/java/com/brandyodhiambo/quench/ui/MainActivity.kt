@@ -9,10 +9,7 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.core.view.WindowCompat
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import com.brandyodhiambo.designsystem.theme.QuenchTheme
@@ -33,15 +30,6 @@ class MainActivity : ComponentActivity() {
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val splashScreen = installSplashScreen()
-
-
-        splashScreen.setKeepOnScreenCondition{
-            viewModel.uiState.value.isSuccessful
-        }
-
-
         setContent {
             QuenchTheme {
                 // A surface container using the 'background' color from the theme
