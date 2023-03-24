@@ -37,8 +37,12 @@ class HomeViewModel @Inject constructor(
 
     fun insertIdealWaterIntake(idealWaterIntake: IdealWaterIntake) {
         viewModelScope.launch {
-            idealWaterIntakeRepository.insertIdealWaterIntake(idealWaterIntake)
-
+            if(idealWaterIntakeFromDb.value != null) {
+                idealWaterIntakeRepository.deleteAllIdealWaterIntakes()
+                idealWaterIntakeRepository.insertIdealWaterIntake(idealWaterIntake)
+            } else {
+                idealWaterIntakeRepository.insertIdealWaterIntake(idealWaterIntake)
+            }
         }
     }
 
