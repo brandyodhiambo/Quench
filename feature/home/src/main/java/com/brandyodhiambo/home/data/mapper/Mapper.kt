@@ -1,7 +1,9 @@
 package com.brandyodhiambo.home.data.mapper
 
+import com.brandyodhiambo.common.domain.model.IdealWaterIntake
 import com.brandyodhiambo.common.domain.model.SleepTime
 import com.brandyodhiambo.common.domain.model.WakeTime
+import com.brandyodhiambo.entity.IdealWaterIntakeEntity
 import com.brandyodhiambo.entity.SleepTimeEntity
 import com.brandyodhiambo.entity.WakeTimeEntity
 
@@ -34,5 +36,19 @@ internal fun WakeTime.toWakeTimeEntity(): WakeTimeEntity {
         hour = hours,
         minute = minutes,
         ampm = amPm
+    )
+}
+
+internal fun IdealWaterIntakeEntity.toIdealWaterIntake(): IdealWaterIntake {
+    return IdealWaterIntake(
+        waterIntake = waterIntake,
+        form = form,
+    )
+}
+
+internal fun IdealWaterIntake.toIdealWaterIntakeEntity(): IdealWaterIntakeEntity {
+    return IdealWaterIntakeEntity(
+        waterIntake = waterIntake,
+        form = form,
     )
 }

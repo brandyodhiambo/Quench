@@ -36,4 +36,8 @@ object DatabaseModule {
     @Provides
     @Singleton
     fun provideWakeTimeDao(database: QuenchDatabase) = database.wakeTimeDao()
+
+    @Provides
+    @Singleton
+    fun provideIdealWaterIntakeDao(database: QuenchDatabase) = database.idealWaterIntakeDao()
 }

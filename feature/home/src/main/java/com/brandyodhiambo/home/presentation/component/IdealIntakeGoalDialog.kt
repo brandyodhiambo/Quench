@@ -1,4 +1,4 @@
-package com.brandyodhiambo.quench.views.screens.dialogs
+package com.brandyodhiambo.home.presentation.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -18,12 +18,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.brandyodhiambo.designsystem.theme.primaryColor
 import com.brandyodhiambo.common.R
+import com.brandyodhiambo.common.domain.model.IdealWaterIntake
+import com.brandyodhiambo.designsystem.theme.primaryColor
+import com.brandyodhiambo.home.presentation.home_screen.HomeViewModel
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun IdealIntakeGoalDialog(modifier: Modifier = Modifier, idealCustomDialog: MutableState<Boolean>) {
+fun IdealIntakeGoalDialog(
+    modifier: Modifier = Modifier,
+    idealCustomDialog: MutableState<Boolean>,
+    viewModel: HomeViewModel,
+) {
     Card(
         shape = RoundedCornerShape(10.dp),
         modifier = Modifier.padding(10.dp, 5.dp, 10.dp, 10.dp),
@@ -61,17 +67,20 @@ fun IdealIntakeGoalDialog(modifier: Modifier = Modifier, idealCustomDialog: Muta
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Row(
-                    Modifier.fillMaxWidth()
+                    Modifier
+                        .fillMaxWidth()
                         .padding(top = 10.dp),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    var email by remember { mutableStateOf("") }
+
                     OutlinedTextField(
                         modifier = Modifier
                             .fillMaxWidth(0.5f)
                             .padding(start = 8.dp, end = 8.dp),
-                        value = email,
-                        onValueChange = { email = it },
+                        value = viewModel.idealWaterIntakeValue.value,
+                        onValueChange = {
+                            viewModel.setIdealWaterIntakeValue(it)
+                        },
                         label = {
                             Text(
                                 "2810",
@@ -87,7 +96,6 @@ fun IdealIntakeGoalDialog(modifier: Modifier = Modifier, idealCustomDialog: Muta
 
                     val options = listOf("ml", "l", "liters")
                     var expanded by remember { mutableStateOf(false) }
-                    var selectedOptionText by remember { mutableStateOf(options[0]) }
 
                     ExposedDropdownMenuBox(
                         expanded = expanded,
@@ -98,7 +106,7 @@ fun IdealIntakeGoalDialog(modifier: Modifier = Modifier, idealCustomDialog: Muta
                         OutlinedTextField(
                             modifier = Modifier.fillMaxWidth(),
                             readOnly = true,
-                            value = selectedOptionText,
+                            value = viewModel.idealWaterForm.value,
                             onValueChange = { },
                             label = { Text("ml") },
                             trailingIcon = {
@@ -121,7 +129,7 @@ fun IdealIntakeGoalDialog(modifier: Modifier = Modifier, idealCustomDialog: Muta
                             options.forEach { selectionOption ->
                                 DropdownMenuItem(
                                     onClick = {
-                                        selectedOptionText = selectionOption
+                                        viewModel.setIdealWaterForm(selectionOption)
                                         expanded = false
                                     }
                                 ) {
@@ -151,6 +159,11 @@ fun IdealIntakeGoalDialog(modifier: Modifier = Modifier, idealCustomDialog: Muta
                 }
                 TextButton(onClick = {
                     idealCustomDialog.value = false
+                    val idealWaterIntakeToInsert = IdealWaterIntake(
+                        waterIntake = viewModel.idealWaterIntakeValue.value.toInt(),
+                        form = viewModel.idealWaterForm.value
+                    )
+                    viewModel.insertIdealWaterIntake(idealWaterIntakeToInsert)
                 }) {
                     Text(
                         "Okay",
