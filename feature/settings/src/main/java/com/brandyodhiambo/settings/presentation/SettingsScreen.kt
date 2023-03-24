@@ -22,7 +22,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.brandyodhiambo.common.R
-import com.brandyodhiambo.common.presentation.component.WaterIntakeDialog
 import com.brandyodhiambo.designsystem.theme.blackColor
 import com.brandyodhiambo.designsystem.theme.primaryColor
 import com.brandyodhiambo.settings.presentation.component.CustomReminderDialog
@@ -73,7 +72,7 @@ fun SettingScreen(
 
             if (openIntakeDialog.value) {
                 Dialog(onDismissRequest = { openIntakeDialog.value }) {
-                    WaterIntakeDialog(openCustomDialog = openIntakeDialog)
+                    //WaterIntakeDialog(openCustomDialog = openIntakeDialog)
                 }
             }
 

@@ -1,11 +1,14 @@
 package com.brandyodhiambo.home.di
 
+import com.brandyodhiambo.common.domain.repository.GoalWaterIntakeRepository
 import com.brandyodhiambo.common.domain.repository.IdealWaterIntakeRepository
 import com.brandyodhiambo.common.domain.repository.SleepTimeRepository
 import com.brandyodhiambo.common.domain.repository.WakeTimeRepository
+import com.brandyodhiambo.dao.GoalWaterIntakeDao
 import com.brandyodhiambo.dao.IdealWaterIntakeDao
 import com.brandyodhiambo.dao.SleepTimeDao
 import com.brandyodhiambo.dao.WakeTimeDao
+import com.brandyodhiambo.home.data.repository.GoalWaterIntakeRepositoryImpl
 import com.brandyodhiambo.home.data.repository.IdealWaterInkateRepositoryImpl
 import com.brandyodhiambo.home.data.repository.SleepTimeRepositoryImpl
 import com.brandyodhiambo.home.data.repository.WakeTimeRepositoryImpl
@@ -35,6 +38,12 @@ object HomeModule {
     @Singleton
     fun provideIdealWaterIntakeRepository(idealWaterIntakeDao: IdealWaterIntakeDao): IdealWaterIntakeRepository {
         return IdealWaterInkateRepositoryImpl(idealWaterIntakeDao = idealWaterIntakeDao)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGoalWaterIntakeRepository(goalWaterIntakeDao: GoalWaterIntakeDao): GoalWaterIntakeRepository {
+        return GoalWaterIntakeRepositoryImpl(goalWaterIntakeDao = goalWaterIntakeDao)
     }
 
 

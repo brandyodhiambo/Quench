@@ -40,4 +40,8 @@ object DatabaseModule {
     @Provides
     @Singleton
     fun provideIdealWaterIntakeDao(database: QuenchDatabase) = database.idealWaterIntakeDao()
+
+    @Provides
+    @Singleton
+    fun provideGoalWaterIntakeDao(database: QuenchDatabase) = database.goalWaterIntakeDao()
 }

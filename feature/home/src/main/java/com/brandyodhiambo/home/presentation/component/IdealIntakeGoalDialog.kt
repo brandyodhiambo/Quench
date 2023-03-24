@@ -19,16 +19,18 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.brandyodhiambo.common.R
-import com.brandyodhiambo.common.domain.model.IdealWaterIntake
 import com.brandyodhiambo.designsystem.theme.primaryColor
-import com.brandyodhiambo.home.presentation.home_screen.HomeViewModel
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun IdealIntakeGoalDialog(
     modifier: Modifier = Modifier,
     idealCustomDialog: MutableState<Boolean>,
-    viewModel: HomeViewModel,
+    currentIdealIntakeText:String,
+    currentIdealIntakeFormText:String,
+    onCurrentIdealIntakeFormTextChange: (String) -> Unit,
+    onCurrentIdealIntakeTextChange: (String) -> Unit,
+    onOkayClick: () -> Unit
 ) {
     Card(
         shape = RoundedCornerShape(10.dp),
@@ -77,9 +79,9 @@ fun IdealIntakeGoalDialog(
                         modifier = Modifier
                             .fillMaxWidth(0.5f)
                             .padding(start = 8.dp, end = 8.dp),
-                        value = viewModel.idealWaterIntakeValue.value,
+                        value = currentIdealIntakeText,
                         onValueChange = {
-                            viewModel.setIdealWaterIntakeValue(it)
+                            onCurrentIdealIntakeTextChange(it)
                         },
                         label = {
                             Text(
@@ -106,7 +108,7 @@ fun IdealIntakeGoalDialog(
                         OutlinedTextField(
                             modifier = Modifier.fillMaxWidth(),
                             readOnly = true,
-                            value = viewModel.idealWaterForm.value,
+                            value = currentIdealIntakeFormText,
                             onValueChange = { },
                             label = { Text("ml") },
                             trailingIcon = {
@@ -129,7 +131,7 @@ fun IdealIntakeGoalDialog(
                             options.forEach { selectionOption ->
                                 DropdownMenuItem(
                                     onClick = {
-                                        viewModel.setIdealWaterForm(selectionOption)
+                                        onCurrentIdealIntakeFormTextChange
                                         expanded = false
                                     }
                                 ) {
@@ -159,11 +161,7 @@ fun IdealIntakeGoalDialog(
                 }
                 TextButton(onClick = {
                     idealCustomDialog.value = false
-                    val idealWaterIntakeToInsert = IdealWaterIntake(
-                        waterIntake = viewModel.idealWaterIntakeValue.value.toInt(),
-                        form = viewModel.idealWaterForm.value
-                    )
-                    viewModel.insertIdealWaterIntake(idealWaterIntakeToInsert)
+                    onOkayClick()
                 }) {
                     Text(
                         "Okay",

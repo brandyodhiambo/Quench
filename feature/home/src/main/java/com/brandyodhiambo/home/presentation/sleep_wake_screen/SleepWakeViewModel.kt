@@ -8,6 +8,8 @@ import com.brandyodhiambo.common.domain.model.SleepTime
 import com.brandyodhiambo.common.domain.model.WakeTime
 import com.brandyodhiambo.common.domain.repository.SleepTimeRepository
 import com.brandyodhiambo.common.domain.repository.WakeTimeRepository
+import com.chargemap.compose.numberpicker.AMPMHours
+import com.chargemap.compose.numberpicker.Hours
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -17,6 +19,9 @@ class SleepWakeViewModel @Inject constructor(
     private val sleepTimeRepository: SleepTimeRepository,
     private val wakeTimeRepository: WakeTimeRepository
 ):ViewModel() {
+
+    private val _sleepTimePickerValue = mutableStateOf<Hours>(AMPMHours(0, 0, AMPMHours.DayTime.AM))
+    val sleepTimePickerValue: MutableState<Hours> = _sleepTimePickerValue
 
     private val _sleepSelectedTime = mutableStateOf(SleepTime(0, 0, ""))
     var sleepSelectedTime: MutableState<SleepTime> = _sleepSelectedTime
@@ -29,6 +34,9 @@ class SleepWakeViewModel @Inject constructor(
     fun onTimeWakeSelected(hours: Int, minutes: Int, amPm: String) {
         _wakeSelectedTime.value = WakeTime(hours, minutes, amPm)
     }
+
+    private val _wakeTimePickerValue = mutableStateOf<Hours>(AMPMHours(0, 0, AMPMHours.DayTime.AM))
+    val wakeTimePickerValue: MutableState<Hours> = _wakeTimePickerValue
 
     val sleepTime = sleepTimeRepository.getSleepTime()
 

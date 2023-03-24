@@ -4,18 +4,18 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.brandyodhiambo.common.domain.model.GoalWaterIntake
 import com.brandyodhiambo.common.domain.model.IdealWaterIntake
+import com.brandyodhiambo.common.domain.repository.GoalWaterIntakeRepository
 import com.brandyodhiambo.common.domain.repository.IdealWaterIntakeRepository
-import com.brandyodhiambo.common.util.UiEvents
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val idealWaterIntakeRepository: IdealWaterIntakeRepository,
+    private val goalWaterIntakeRepository: GoalWaterIntakeRepository
 ) : ViewModel() {
 
     private val _idealWaterIntake = mutableStateOf("0")
@@ -30,8 +30,6 @@ class HomeViewModel @Inject constructor(
         _idealWaterForm.value = value
     }
 
-    private val _eventsFlow = MutableSharedFlow<UiEvents>()
-    val eventsFlow = _eventsFlow.asSharedFlow()
 
     val idealWaterIntakeFromDb = idealWaterIntakeRepository.getIdealWaterIntake()
 
@@ -46,21 +44,29 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun updateIdealWaterIntake(idealWaterIntake: IdealWaterIntake) {
-        viewModelScope.launch {
-            idealWaterIntakeRepository.updateIdealWaterIntake(idealWaterIntake)
-        }
+
+    private val _goalWaterIntake = mutableStateOf("0")
+    var goalWaterIntakeValue: State<String> = _goalWaterIntake
+    fun setGoalWaterIntakeValue(value: String) {
+        _goalWaterIntake.value = value
     }
 
-    fun deleteIdealWaterIntake(idealWaterIntake: IdealWaterIntake) {
-        viewModelScope.launch {
-            idealWaterIntakeRepository.deleteIdealWaterIntake(idealWaterIntake)
-        }
+    private val _goalWaterForm = mutableStateOf("ml")
+    var goalWaterForm: State<String> = _goalWaterForm
+    fun setGoalWaterForm(value: String) {
+        _goalWaterForm.value = value
     }
 
-    fun deleteAllIdealWaterIntakes() {
+    val goalWaterIntakeFromDb = goalWaterIntakeRepository.getGoalWaterIntake()
+
+    fun insertGoalWaterIntake(goalWaterIntake: GoalWaterIntake) {
         viewModelScope.launch {
-            idealWaterIntakeRepository.deleteAllIdealWaterIntakes()
+            if(goalWaterIntakeFromDb.value != null) {
+                goalWaterIntakeRepository.deleteAllGoalWaterIntakes()
+                goalWaterIntakeRepository.insertGoalWaterIntake(goalWaterIntake)
+            } else {
+                goalWaterIntakeRepository.insertGoalWaterIntake(goalWaterIntake)
+            }
         }
     }
 

@@ -23,6 +23,8 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.brandyodhiambo.common.R
+import com.brandyodhiambo.common.domain.model.GoalWaterIntake
+import com.brandyodhiambo.common.domain.model.IdealWaterIntake
 import com.brandyodhiambo.common.presentation.component.WaterIntakeDialog
 import com.brandyodhiambo.designsystem.components.CircularButton
 import com.brandyodhiambo.designsystem.theme.lightBlue
@@ -41,7 +43,7 @@ fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
     val openTimeDialog = remember { mutableStateOf(false) }
-    val waterIntakeDialog = remember { mutableStateOf(false) }
+    val openGoalDialog = remember { mutableStateOf(false) }
     val idealWaterIntakeDialog = remember { mutableStateOf(false) }
     val selectedDrinkDialog = remember { mutableStateOf(false) }
     val waterleveltime = listOf(
@@ -61,7 +63,7 @@ fun HomeScreen(
             LazyColumn {
                 item {
                     WaterIntake(
-                        openDialog = waterIntakeDialog,
+                        openGoalDialog = openGoalDialog,
                         idealWaterIntakeDialog = idealWaterIntakeDialog,
                         viewModel = viewModel
                     )
@@ -87,15 +89,49 @@ fun HomeScreen(
                 }
             }
 
-            if (waterIntakeDialog.value) {
-                Dialog(onDismissRequest = { waterIntakeDialog.value }) {
-                    WaterIntakeDialog(openCustomDialog = waterIntakeDialog)
+            if (openGoalDialog.value) {
+                Dialog(onDismissRequest = { openGoalDialog.value }) {
+                    WaterIntakeDialog(
+                        openCustomDialog = openGoalDialog,
+                        currentWaterIntakeText = viewModel.goalWaterIntakeValue.value,
+                        currentWaterIntakeFormText = viewModel.goalWaterForm.value,
+                        onCurrentWaterIntakeTextChange = {
+                            viewModel.setGoalWaterIntakeValue(it)
+                        },
+                        onCurrentWaterIntakeFormTextChange = {
+                            viewModel.setGoalWaterForm(it)
+                        },
+                        onOkayClick = {
+                            val goalWaterIntakeToInsert = GoalWaterIntake(
+                                waterIntake = viewModel.goalWaterIntakeValue.value.toInt(),
+                                form = viewModel.goalWaterForm.value
+                            )
+                            viewModel.insertGoalWaterIntake(goalWaterIntakeToInsert)
+                        }
+                    )
                 }
             }
 
             if (idealWaterIntakeDialog.value) {
                 Dialog(onDismissRequest = { idealWaterIntakeDialog.value }) {
-                    IdealIntakeGoalDialog(idealCustomDialog = idealWaterIntakeDialog, viewModel = viewModel)
+                    IdealIntakeGoalDialog(
+                        idealCustomDialog = idealWaterIntakeDialog,
+                        currentIdealIntakeText = viewModel.idealWaterIntakeValue.value ,
+                        currentIdealIntakeFormText = viewModel.idealWaterForm.value,
+                        onCurrentIdealIntakeTextChange = {
+                            viewModel.setIdealWaterIntakeValue(it)
+                        },
+                        onCurrentIdealIntakeFormTextChange = {
+                            viewModel.setIdealWaterForm(it)
+                        },
+                        onOkayClick = {
+                            val idealWaterIntakeToInsert = IdealWaterIntake(
+                                waterIntake = viewModel.idealWaterIntakeValue.value.toInt(),
+                                form = viewModel.idealWaterForm.value
+                            )
+                            viewModel.insertIdealWaterIntake(idealWaterIntakeToInsert)
+                        }
+                    )
                 }
             }
 
@@ -112,13 +148,17 @@ fun HomeScreen(
 
 @Composable
 fun WaterIntake(
-    openDialog: MutableState<Boolean>,
+    openGoalDialog: MutableState<Boolean>,
     idealWaterIntakeDialog: MutableState<Boolean>,
     viewModel: HomeViewModel
 ) {
     val idealWaterIntake = viewModel.idealWaterIntakeFromDb.observeAsState()
     val waterIntake = idealWaterIntake.value?.waterIntake ?: 0
     val form = idealWaterIntake.value?.form ?: "ml"
+
+    val goalWaterIntakeFromDb = viewModel.goalWaterIntakeFromDb.observeAsState()
+    val goalWaterIntake = goalWaterIntakeFromDb.value?.waterIntake ?: 0
+    val goalForm = goalWaterIntakeFromDb.value?.form ?: "ml"
     Card(
         modifier = Modifier
             .height(100.dp)
@@ -174,7 +214,7 @@ fun WaterIntake(
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier.clickable {
-                        openDialog.value = true
+                        openGoalDialog.value = true
                     }
                 ) {
                     Text(
@@ -184,7 +224,7 @@ fun WaterIntake(
                         fontFamily = roboto
                     )
                     Text(
-                        text = "2400 ml",
+                        text = "$goalWaterIntake $goalForm",
                         fontSize = 16.sp,
                         color = Color.Gray,
                         fontWeight = FontWeight.Bold,
