@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -14,6 +15,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -80,6 +82,15 @@ fun IdealIntakeGoalDialog(
                             .fillMaxWidth(0.5f)
                             .padding(start = 8.dp, end = 8.dp),
                         value = currentIdealIntakeText,
+                        singleLine = true,
+                        keyboardOptions = KeyboardOptions.Default.copy(
+                            keyboardType = KeyboardType.Number
+                        ),
+                        shape = RoundedCornerShape(30.dp),
+                        colors = TextFieldDefaults.outlinedTextFieldColors(
+                            focusedBorderColor = Gray,
+                            unfocusedBorderColor = LightGray
+                        ),
                         onValueChange = {
                             onCurrentIdealIntakeTextChange(it)
                         },
@@ -89,14 +100,9 @@ fun IdealIntakeGoalDialog(
                                 color = Gray
                             )
                         },
-                        shape = RoundedCornerShape(30.dp),
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                            focusedBorderColor = Gray,
-                            unfocusedBorderColor = LightGray
-                        )
                     )
 
-                    val options = listOf("ml", "l", "liters")
+                    val options = listOf("ml", "l", "oz")
                     var expanded by remember { mutableStateOf(false) }
 
                     ExposedDropdownMenuBox(
@@ -109,7 +115,9 @@ fun IdealIntakeGoalDialog(
                             modifier = Modifier.fillMaxWidth(),
                             readOnly = true,
                             value = currentIdealIntakeFormText,
-                            onValueChange = { },
+                            onValueChange = {
+                                onCurrentIdealIntakeFormTextChange(it)
+                            },
                             label = { Text("ml") },
                             trailingIcon = {
                                 ExposedDropdownMenuDefaults.TrailingIcon(
@@ -131,7 +139,7 @@ fun IdealIntakeGoalDialog(
                             options.forEach { selectionOption ->
                                 DropdownMenuItem(
                                     onClick = {
-                                        onCurrentIdealIntakeFormTextChange
+                                        onCurrentIdealIntakeFormTextChange(selectionOption)
                                         expanded = false
                                     }
                                 ) {

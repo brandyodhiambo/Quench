@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -14,6 +15,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -82,6 +84,9 @@ fun WaterIntakeDialog(
                             .padding(start = 8.dp, end = 8.dp),
                         value = currentWaterIntakeText,
                         onValueChange = onCurrentWaterIntakeTextChange,
+                        keyboardOptions = KeyboardOptions.Default.copy(
+                            keyboardType = KeyboardType.Number
+                        ),
                         label = {
                             Text(
                                 "2810",
@@ -95,7 +100,7 @@ fun WaterIntakeDialog(
                         )
                     )
 
-                    val options = listOf("ml", "l")
+                    val options = listOf("ml", "l", "oz")
                     var expanded by remember { mutableStateOf(false) }
 
                     ExposedDropdownMenuBox(
@@ -108,7 +113,9 @@ fun WaterIntakeDialog(
                             modifier = Modifier.fillMaxWidth(),
                             readOnly = true,
                             value = currentWaterIntakeFormText,
-                            onValueChange = { },
+                            onValueChange = {
+                                onCurrentWaterIntakeFormTextChange(it)
+                            },
                             label = { Text("ml") },
                             trailingIcon = {
                                 ExposedDropdownMenuDefaults.TrailingIcon(
@@ -130,7 +137,7 @@ fun WaterIntakeDialog(
                             options.forEach { selectionOption ->
                                 DropdownMenuItem(
                                     onClick = {
-                                        onCurrentWaterIntakeFormTextChange
+                                        onCurrentWaterIntakeFormTextChange(selectionOption)
                                         expanded = false
                                     }
                                 ) {
