@@ -25,6 +25,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.brandyodhiambo.common.R
 import com.brandyodhiambo.common.domain.model.GoalWaterIntake
 import com.brandyodhiambo.common.domain.model.IdealWaterIntake
+import com.brandyodhiambo.common.domain.model.SelectedDrink
 import com.brandyodhiambo.common.presentation.component.WaterIntakeDialog
 import com.brandyodhiambo.designsystem.components.CircularButton
 import com.brandyodhiambo.designsystem.theme.lightBlue
@@ -46,6 +47,8 @@ fun HomeScreen(
     val openGoalDialog = remember { mutableStateOf(false) }
     val idealWaterIntakeDialog = remember { mutableStateOf(false) }
     val selectedDrinkDialog = remember { mutableStateOf(false) }
+
+    // to be changed to selectedDrinks
     val waterleveltime = listOf(
         Intake("100 Ml", "12:30 Pm"),
         Intake("300 Ml", "18:30 Pm"),
@@ -137,9 +140,27 @@ fun HomeScreen(
 
             if (selectedDrinkDialog.value) {
                 Dialog(onDismissRequest = { selectedDrinkDialog.value }) {
-                    SelectDrinkComposable(openDialog = selectedDrinkDialog, onClick = {
-                        //TODO: set the selected drink
-                    })
+                    SelectDrinkComposable(
+                        openDialog = selectedDrinkDialog,
+                        onCurrentSelectedDrinkTime = {
+                            viewModel.setSelectedTime(it)
+                        },
+                        onCurrentSelectedDrinkIcon = {
+                            viewModel.setSelectedIcon(it)
+                        },
+                        onCurrentSelectedDrinkSize = {
+                            viewModel.setSize(it)
+                        },
+                        onClick = {
+                            viewModel.insertSelectedDrink(
+                                SelectedDrink(
+                                    drinkValue = viewModel.size.value,
+                                    icon = viewModel.selectedIcon.value,
+                                    time = viewModel.selectedTime.value
+                                )
+                            )
+                        }
+                    )
                 }
             }
         }

@@ -44,4 +44,8 @@ object DatabaseModule {
     @Provides
     @Singleton
     fun provideGoalWaterIntakeDao(database: QuenchDatabase) = database.goalWaterIntakeDao()
+
+    @Provides
+    @Singleton
+    fun provideSelectedDrinkDao(database: QuenchDatabase) = database.selectedDrinkDao()
 }

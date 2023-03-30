@@ -13,7 +13,7 @@ interface SelectedDrinkDao {
     suspend fun insertSelectedDrink(selectedDrink: SelectedDrinkEntity)
 
     @Query("SELECT *FROM selected_drink_table")
-    fun getSelectedDrink(): LiveData<SelectedDrinkEntity>
+    fun getSelectedDrink(): LiveData<List<SelectedDrinkEntity>>
 
     @Query("SELECT *FROM selected_drink_table ORDER BY id DESC")
     fun getAllSelectedDrink(): LiveData<List<SelectedDrinkEntity>>
