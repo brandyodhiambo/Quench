@@ -7,4 +7,5 @@ interface SelectedDrinkRepository {
     fun getSelectedDrink(): LiveData<List<SelectedDrink>>
     suspend fun insertSelectedDrink(selectedDrink: SelectedDrink)
     suspend fun deleteAllSelectedDrinks()
+    suspend fun deleteOneSelectedDrink(id: Int)
 }

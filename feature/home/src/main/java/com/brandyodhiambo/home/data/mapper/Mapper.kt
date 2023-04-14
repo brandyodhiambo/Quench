@@ -83,7 +83,8 @@ internal fun SelectedDrinkEntity.toSelectedDrink(): SelectedDrink {
     return SelectedDrink(
         drinkValue = drinkValue,
         icon = icon,
-        time = time
+        time = time,
+        id = id
     )
 }
 

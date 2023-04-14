@@ -24,7 +24,7 @@ class HomeViewModel @Inject constructor(
 /*
 * ideal water intake value and functions
 * */
-    private val _idealWaterIntake = mutableStateOf("0")
+    private val _idealWaterIntake = mutableStateOf("500")
     var idealWaterIntakeValue: State<String> = _idealWaterIntake
     fun setIdealWaterIntakeValue(value: String) {
         _idealWaterIntake.value = value
@@ -51,9 +51,9 @@ class HomeViewModel @Inject constructor(
     }
 
 /*
-* Goal Water intake values and fuctions
+* Goal Water intake values and functions
 * */
-    private val _goalWaterIntake = mutableStateOf("0")
+    private val _goalWaterIntake = mutableStateOf("2080")
     var goalWaterIntakeValue: State<String> = _goalWaterIntake
     fun setGoalWaterIntakeValue(value: String) {
         _goalWaterIntake.value = value
@@ -104,6 +104,18 @@ class HomeViewModel @Inject constructor(
     fun insertSelectedDrink(selectedDrink: SelectedDrink) {
         viewModelScope.launch {
             selectedDrinkRepository.insertSelectedDrink(selectedDrink)
+        }
+    }
+
+    fun deleteAllSelectedDrinks() {
+        viewModelScope.launch {
+            selectedDrinkRepository.deleteAllSelectedDrinks()
+        }
+    }
+
+    fun deleteOneSelectedDrink(id: Int) {
+        viewModelScope.launch {
+            selectedDrinkRepository.deleteOneSelectedDrink(id)
         }
     }
 

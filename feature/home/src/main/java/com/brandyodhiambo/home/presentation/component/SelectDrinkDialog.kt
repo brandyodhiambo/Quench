@@ -41,35 +41,35 @@ import java.util.Calendar
 val selectedDrinks = listOf(
     SelectDrink(
         icon = R.drawable.small_cup,
-        size = "50ml"
-    ),
-    SelectDrink(
-        icon = R.drawable.small_cup,
-        size = "150ml"
-    ),
-    SelectDrink(
-        icon = R.drawable.small_glass,
-        size = "100ml"
-    ),
-    SelectDrink(
-        icon = R.drawable.ic_glass,
-        size = "200ml"
-    ),
-    SelectDrink(
-        icon = R.drawable.ic_cup,
         size = "300ml"
     ),
     SelectDrink(
-        icon = R.drawable.big_cup,
+        icon = R.drawable.small_cup,
+        size = "350ml"
+    ),
+    SelectDrink(
+        icon = R.drawable.small_glass,
         size = "400ml"
     ),
     SelectDrink(
-        icon = R.drawable.kettle,
+        icon = R.drawable.ic_glass,
+        size = "450ml"
+    ),
+    SelectDrink(
+        icon = R.drawable.ic_cup,
         size = "500ml"
     ),
     SelectDrink(
         icon = R.drawable.big_cup,
+        size = "550ml"
+    ),
+    SelectDrink(
+        icon = R.drawable.kettle,
         size = "600ml"
+    ),
+    SelectDrink(
+        icon = R.drawable.big_cup,
+        size = "650ml"
     ),
     SelectDrink(
         icon = R.drawable.kettle,

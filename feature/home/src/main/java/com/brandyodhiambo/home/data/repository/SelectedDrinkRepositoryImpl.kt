@@ -24,4 +24,8 @@ class SelectedDrinkRepositoryImpl(
     override suspend fun deleteAllSelectedDrinks() {
         selectedDrinkDao.deleteAllSelectedDrink()
     }
+
+    override suspend fun deleteOneSelectedDrink(id: Int) {
+        selectedDrinkDao.deleteSelectedDrink(id)
+    }
 }

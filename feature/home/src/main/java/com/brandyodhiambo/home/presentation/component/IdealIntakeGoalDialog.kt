@@ -102,7 +102,7 @@ fun IdealIntakeGoalDialog(
                         },
                     )
 
-                    val options = listOf("ml", "l", "oz")
+                    val options = listOf("ml", "l")
                     var expanded by remember { mutableStateOf(false) }
 
                     ExposedDropdownMenuBox(

@@ -32,7 +32,7 @@ fun CircularRating(
     percentage: Float,
     drunk: Int,
     goal: Int,
-    number: Int = 10,
+    number: Int = 1,
     fontSize: TextUnit = 16.sp,
     radius: Dp = 110.dp,
     color: Color = primaryColor,
@@ -45,7 +45,7 @@ fun CircularRating(
     }
 
     val currentPercentage = animateFloatAsState(
-        targetValue = if (animationPlayed) percentage else 0f,
+        targetValue = if (animationPlayed) percentage*100 else 0f,
         animationSpec = tween(
             durationMillis = animationDuration,
             delayMillis = animDelay
