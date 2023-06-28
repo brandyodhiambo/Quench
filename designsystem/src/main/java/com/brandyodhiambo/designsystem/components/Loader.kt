@@ -33,7 +33,7 @@ fun Loader(
         LottieAnimation(
             composition = composition,
             progress = { progress },
-            applyOpacityToLayers = true
+           // applyOpacityToLayers = true
         )
     }
 

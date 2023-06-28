@@ -2,11 +2,13 @@ package com.brandyodhiambo.home.data.mapper
 
 import com.brandyodhiambo.common.domain.model.GoalWaterIntake
 import com.brandyodhiambo.common.domain.model.IdealWaterIntake
+import com.brandyodhiambo.common.domain.model.Level
 import com.brandyodhiambo.common.domain.model.SelectedDrink
 import com.brandyodhiambo.common.domain.model.SleepTime
 import com.brandyodhiambo.common.domain.model.WakeTime
 import com.brandyodhiambo.entity.GoalWaterIntakeEntity
 import com.brandyodhiambo.entity.IdealWaterIntakeEntity
+import com.brandyodhiambo.entity.LevelEntity
 import com.brandyodhiambo.entity.SelectedDrinkEntity
 import com.brandyodhiambo.entity.SleepTimeEntity
 import com.brandyodhiambo.entity.WakeTimeEntity
@@ -85,6 +87,20 @@ internal fun SelectedDrinkEntity.toSelectedDrink(): SelectedDrink {
         icon = icon,
         time = time,
         id = id
+    )
+}
+
+internal fun LevelEntity.toLevel(): Level {
+    return Level(
+        amountTaken = amountTaken,
+        waterTaken = waterTaken,
+    )
+}
+
+internal fun Level.toLevelEntity(): LevelEntity {
+    return LevelEntity(
+        amountTaken = amountTaken,
+        waterTaken = waterTaken,
     )
 }
 

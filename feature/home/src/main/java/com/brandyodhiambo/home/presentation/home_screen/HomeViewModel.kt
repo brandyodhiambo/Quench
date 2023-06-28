@@ -6,9 +6,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.brandyodhiambo.common.domain.model.GoalWaterIntake
 import com.brandyodhiambo.common.domain.model.IdealWaterIntake
+import com.brandyodhiambo.common.domain.model.Level
 import com.brandyodhiambo.common.domain.model.SelectedDrink
 import com.brandyodhiambo.common.domain.repository.GoalWaterIntakeRepository
 import com.brandyodhiambo.common.domain.repository.IdealWaterIntakeRepository
+import com.brandyodhiambo.common.domain.repository.LevelRepository
 import com.brandyodhiambo.common.domain.repository.SelectedDrinkRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -18,12 +20,13 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val idealWaterIntakeRepository: IdealWaterIntakeRepository,
     private val goalWaterIntakeRepository: GoalWaterIntakeRepository,
-    private val selectedDrinkRepository: SelectedDrinkRepository
+    private val selectedDrinkRepository: SelectedDrinkRepository,
+    private val levelRepository: LevelRepository,
 ) : ViewModel() {
 
-/*
-* ideal water intake value and functions
-* */
+    /*
+    * ideal water intake value and functions
+    * */
     private val _idealWaterIntake = mutableStateOf("500")
     var idealWaterIntakeValue: State<String> = _idealWaterIntake
     fun setIdealWaterIntakeValue(value: String) {
@@ -36,12 +39,11 @@ class HomeViewModel @Inject constructor(
         _idealWaterForm.value = value
     }
 
-
     val idealWaterIntakeFromDb = idealWaterIntakeRepository.getIdealWaterIntake()
 
     fun insertIdealWaterIntake(idealWaterIntake: IdealWaterIntake) {
         viewModelScope.launch {
-            if(idealWaterIntakeFromDb.value != null) {
+            if (idealWaterIntakeFromDb.value != null) {
                 idealWaterIntakeRepository.deleteAllIdealWaterIntakes()
                 idealWaterIntakeRepository.insertIdealWaterIntake(idealWaterIntake)
             } else {
@@ -50,9 +52,9 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-/*
-* Goal Water intake values and functions
-* */
+    /*
+    * Goal Water intake values and functions
+    * */
     private val _goalWaterIntake = mutableStateOf("2080")
     var goalWaterIntakeValue: State<String> = _goalWaterIntake
     fun setGoalWaterIntakeValue(value: String) {
@@ -69,7 +71,7 @@ class HomeViewModel @Inject constructor(
 
     fun insertGoalWaterIntake(goalWaterIntake: GoalWaterIntake) {
         viewModelScope.launch {
-            if(goalWaterIntakeFromDb.value != null) {
+            if (goalWaterIntakeFromDb.value != null) {
                 goalWaterIntakeRepository.deleteAllGoalWaterIntakes()
                 goalWaterIntakeRepository.insertGoalWaterIntake(goalWaterIntake)
             } else {
@@ -119,6 +121,45 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    /*
+    * Level values and functions
+    * */
 
+    private val _amountTaken = mutableStateOf(0f)
+    var amountTaken: State<Float> = _amountTaken
+    fun setAmountTaken(value: Float) {
+        _amountTaken.value = value
+    }
 
+    private val _waterTaken = mutableStateOf(0)
+    var waterTaken: State<Int> = _waterTaken
+    fun setWaterTaken(value: Int) {
+        _waterTaken.value = value
+    }
+
+    val levelFromDB = levelRepository.getLevel()
+
+    fun insertLevel(level: Level) {
+        viewModelScope.launch {
+            levelRepository.insertLevel(level)
+        }
+    }
+
+    fun deleteAllLevels() {
+        viewModelScope.launch {
+            levelRepository.deleteAllLevel()
+        }
+    }
+
+    fun deleteOneLevel(level: Level) {
+        viewModelScope.launch {
+            levelRepository.deleteLevel(level)
+        }
+    }
+
+    fun updateLevel(level: Level) {
+        viewModelScope.launch {
+            levelRepository.updateLevel(level)
+        }
+    }
 }

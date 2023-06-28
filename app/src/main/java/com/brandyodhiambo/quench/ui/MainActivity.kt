@@ -25,7 +25,6 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-
     @OptIn(ExperimentalAnimationApi::class)
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,7 +34,7 @@ class MainActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
+                    color = MaterialTheme.colors.background,
                 ) {
                     val navController = rememberAnimatedNavController()
                     val navHostEngine = rememberNavHostEngine()
@@ -46,9 +45,9 @@ class MainActivity : ComponentActivity() {
                         engine = navHostEngine,
                         dependenciesContainerBuilder = {
                             dependency(
-                                currentNavigator()
+                                currentNavigator(),
                             )
-                        }
+                        },
                     )
                 }
             }
@@ -59,7 +58,7 @@ class MainActivity : ComponentActivity() {
 fun DestinationScope<*>.currentNavigator(): FeatureNavigator {
     return FeatureNavigator(
         navController = navController,
-        navGraph = navBackStackEntry.destination.navGraph()
+        navGraph = navBackStackEntry.destination.navGraph(),
     )
 }
 

@@ -3,23 +3,27 @@ package com.brandyodhiambo.quench.navigation
 import androidx.navigation.NavController
 import com.brandyodhiambo.home.presentation.destinations.SleepAndWakeTimeScreenDestination
 import com.brandyodhiambo.home.presentation.sleep_wake_screen.SleepAndWakeUpScreenScreenNavigator
-import com.brandyodhiambo.quench.ui.destinations.MainScreenDestination
 import com.brandyodhiambo.quench.ui.splash.SplashScreenNavigator
 import com.brandyodhiambo.settings.presentation.AddReminderNavigator
 import com.brandyodhiambo.settings.presentation.NotificationNavigator
 import com.brandyodhiambo.settings.presentation.SettingsNavigator
 import com.brandyodhiambo.settings.presentation.destinations.AddReminderScreenDestination
-import com.brandyodhiambo.settings.presentation.destinations.NotificationScreenDestination
 import com.ramcosta.composedestinations.dynamic.within
 import com.ramcosta.composedestinations.navigation.navigate
 import com.ramcosta.composedestinations.spec.NavGraphSpec
 
 class FeatureNavigator(
     private val navController: NavController,
-    private val navGraph: NavGraphSpec
-) : SplashScreenNavigator, SleepAndWakeUpScreenScreenNavigator,SettingsNavigator, NotificationNavigator, AddReminderNavigator {
+    private val navGraph: NavGraphSpec,
+) : SplashScreenNavigator,
+    SleepAndWakeUpScreenScreenNavigator,
+    SettingsNavigator,
+    NotificationNavigator,
+    AddReminderNavigator {
     override fun navigateToNotificationScreen() {
-        navController.navigate(NotificationScreenDestination within navGraph)
+        navController.navigate(
+            NavGraphs.settings.route,
+        )
     }
 
     override fun navigateToReminderScreen() {
@@ -35,7 +39,13 @@ class FeatureNavigator(
     }
 
     override fun navigateToMainScreen() {
-       navController.navigate(MainScreenDestination within navGraph)
+        navController.navigate(
+            NavGraphs.home.route,
+        ) {
+            popUpTo(NavGraphs.splash.route) {
+                inclusive = true
+            }
+        }
     }
 
     override fun navigateUp() {

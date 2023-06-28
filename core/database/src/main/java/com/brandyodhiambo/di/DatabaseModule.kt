@@ -23,7 +23,7 @@ object DatabaseModule {
         return Room.databaseBuilder(
             context,
             QuenchDatabase::class.java,
-            DATABASE_NAME
+            DATABASE_NAME,
         )
             .fallbackToDestructiveMigration()
             .build()
@@ -48,4 +48,8 @@ object DatabaseModule {
     @Provides
     @Singleton
     fun provideSelectedDrinkDao(database: QuenchDatabase) = database.selectedDrinkDao()
+
+    @Provides
+    @Singleton
+    fun provideLevelDao(database: QuenchDatabase) = database.levelDao()
 }

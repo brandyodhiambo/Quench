@@ -21,7 +21,7 @@ class WakeTimeRepositoryImpl(
             id = entityData.id,
             hours = entityData.hour.toString(),
             minutes = entityData.minute.toString(),
-            ampm = entityData.ampm
+            ampm = entityData.ampm,
         )
     }
 

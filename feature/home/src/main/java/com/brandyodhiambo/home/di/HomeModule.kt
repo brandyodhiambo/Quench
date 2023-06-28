@@ -2,16 +2,19 @@ package com.brandyodhiambo.home.di
 
 import com.brandyodhiambo.common.domain.repository.GoalWaterIntakeRepository
 import com.brandyodhiambo.common.domain.repository.IdealWaterIntakeRepository
+import com.brandyodhiambo.common.domain.repository.LevelRepository
 import com.brandyodhiambo.common.domain.repository.SelectedDrinkRepository
 import com.brandyodhiambo.common.domain.repository.SleepTimeRepository
 import com.brandyodhiambo.common.domain.repository.WakeTimeRepository
 import com.brandyodhiambo.dao.GoalWaterIntakeDao
 import com.brandyodhiambo.dao.IdealWaterIntakeDao
+import com.brandyodhiambo.dao.LevelDao
 import com.brandyodhiambo.dao.SelectedDrinkDao
 import com.brandyodhiambo.dao.SleepTimeDao
 import com.brandyodhiambo.dao.WakeTimeDao
 import com.brandyodhiambo.home.data.repository.GoalWaterIntakeRepositoryImpl
 import com.brandyodhiambo.home.data.repository.IdealWaterInkateRepositoryImpl
+import com.brandyodhiambo.home.data.repository.LevelRepositoryImpl
 import com.brandyodhiambo.home.data.repository.SelectedDrinkRepositoryImpl
 import com.brandyodhiambo.home.data.repository.SleepTimeRepositoryImpl
 import com.brandyodhiambo.home.data.repository.WakeTimeRepositoryImpl
@@ -33,7 +36,7 @@ object HomeModule {
 
     @Provides
     @Singleton
-    fun provideWakeTimeRepository(wakeTimeDao: WakeTimeDao):WakeTimeRepository{
+    fun provideWakeTimeRepository(wakeTimeDao: WakeTimeDao): WakeTimeRepository {
         return WakeTimeRepositoryImpl(wakeTimeDao = wakeTimeDao)
     }
 
@@ -55,5 +58,9 @@ object HomeModule {
         return SelectedDrinkRepositoryImpl(selectedDrinkDao = selectedDrinkDao)
     }
 
-
+    @Provides
+    @Singleton
+    fun provideLevelRepository(levelDao: LevelDao): LevelRepository {
+        return LevelRepositoryImpl(levelDao = levelDao)
+    }
 }

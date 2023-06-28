@@ -1,6 +1,8 @@
 package com.brandyodhiambo.home.presentation.home_screen
 
 import android.annotation.SuppressLint
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -28,6 +30,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.brandyodhiambo.common.R
 import com.brandyodhiambo.common.domain.model.GoalWaterIntake
 import com.brandyodhiambo.common.domain.model.IdealWaterIntake
+import com.brandyodhiambo.common.domain.model.Level
 import com.brandyodhiambo.common.domain.model.SelectedDrink
 import com.brandyodhiambo.common.presentation.component.WaterIntakeDialog
 import com.brandyodhiambo.designsystem.components.CircularButton
@@ -38,8 +41,10 @@ import com.brandyodhiambo.home.presentation.component.CircularRating
 import com.brandyodhiambo.home.presentation.component.IdealIntakeGoalDialog
 import com.brandyodhiambo.home.presentation.component.SelectDrinkComposable
 import com.brandyodhiambo.home.presentation.component.TimeSetterDialog
+import com.brandyodhiambo.quench.views.screens.dialogs.CongratulationsDialog
 import com.ramcosta.composedestinations.annotation.Destination
 
+@RequiresApi(Build.VERSION_CODES.O)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Destination
 @Composable
@@ -47,13 +52,12 @@ fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
     val openTimeDialog = remember { mutableStateOf(false) }
+    val openCongratulationsDialog = remember { mutableStateOf(false) }
     val openGoalDialog = remember { mutableStateOf(false) }
     val idealWaterIntakeDialog = remember { mutableStateOf(false) }
     val selectedDrinkDialog = remember { mutableStateOf(false) }
 
-
     val selectedDrinksFromDB = viewModel.selectedDrinkFromDB.observeAsState(initial = emptyList())
-
 
     val idealWaterIntake = viewModel.idealWaterIntakeFromDb.observeAsState()
     val waterIntake = idealWaterIntake.value?.waterIntake ?: 0
@@ -63,18 +67,18 @@ fun HomeScreen(
     val goalWaterIntake = goalWaterIntakeFromDb.value?.waterIntake ?: 0
     val goalForm = goalWaterIntakeFromDb.value?.form ?: "ml"
 
+    val levelFromDb = viewModel.levelFromDB.observeAsState()
 
-    var amountTaken: Int = 0
-    var waterTaken: Int = 0
-
+    val amountTaken = levelFromDb.value?.amountTaken ?: 0f
+    val waterTaken = levelFromDb.value?.waterTaken ?: 0
 
     Scaffold(
-        backgroundColor = primaryColor
+        backgroundColor = primaryColor,
     ) { paddingValues ->
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues)
+                .padding(paddingValues),
         ) {
             LazyColumn {
                 item {
@@ -96,13 +100,18 @@ fun HomeScreen(
                         goalWaterIntake = goalWaterIntake,
                         onAddLevelClick = {
                             val (amount, taken) = incrementProgressCircle(
-                                selectedDrinksFromDB,
-                                goalWaterIntake,
-                                viewModel
+                                selectedDrinksFromDB = selectedDrinksFromDB,
+                                goalWaterIntake = goalWaterIntake,
+                                viewModel = viewModel,
                             )
-                            amountTaken = amount
-                            waterTaken = taken
-                        }
+                            viewModel.deleteAllLevels()
+                            viewModel.insertLevel(
+                                Level(
+                                    amountTaken = amount,
+                                    waterTaken = taken,
+                                ),
+                            )
+                        },
                     )
                 }
                 item {
@@ -116,10 +125,19 @@ fun HomeScreen(
                 }
             }
 
+            if (waterIntake >= goalWaterIntake) {
+                openCongratulationsDialog.value = true
+            }
+
+            if (openCongratulationsDialog.value) {
+                Dialog(onDismissRequest = { openCongratulationsDialog.value }) {
+                    CongratulationsDialog(openDialogCustom = openCongratulationsDialog)
+                }
+            }
+
             if (openTimeDialog.value) {
                 Dialog(onDismissRequest = { openTimeDialog.value }) {
                     TimeSetterDialog(openDialogCustom = openTimeDialog)
-                    // CongratulationsDialog(openDialogCustom = openTimeDialog)
                 }
             }
 
@@ -138,10 +156,10 @@ fun HomeScreen(
                         onOkayClick = {
                             val goalWaterIntakeToInsert = GoalWaterIntake(
                                 waterIntake = viewModel.goalWaterIntakeValue.value.toInt(),
-                                form = viewModel.goalWaterForm.value
+                                form = viewModel.goalWaterForm.value,
                             )
                             viewModel.insertGoalWaterIntake(goalWaterIntakeToInsert)
-                        }
+                        },
                     )
                 }
             }
@@ -161,10 +179,10 @@ fun HomeScreen(
                         onOkayClick = {
                             val idealWaterIntakeToInsert = IdealWaterIntake(
                                 waterIntake = viewModel.idealWaterIntakeValue.value.toInt(),
-                                form = viewModel.idealWaterForm.value
+                                form = viewModel.idealWaterForm.value,
                             )
                             viewModel.insertIdealWaterIntake(idealWaterIntakeToInsert)
-                        }
+                        },
                     )
                 }
             }
@@ -188,9 +206,9 @@ fun HomeScreen(
                                     drinkValue = viewModel.size.value,
                                     icon = viewModel.selectedIcon.value,
                                     time = viewModel.selectedTime.value,
-                                )
+                                ),
                             )
-                        }
+                        },
                     )
                 }
             }
@@ -202,25 +220,44 @@ private fun incrementProgressCircle(
     selectedDrinksFromDB: State<List<SelectedDrink>>,
     goalWaterIntake: Int,
     viewModel: HomeViewModel,
-): Pair<Int, Int> {
-    var amountTaken = 0
+): Pair<Float, Int> {
+    // getting the last selected drink
+    var amountTaken = viewModel.levelFromDB.value?.amountTaken ?: 0f
+    var waterTakenFromDb = viewModel.levelFromDB.value?.waterTaken ?: 0
+
+    // if there is no selected drink, return
     if (selectedDrinksFromDB.value.isEmpty()) {
-        return Pair(0, 0)
-    } else {
-        val waterTakenId = selectedDrinksFromDB.value.first().id
-        val waterTaken = selectedDrinksFromDB.value.first().drinkValue.removeSuffix("ml").toInt()
-        if (waterTaken != 0) {
-            ( waterTaken/ goalWaterIntake).also { amountTaken = it }
-            if (waterTakenId != null) {
-                viewModel.deleteOneSelectedDrink(waterTakenId)
-            }
-
-            return Pair(amountTaken, waterTaken)
-        } else {
-
-            return Pair(0, 0)
-        }
+        return Pair(0f, 0)
     }
+
+    // getting the last selected drink from the list of selected drinks from db
+    val lastSelectedDrink = selectedDrinksFromDB.value.last()
+    val waterTakenId = lastSelectedDrink.id
+    val waterTaken = lastSelectedDrink.drinkValue.removeSuffix("ml").toInt()
+
+    // if the water taken is 0 or the goal water intake is 0, return
+    if (waterTaken == 0 || goalWaterIntake == 0) {
+        return Pair(0f, 0)
+    }
+
+    // if the amount taken is 0, then calculate the amount taken
+    if (amountTaken == 0f) {
+        amountTaken = (waterTaken.toFloat() / goalWaterIntake.toFloat()) * 100
+    } else {
+        amountTaken += (waterTaken.toFloat() / goalWaterIntake.toFloat()) * 100
+    }
+
+    // if the water taken from db is 0, then calculate the water taken from db
+    if (waterTakenFromDb == 0) {
+        waterTakenFromDb = waterTaken
+    } else {
+        waterTakenFromDb += waterTaken
+    }
+
+    if (waterTakenId != null) {
+        viewModel.deleteOneSelectedDrink(waterTakenId)
+    }
+    return Pair(amountTaken, waterTakenFromDb)
 }
 
 @Composable
@@ -232,46 +269,47 @@ fun WaterIntake(
     goalForm: String,
     goalWaterIntake: Int,
 ) {
-
     Card(
         modifier = Modifier
             .height(100.dp)
             .padding(16.dp)
             .fillMaxWidth(),
-        elevation = 4.dp
+        elevation = 4.dp,
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
             horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_glass),
-                    contentDescription = null
+                    contentDescription = null,
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier.clickable {
                         idealWaterIntakeDialog.value = true
-                    }
+                    },
                 ) {
-                    Text(text = "Ideal water intake",
+                    Text(
+                        text = "Ideal water intake",
                         fontSize = 14.sp,
                         color = Color.Gray,
-                        fontFamily = roboto)
+                        fontFamily = roboto,
+                    )
                     Text(
                         text = "$waterIntake $form",
                         fontSize = 16.sp,
                         color = Color.Gray,
                         fontWeight = FontWeight.Bold,
-                        fontFamily = roboto
+                        fontFamily = roboto,
                     )
                 }
             }
@@ -280,11 +318,11 @@ fun WaterIntake(
                     .fillMaxHeight()
                     .width(2.dp),
                 thickness = 2.dp,
-                color = primaryColor
+                color = primaryColor,
             )
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Image(painter = painterResource(id = R.drawable.ic_cup), contentDescription = null)
                 Spacer(modifier = Modifier.width(8.dp))
@@ -292,20 +330,20 @@ fun WaterIntake(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier.clickable {
                         openGoalDialog.value = true
-                    }
+                    },
                 ) {
                     Text(
                         text = "Water intake goal",
                         fontSize = 14.sp,
                         color = Color.Gray,
-                        fontFamily = roboto
+                        fontFamily = roboto,
                     )
                     Text(
                         text = "$goalWaterIntake $goalForm",
                         fontSize = 16.sp,
                         color = Color.Gray,
                         fontWeight = FontWeight.Bold,
-                        fontFamily = roboto
+                        fontFamily = roboto,
                     )
                 }
             }
@@ -316,7 +354,7 @@ fun WaterIntake(
 @Composable
 fun WaterRecord(
     openDialog: MutableState<Boolean>,
-    amountTaken: Int,
+    amountTaken: Float,
     waterTaken: Int,
     goalWaterIntake: Int,
     selectedDrinkDialog: MutableState<Boolean>,
@@ -327,25 +365,25 @@ fun WaterRecord(
             .fillMaxWidth()
             .height(350.dp)
             .padding(start = 16.dp, end = 16.dp),
-        elevation = 4.dp
+        elevation = 4.dp,
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(8.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Spacer(modifier = Modifier.height(8.dp))
 
             CircularRating(
-                percentage = amountTaken.toFloat(),
+                percentage = amountTaken,
                 drunk = waterTaken,
-                goal = goalWaterIntake
+                goal = goalWaterIntake,
             )
             Spacer(modifier = Modifier.height(8.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly
+                horizontalArrangement = Arrangement.SpaceEvenly,
             ) {
                 CircularButton(
                     backgroundColor = lightBlue,
@@ -353,7 +391,7 @@ fun WaterRecord(
                     title = "12:04 AM",
                     onClick = {
                         openDialog.value = true
-                    }
+                    },
                 )
                 CircularButton(
                     backgroundColor = lightBlue,
@@ -361,7 +399,7 @@ fun WaterRecord(
                     title = "Add Level",
                     onClick = {
                         onAddLevelClick()
-                    }
+                    },
                 )
                 CircularButton(
                     backgroundColor = lightBlue,
@@ -369,7 +407,7 @@ fun WaterRecord(
                     title = "Add Drink",
                     onClick = {
                         selectedDrinkDialog.value = true
-                    }
+                    },
                 )
             }
         }
@@ -385,7 +423,7 @@ fun WaterIntakeTimeAndLevel(
         modifier = Modifier
             .fillMaxSize()
             .padding(start = 16.dp, end = 16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Row(
             modifier = Modifier
@@ -393,47 +431,48 @@ fun WaterIntakeTimeAndLevel(
                 .background(Color.White)
                 .padding(4.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Icon(
                     modifier = Modifier.size(20.dp),
                     painter = painterResource(id = intake.icon),
                     tint = primaryColor,
-                    contentDescription = null
+                    contentDescription = null,
                 )
-                Text(text = intake.drinkValue,
+                Text(
+                    text = intake.drinkValue,
                     fontFamily = roboto,
                     fontSize = 16.sp,
-                    fontWeight = FontWeight.W400)
+                    fontWeight = FontWeight.W400,
+                )
             }
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
                     text = intake.time,
                     fontSize = 14.sp,
                     color = Color.Gray,
                     fontFamily = roboto,
-                    fontWeight = FontWeight.W300
+                    fontWeight = FontWeight.W300,
                 )
                 IconButton(onClick = { onDeleteIconClick(intake) }) {
                     Icon(
                         imageVector = Icons.Default.Delete,
                         tint = Color.Gray,
-                        contentDescription = null
+                        contentDescription = null,
                     )
                 }
             }
         }
         Divider(
             thickness = 1.dp,
-            color = Color.Gray
+            color = Color.Gray,
         )
     }
 }
-
