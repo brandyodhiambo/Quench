@@ -13,5 +13,5 @@ data class ReminderTimeEntity(
     val ampm: String,
     val isRepeated: Boolean,
     val isAllDay: Boolean,
-    val days:List<String>
+    val days: List<String>,
 )

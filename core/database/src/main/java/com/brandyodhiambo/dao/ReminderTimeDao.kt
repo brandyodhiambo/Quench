@@ -10,7 +10,7 @@ import com.brandyodhiambo.entity.ReminderTimeEntity
 @Dao
 interface ReminderTimeDao {
     @Insert
-    suspend fun reminderTime(reminderTime: ReminderTimeEntity)
+    suspend fun insertReminderTime(reminderTime: ReminderTimeEntity)
 
     @Query("SELECT *FROM reminder_table")
     fun getReminderTime(): LiveData<ReminderTimeEntity>

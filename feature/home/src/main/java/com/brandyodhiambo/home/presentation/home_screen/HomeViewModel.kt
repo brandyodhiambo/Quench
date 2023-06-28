@@ -1,5 +1,6 @@
 package com.brandyodhiambo.home.presentation.home_screen
 
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -7,11 +8,15 @@ import androidx.lifecycle.viewModelScope
 import com.brandyodhiambo.common.domain.model.GoalWaterIntake
 import com.brandyodhiambo.common.domain.model.IdealWaterIntake
 import com.brandyodhiambo.common.domain.model.Level
+import com.brandyodhiambo.common.domain.model.ReminderTime
 import com.brandyodhiambo.common.domain.model.SelectedDrink
 import com.brandyodhiambo.common.domain.repository.GoalWaterIntakeRepository
 import com.brandyodhiambo.common.domain.repository.IdealWaterIntakeRepository
 import com.brandyodhiambo.common.domain.repository.LevelRepository
+import com.brandyodhiambo.common.domain.repository.ReminderTimeRepository
 import com.brandyodhiambo.common.domain.repository.SelectedDrinkRepository
+import com.chargemap.compose.numberpicker.AMPMHours
+import com.chargemap.compose.numberpicker.Hours
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -22,6 +27,7 @@ class HomeViewModel @Inject constructor(
     private val goalWaterIntakeRepository: GoalWaterIntakeRepository,
     private val selectedDrinkRepository: SelectedDrinkRepository,
     private val levelRepository: LevelRepository,
+    private val reminderTimeRepository: ReminderTimeRepository,
 ) : ViewModel() {
 
     /*
@@ -160,6 +166,60 @@ class HomeViewModel @Inject constructor(
     fun updateLevel(level: Level) {
         viewModelScope.launch {
             levelRepository.updateLevel(level)
+        }
+    }
+
+    /*
+    * Reminder Time
+    * */
+    private val _reminderTimePickerValue =
+        mutableStateOf<Hours>(AMPMHours(0, 0, AMPMHours.DayTime.AM))
+    val reminderTimePickerValue: MutableState<Hours> = _reminderTimePickerValue
+
+    private val _reminderSelectedTime =
+        mutableStateOf(ReminderTime(0, 0, "", false, false, emptyList()))
+    var reminderSelectedTime: MutableState<ReminderTime> = _reminderSelectedTime
+    fun onReminderTimeSelected(
+        hours: Int,
+        minutes: Int,
+        amPm: String,
+        isReapeated: Boolean,
+        isAllDay: Boolean,
+        days: List<String>,
+    ) {
+        _reminderSelectedTime.value = ReminderTime(
+            hour = hours,
+            minute = minutes,
+            ampm = amPm,
+            isRepeated = isReapeated,
+            isAllDay = isAllDay,
+            days = days,
+        )
+    }
+
+    val reminderTime = reminderTimeRepository.getReminderTime()
+
+    fun insertRemindTime(reminderTime: ReminderTime) {
+        viewModelScope.launch {
+            reminderTimeRepository.insertReminderTime(reminderTime)
+        }
+    }
+
+    fun updateRemindTime(reminderTime: ReminderTime) {
+        viewModelScope.launch {
+            reminderTimeRepository.updateReminderTime(reminderTime)
+        }
+    }
+
+    fun deleteRemindTime(reminderTime: ReminderTime) {
+        viewModelScope.launch {
+            reminderTimeRepository.deleteReminderTime(reminderTime)
+        }
+    }
+
+    fun deleteAllRemindTime() {
+        viewModelScope.launch {
+            reminderTimeRepository.dellAllReminderTimes()
         }
     }
 }

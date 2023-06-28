@@ -125,7 +125,7 @@ fun HomeScreen(
                 }
             }
 
-            if (waterIntake >= goalWaterIntake) {
+            if (waterIntake >= goalWaterIntake && goalWaterIntake != 0) {
                 openCongratulationsDialog.value = true
             }
 
@@ -137,7 +137,10 @@ fun HomeScreen(
 
             if (openTimeDialog.value) {
                 Dialog(onDismissRequest = { openTimeDialog.value }) {
-                    TimeSetterDialog(openDialogCustom = openTimeDialog)
+                    TimeSetterDialog(
+                        openDialogCustom = openTimeDialog,
+                        viewModel = viewModel
+                    )
                 }
             }
 

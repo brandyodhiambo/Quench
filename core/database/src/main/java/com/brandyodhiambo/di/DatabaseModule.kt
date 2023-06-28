@@ -52,4 +52,8 @@ object DatabaseModule {
     @Provides
     @Singleton
     fun provideLevelDao(database: QuenchDatabase) = database.levelDao()
+
+    @Provides
+    @Singleton
+    fun provideReminderTimeDao(database: QuenchDatabase) = database.reminderTimeDao()
 }
