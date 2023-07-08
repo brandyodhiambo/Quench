@@ -2,6 +2,8 @@ package com.brandyodhiambo.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
+import com.brandyodhiambo.converter.Converter
 import com.brandyodhiambo.dao.GoalWaterIntakeDao
 import com.brandyodhiambo.dao.IdealWaterIntakeDao
 import com.brandyodhiambo.dao.LevelDao
@@ -17,6 +19,8 @@ import com.brandyodhiambo.entity.SelectedDrinkEntity
 import com.brandyodhiambo.entity.SleepTimeEntity
 import com.brandyodhiambo.entity.WakeTimeEntity
 
+
+@TypeConverters(Converter::class)
 @Database(
     entities = [SelectedDrinkEntity::class, WakeTimeEntity::class, IdealWaterIntakeEntity::class, GoalWaterIntakeEntity::class, SleepTimeEntity::class, LevelEntity::class, ReminderTimeEntity::class],
     version = 3,

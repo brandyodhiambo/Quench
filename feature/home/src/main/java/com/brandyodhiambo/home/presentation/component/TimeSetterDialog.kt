@@ -37,6 +37,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.brandyodhiambo.common.R
+import com.brandyodhiambo.common.domain.model.Days
 import com.brandyodhiambo.common.domain.model.ReminderTime
 import com.brandyodhiambo.designsystem.theme.blackColor
 import com.brandyodhiambo.designsystem.theme.primaryColor
@@ -293,8 +294,3 @@ fun DayItem(color: Color, text: String, onClick: () -> Unit = {}) {
         }
     }
 }
-
-data class Days(
-    val day: String,
-    var isSelected: Boolean,
-)

@@ -3,7 +3,9 @@ package com.brandyodhiambo.di
 import android.content.Context
 import androidx.room.Room
 import com.brandyodhiambo.Constants.DATABASE_NAME
+import com.brandyodhiambo.converter.Converter
 import com.brandyodhiambo.database.QuenchDatabase
+import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,13 +21,16 @@ object DatabaseModule {
     @Singleton
     fun provideQuenchDatabase(
         @ApplicationContext context: Context,
+        gson: Gson,
     ): QuenchDatabase {
         return Room.databaseBuilder(
             context,
             QuenchDatabase::class.java,
             DATABASE_NAME,
         )
+            .allowMainThreadQueries()
             .fallbackToDestructiveMigration()
+            .addTypeConverter(Converter(gson))
             .build()
     }
 
@@ -56,4 +61,10 @@ object DatabaseModule {
     @Provides
     @Singleton
     fun provideReminderTimeDao(database: QuenchDatabase) = database.reminderTimeDao()
+
+    @Provides
+    @Singleton
+    fun provideGson(): Gson {
+        return Gson()
+    }
 }
