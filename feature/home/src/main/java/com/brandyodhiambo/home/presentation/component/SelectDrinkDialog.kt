@@ -100,7 +100,6 @@ fun SelectDrinkComposable(
     onCurrentSelectedDrinkIcon: (Int) -> Unit,
     onClick: () -> Unit,
 ) {
-    // val openTimeDialog = remember { mutableStateOf(false) }
     val openTimeDialog = rememberMaterialDialogState()
     Card(
         shape = RoundedCornerShape(10.dp),
@@ -223,7 +222,7 @@ fun TimeDialog(
     openDialog: MaterialDialogState,
 ) {
     var pickedTime by remember {
-        mutableStateOf(LocalTime.NOON)
+        mutableStateOf(LocalTime.MAX)
     }
     MaterialDialog(
         dialogState = openDialog,
@@ -236,8 +235,9 @@ fun TimeDialog(
         },
     ) {
         timepicker(
-            initialTime = LocalTime.NOON,
+            initialTime = pickedTime,
             title = "Pick a time",
+            is24HourClock = false,
             colors = TimePickerDefaults.colors(
                 selectorColor = primaryColor,
                 selectorTextColor = primaryColor,
@@ -247,7 +247,6 @@ fun TimeDialog(
                 inactiveBackgroundColor = Color.White,
                 inactiveTextColor = Color.Black,
             ),
-            timeRange = LocalTime.MIDNIGHT..LocalTime.NOON,
         ) {
             pickedTime = it
         }
