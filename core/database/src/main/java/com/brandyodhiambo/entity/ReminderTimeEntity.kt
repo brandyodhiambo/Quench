@@ -3,6 +3,7 @@ package com.brandyodhiambo.entity
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.brandyodhiambo.Constants.REMINDER_TABLE
+import com.brandyodhiambo.common.domain.model.Days
 
 @Entity(tableName = REMINDER_TABLE)
 data class ReminderTimeEntity(
@@ -13,5 +14,5 @@ data class ReminderTimeEntity(
     val ampm: String,
     val isRepeated: Boolean,
     val isAllDay: Boolean,
-    val days: List<String>,
+    val days: List<Days>,
 )

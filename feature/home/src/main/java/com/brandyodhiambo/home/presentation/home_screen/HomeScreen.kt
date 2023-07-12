@@ -28,9 +28,11 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.brandyodhiambo.common.R
+import com.brandyodhiambo.common.domain.model.Days
 import com.brandyodhiambo.common.domain.model.GoalWaterIntake
 import com.brandyodhiambo.common.domain.model.IdealWaterIntake
 import com.brandyodhiambo.common.domain.model.Level
+import com.brandyodhiambo.common.domain.model.ReminderTime
 import com.brandyodhiambo.common.domain.model.SelectedDrink
 import com.brandyodhiambo.common.presentation.component.WaterIntakeDialog
 import com.brandyodhiambo.designsystem.components.CircularButton
@@ -58,15 +60,12 @@ fun HomeScreen(
     val selectedDrinkDialog = remember { mutableStateOf(false) }
 
     val selectedDrinksFromDB = viewModel.selectedDrinkFromDB.observeAsState(initial = emptyList())
-
     val idealWaterIntake = viewModel.idealWaterIntakeFromDb.observeAsState()
     val waterIntake = idealWaterIntake.value?.waterIntake ?: 0
     val waterIntakeForm = idealWaterIntake.value?.form ?: "ml"
-
     val goalWaterIntakeFromDb = viewModel.goalWaterIntakeFromDb.observeAsState()
     val goalWaterIntake = goalWaterIntakeFromDb.value?.waterIntake ?: 0
     val goalForm = goalWaterIntakeFromDb.value?.form ?: "ml"
-
     val levelFromDb = viewModel.levelFromDB.observeAsState()
 
     val amountTaken = levelFromDb.value?.amountTaken ?: 0f
@@ -125,7 +124,7 @@ fun HomeScreen(
                 }
             }
 
-            if (waterIntake >= goalWaterIntake && goalWaterIntake != 0) {
+            if ((waterTaken >= goalWaterIntake) && (goalWaterIntake != 0)) {
                 openCongratulationsDialog.value = true
             }
 
@@ -138,8 +137,53 @@ fun HomeScreen(
             if (openTimeDialog.value) {
                 Dialog(onDismissRequest = { openTimeDialog.value }) {
                     TimeSetterDialog(
-                        openDialogCustom = openTimeDialog,
-                        viewModel = viewModel
+                        currentPickerValueText = viewModel.reminderTimePickerValue.value,
+                        reminderDays = viewModel.reminderDays.value,
+                        onDismiss = { openTimeDialog.value = false },
+                        onCurrentPickerValueChanged = {
+                            viewModel.reminderTimePickerValue.value = it
+                        },
+                        onAllDayClicked = {
+                            viewModel.onAllDaySelected(
+                                isAllDay = true
+                            )
+                            viewModel.reminderDays.value = listOf(
+                                Days("M", viewModel.isAllDaySelected.value),
+                                Days("T", viewModel.isAllDaySelected.value),
+                                Days("W", viewModel.isAllDaySelected.value),
+                                Days("T", viewModel.isAllDaySelected.value),
+                                Days("F", viewModel.isAllDaySelected.value),
+                                Days("S", viewModel.isAllDaySelected.value),
+                                Days("S", viewModel.isAllDaySelected.value),
+                            )
+                        },
+                        onConfirmClick = {
+                            openTimeDialog.value = false
+                            var ampm = ""
+                            ampm = if (viewModel.reminderTimePickerValue.value.hours in 0..12) {
+                                "AM"
+                            } else {
+                                "PM"
+                            }
+                            viewModel.onReminderTimeSelected(
+                                hours = viewModel.reminderTimePickerValue.value.hours,
+                                minutes = viewModel.reminderTimePickerValue.value.minutes,
+                                amPm = ampm,
+                                isReapeated = false,
+                                isAllDay = viewModel.isAllDaySelected.value,
+                                days = viewModel.reminderDays.value,
+                            )
+                            viewModel.insertRemindTime(
+                                ReminderTime(
+                                    hour = viewModel.reminderSelectedTime.value.hour,
+                                    minute = viewModel.reminderSelectedTime.value.minute,
+                                    ampm = viewModel.reminderSelectedTime.value.ampm,
+                                    isRepeated = false,
+                                    isAllDay = viewModel.isAllDaySelected.value,
+                                    days = viewModel.reminderDays.value,
+                                ),
+                            )
+                        },
                     )
                 }
             }
@@ -234,7 +278,7 @@ private fun incrementProgressCircle(
     }
 
     // getting the last selected drink from the list of selected drinks from db
-    val lastSelectedDrink = selectedDrinksFromDB.value.last()
+    val lastSelectedDrink = selectedDrinksFromDB.value.first()
     val waterTakenId = lastSelectedDrink.id
     val waterTaken = lastSelectedDrink.drinkValue.removeSuffix("ml").toInt()
 

@@ -5,6 +5,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.brandyodhiambo.common.domain.model.Days
 import com.brandyodhiambo.common.domain.model.GoalWaterIntake
 import com.brandyodhiambo.common.domain.model.IdealWaterIntake
 import com.brandyodhiambo.common.domain.model.Level
@@ -176,8 +177,20 @@ class HomeViewModel @Inject constructor(
         mutableStateOf<Hours>(AMPMHours(0, 0, AMPMHours.DayTime.AM))
     val reminderTimePickerValue: MutableState<Hours> = _reminderTimePickerValue
 
+    private val _remiderDays = mutableStateOf(emptyList<Days>())
+    val reminderDays: MutableState<List<Days>> = _remiderDays
+    fun onReminderDays(days: List<Days>) {
+        _remiderDays.value = days
+    }
+
+    private val _isAllDaySelected = mutableStateOf(false)
+    val isAllDaySelected: MutableState<Boolean> = _isAllDaySelected
+    fun onAllDaySelected(isAllDay: Boolean) {
+        _isAllDaySelected.value = isAllDay
+    }
+
     private val _reminderSelectedTime =
-        mutableStateOf(ReminderTime(0, 0, "", false, false, emptyList()))
+        mutableStateOf(ReminderTime(0, 0, "", false, false, emptyList<Days>()))
     var reminderSelectedTime: MutableState<ReminderTime> = _reminderSelectedTime
     fun onReminderTimeSelected(
         hours: Int,
@@ -185,7 +198,7 @@ class HomeViewModel @Inject constructor(
         amPm: String,
         isReapeated: Boolean,
         isAllDay: Boolean,
-        days: List<String>,
+        days: List<Days>,
     ) {
         _reminderSelectedTime.value = ReminderTime(
             hour = hours,

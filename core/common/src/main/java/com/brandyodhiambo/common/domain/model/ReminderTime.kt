@@ -6,5 +6,5 @@ data class ReminderTime(
     val ampm: String,
     val isRepeated: Boolean,
     val isAllDay: Boolean,
-    val days: List<String>,
+    val days: List<Days>,
 )
