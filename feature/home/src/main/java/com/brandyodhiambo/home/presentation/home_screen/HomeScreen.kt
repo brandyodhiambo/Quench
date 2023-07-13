@@ -145,7 +145,7 @@ fun HomeScreen(
                         },
                         onAllDayClicked = {
                             viewModel.onAllDaySelected(
-                                isAllDay = true
+                                isAllDay = true,
                             )
                             viewModel.reminderDays.value = listOf(
                                 Days("M", viewModel.isAllDaySelected.value),
