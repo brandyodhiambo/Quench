@@ -46,7 +46,7 @@ android {
 
 dependencies {
     // design system
-    implementation(project(":designsystem"))
+    implementation(project(Module.designsystem))
 
     implementation("androidx.core:core-ktx:1.7.0")
     implementation("androidx.appcompat:appcompat:1.6.1")

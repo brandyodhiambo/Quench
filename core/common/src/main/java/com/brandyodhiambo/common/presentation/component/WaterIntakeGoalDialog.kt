@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -14,6 +15,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -24,7 +26,16 @@ import com.brandyodhiambo.designsystem.theme.primaryColor
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun WaterIntakeDialog(modifier: Modifier = Modifier, openCustomDialog: MutableState<Boolean>) {
+fun WaterIntakeDialog(
+    modifier: Modifier = Modifier,
+    openCustomDialog: MutableState<Boolean>,
+    currentWaterIntakeText:String,
+    currentWaterIntakeFormText:String,
+    onCurrentWaterIntakeTextChange: (String) -> Unit,
+    onCurrentWaterIntakeFormTextChange:(String) -> Unit,
+    onOkayClick: () -> Unit,
+
+) {
     Card(
         shape = RoundedCornerShape(10.dp),
         modifier = Modifier.padding(10.dp, 5.dp, 10.dp, 10.dp),
@@ -62,17 +73,20 @@ fun WaterIntakeDialog(modifier: Modifier = Modifier, openCustomDialog: MutableSt
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Row(
-                    Modifier.fillMaxWidth()
+                    Modifier
+                        .fillMaxWidth()
                         .padding(top = 10.dp),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    var email by remember { mutableStateOf("") }
                     OutlinedTextField(
                         modifier = Modifier
                             .fillMaxWidth(0.5f)
                             .padding(start = 8.dp, end = 8.dp),
-                        value = email,
-                        onValueChange = { email = it },
+                        value = currentWaterIntakeText,
+                        onValueChange = onCurrentWaterIntakeTextChange,
+                        keyboardOptions = KeyboardOptions.Default.copy(
+                            keyboardType = KeyboardType.Number
+                        ),
                         label = {
                             Text(
                                 "2810",
@@ -88,7 +102,6 @@ fun WaterIntakeDialog(modifier: Modifier = Modifier, openCustomDialog: MutableSt
 
                     val options = listOf("ml", "l")
                     var expanded by remember { mutableStateOf(false) }
-                    var selectedOptionText by remember { mutableStateOf(options[0]) }
 
                     ExposedDropdownMenuBox(
                         expanded = expanded,
@@ -99,8 +112,10 @@ fun WaterIntakeDialog(modifier: Modifier = Modifier, openCustomDialog: MutableSt
                         OutlinedTextField(
                             modifier = Modifier.fillMaxWidth(),
                             readOnly = true,
-                            value = selectedOptionText,
-                            onValueChange = { },
+                            value = currentWaterIntakeFormText,
+                            onValueChange = {
+                                onCurrentWaterIntakeFormTextChange(it)
+                            },
                             label = { Text("ml") },
                             trailingIcon = {
                                 ExposedDropdownMenuDefaults.TrailingIcon(
@@ -122,7 +137,7 @@ fun WaterIntakeDialog(modifier: Modifier = Modifier, openCustomDialog: MutableSt
                             options.forEach { selectionOption ->
                                 DropdownMenuItem(
                                     onClick = {
-                                        selectedOptionText = selectionOption
+                                        onCurrentWaterIntakeFormTextChange(selectionOption)
                                         expanded = false
                                     }
                                 ) {
@@ -152,6 +167,7 @@ fun WaterIntakeDialog(modifier: Modifier = Modifier, openCustomDialog: MutableSt
                 }
                 TextButton(onClick = {
                     openCustomDialog.value = false
+                    onOkayClick()
                 }) {
                     Text(
                         "Okay",

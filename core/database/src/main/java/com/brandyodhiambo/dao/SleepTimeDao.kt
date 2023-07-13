@@ -4,16 +4,17 @@ import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.brandyodhiambo.entity.SleepTimeEntity
 
 @Dao
 interface SleepTimeDao {
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertSleepTime(sleepTimeEntity: SleepTimeEntity)
 
     @Query("SELECT *FROM sleep_time_table")
-    fun getSleepTime(): LiveData<SleepTimeEntity>
+    fun getSleepTime(): LiveData<SleepTimeEntity?>
 
     @Delete
     suspend fun deleteSleepTime(sleepTimeEntity: SleepTimeEntity)

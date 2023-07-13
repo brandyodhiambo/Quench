@@ -1,9 +1,10 @@
-package com.brandyodhiambo.quench.views.screens.dialogs
+package com.brandyodhiambo.home.presentation.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -14,16 +15,25 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.brandyodhiambo.designsystem.theme.primaryColor
 import com.brandyodhiambo.common.R
+import com.brandyodhiambo.designsystem.theme.primaryColor
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun IdealIntakeGoalDialog(modifier: Modifier = Modifier, idealCustomDialog: MutableState<Boolean>) {
+fun IdealIntakeGoalDialog(
+    modifier: Modifier = Modifier,
+    idealCustomDialog: MutableState<Boolean>,
+    currentIdealIntakeText:String,
+    currentIdealIntakeFormText:String,
+    onCurrentIdealIntakeFormTextChange: (String) -> Unit,
+    onCurrentIdealIntakeTextChange: (String) -> Unit,
+    onOkayClick: () -> Unit
+) {
     Card(
         shape = RoundedCornerShape(10.dp),
         modifier = Modifier.padding(10.dp, 5.dp, 10.dp, 10.dp),
@@ -61,33 +71,39 @@ fun IdealIntakeGoalDialog(modifier: Modifier = Modifier, idealCustomDialog: Muta
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Row(
-                    Modifier.fillMaxWidth()
+                    Modifier
+                        .fillMaxWidth()
                         .padding(top = 10.dp),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    var email by remember { mutableStateOf("") }
+
                     OutlinedTextField(
                         modifier = Modifier
                             .fillMaxWidth(0.5f)
                             .padding(start = 8.dp, end = 8.dp),
-                        value = email,
-                        onValueChange = { email = it },
+                        value = currentIdealIntakeText,
+                        singleLine = true,
+                        keyboardOptions = KeyboardOptions.Default.copy(
+                            keyboardType = KeyboardType.Number
+                        ),
+                        shape = RoundedCornerShape(30.dp),
+                        colors = TextFieldDefaults.outlinedTextFieldColors(
+                            focusedBorderColor = Gray,
+                            unfocusedBorderColor = LightGray
+                        ),
+                        onValueChange = {
+                            onCurrentIdealIntakeTextChange(it)
+                        },
                         label = {
                             Text(
                                 "2810",
                                 color = Gray
                             )
                         },
-                        shape = RoundedCornerShape(30.dp),
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                            focusedBorderColor = Gray,
-                            unfocusedBorderColor = LightGray
-                        )
                     )
 
-                    val options = listOf("ml", "l", "liters")
+                    val options = listOf("ml", "l")
                     var expanded by remember { mutableStateOf(false) }
-                    var selectedOptionText by remember { mutableStateOf(options[0]) }
 
                     ExposedDropdownMenuBox(
                         expanded = expanded,
@@ -98,8 +114,10 @@ fun IdealIntakeGoalDialog(modifier: Modifier = Modifier, idealCustomDialog: Muta
                         OutlinedTextField(
                             modifier = Modifier.fillMaxWidth(),
                             readOnly = true,
-                            value = selectedOptionText,
-                            onValueChange = { },
+                            value = currentIdealIntakeFormText,
+                            onValueChange = {
+                                onCurrentIdealIntakeFormTextChange(it)
+                            },
                             label = { Text("ml") },
                             trailingIcon = {
                                 ExposedDropdownMenuDefaults.TrailingIcon(
@@ -121,7 +139,7 @@ fun IdealIntakeGoalDialog(modifier: Modifier = Modifier, idealCustomDialog: Muta
                             options.forEach { selectionOption ->
                                 DropdownMenuItem(
                                     onClick = {
-                                        selectedOptionText = selectionOption
+                                        onCurrentIdealIntakeFormTextChange(selectionOption)
                                         expanded = false
                                     }
                                 ) {
@@ -151,6 +169,7 @@ fun IdealIntakeGoalDialog(modifier: Modifier = Modifier, idealCustomDialog: Muta
                 }
                 TextButton(onClick = {
                     idealCustomDialog.value = false
+                    onOkayClick()
                 }) {
                     Text(
                         "Okay",

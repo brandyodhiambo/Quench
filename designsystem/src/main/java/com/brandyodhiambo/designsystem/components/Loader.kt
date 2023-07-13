@@ -1,4 +1,4 @@
-package com.brandyodhiambo.quench.views.screens.dialogs
+package com.brandyodhiambo.designsystem.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -20,11 +20,11 @@ fun Loader(
     compositions: Int,
 ) {
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(compositions))
-    val progress by animateLottieCompositionAsState(composition)
+    val progress by animateLottieCompositionAsState(composition = composition, restartOnPlay = true, iterations = 2)
 
     Column(
         modifier = Modifier
-            .height(350.dp)
+            .height(300.dp)
             .fillMaxWidth()
             .background(Color.White),
         verticalArrangement = Arrangement.Center
@@ -33,6 +33,7 @@ fun Loader(
         LottieAnimation(
             composition = composition,
             progress = { progress },
+           // applyOpacityToLayers = true
         )
     }
 

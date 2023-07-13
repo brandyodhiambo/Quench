@@ -32,13 +32,13 @@ fun CircularRating(
     percentage: Float,
     drunk: Int,
     goal: Int,
-    number: Int = 10,
+    number: Int = 1,
     fontSize: TextUnit = 16.sp,
     radius: Dp = 110.dp,
     color: Color = primaryColor,
     strokeWidth: Dp = 8.dp,
     animationDuration: Int = 1000,
-    animDelay: Int = 0
+    animDelay: Int = 0,
 ) {
     var animationPlayed by remember {
         mutableStateOf(false)
@@ -48,8 +48,8 @@ fun CircularRating(
         targetValue = if (animationPlayed) percentage else 0f,
         animationSpec = tween(
             durationMillis = animationDuration,
-            delayMillis = animDelay
-        )
+            delayMillis = animDelay,
+        ),
     )
 
     LaunchedEffect(key1 = true) {
@@ -58,37 +58,37 @@ fun CircularRating(
 
     Box(
         contentAlignment = Alignment.Center,
-        modifier = Modifier.size(radius * 2f)
+        modifier = Modifier.size(radius * 2f),
     ) {
         Canvas(
             modifier = Modifier
-                .size(radius * 2f)
+                .size(radius * 2f),
         ) {
             drawArc(
                 color = color,
                 startAngle = 90f,
-                sweepAngle = (360 * (currentPercentage.value * 0.1)).toFloat(),
+                sweepAngle = (360 * (currentPercentage.value * 0.01)).toFloat(),
                 useCenter = false,
                 style = Stroke(strokeWidth.toPx(), cap = StrokeCap.Round),
             )
         }
-     Column(
-         horizontalAlignment = Alignment.CenterHorizontally
-     ) {
-         Text(
-             text = "$drunk /$goal ml",
-             color = primaryColor,
-             fontSize = fontSize,
-             fontFamily = roboto,
-             fontWeight = FontWeight.Bold
-         )
-         Text(
-             text = " You have completed ${(currentPercentage.value * number).toInt()}% of daily target",
-             color = Color.Gray,
-             fontSize = 12.sp,
-             fontFamily = roboto,
-             fontWeight = FontWeight.Normal
-         )
-     }
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Text(
+                text = "$drunk /$goal ml",
+                color = primaryColor,
+                fontSize = fontSize,
+                fontFamily = roboto,
+                fontWeight = FontWeight.Bold,
+            )
+            Text(
+                text = " You have completed ${(currentPercentage.value * number).toInt()}% of daily target",
+                color = Color.Gray,
+                fontSize = 12.sp,
+                fontFamily = roboto,
+                fontWeight = FontWeight.Normal,
+            )
+        }
     }
 }

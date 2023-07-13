@@ -2,7 +2,6 @@ package com.brandyodhiambo.home.presentation.component
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,15 +14,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.AlertDialog
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,48 +33,41 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.brandyodhiambo.common.R
+import com.brandyodhiambo.common.domain.model.Days
 import com.brandyodhiambo.designsystem.theme.blackColor
 import com.brandyodhiambo.designsystem.theme.primaryColor
 import com.brandyodhiambo.designsystem.theme.roboto
-import com.chargemap.compose.numberpicker.AMPMHours
 import com.chargemap.compose.numberpicker.Hours
 import com.chargemap.compose.numberpicker.HoursNumberPicker
 
-val selectedDays = listOf(
-    Days("M", true),
-    Days("T", true),
-    Days("W", true),
-    Days("T", true),
-    Days("F", true),
-    Days("S", true),
-    Days("S", false),
-)
-
 @Composable
-fun TimeSetterDialog(modifier: Modifier = Modifier, openDialogCustom: MutableState<Boolean>) {
-    Card(
-        shape = RoundedCornerShape(10.dp),
-        modifier = Modifier.padding(10.dp, 5.dp, 10.dp, 10.dp),
-        elevation = 8.dp
-    ) {
-        Column(
-            modifier
-                .background(Color.White)
-        ) {
+fun TimeSetterDialog(
+    currentPickerValueText: Hours,
+    reminderDays: List<Days>,
+    onCurrentPickerValueChanged: (Hours) -> Unit,
+    onDismiss: () -> Unit,
+    onAllDayClicked: () -> Unit,
+    onConfirmClick: () -> Unit,
+) {
+    AlertDialog(
+        backgroundColor = Color.White,
+        onDismissRequest = { onDismiss() },
+        title = {
             Image(
                 painter = painterResource(id = R.drawable.alarm_clock),
                 contentDescription = null,
                 contentScale = ContentScale.Fit,
                 colorFilter = ColorFilter.tint(
-                    color = primaryColor
+                    color = primaryColor,
                 ),
                 modifier = Modifier
                     .padding(top = 35.dp)
                     .height(70.dp)
                     .fillMaxWidth(),
 
-                )
-
+            )
+        },
+        text = {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
                     text = "Reminder Time",
@@ -91,13 +80,18 @@ fun TimeSetterDialog(modifier: Modifier = Modifier, openDialogCustom: MutableSta
                     fontFamily = roboto,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
-                TimePickerForDialogInHours()
+                TimePickerForDialogInHours(
+                    currentPickerValueText = currentPickerValueText,
+                    onPickerValueChange = {
+                        onCurrentPickerValueChanged(it)
+                    },
+                )
                 Row(
                     Modifier
                         .fillMaxWidth()
                         .padding(top = 10.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
                         text = "Reminder Time",
@@ -107,9 +101,11 @@ fun TimeSetterDialog(modifier: Modifier = Modifier, openDialogCustom: MutableSta
                             .padding(top = 5.dp),
                         fontWeight = FontWeight.Bold,
                         maxLines = 2,
-                        overflow = TextOverflow.Ellipsis
+                        overflow = TextOverflow.Ellipsis,
                     )
-                    TextButton(onClick = { /*TODO*/ }) {
+                    TextButton(onClick = {
+                        onAllDayClicked()
+                    }) {
                         Text(
                             text = "All Day",
                             color = primaryColor,
@@ -119,88 +115,82 @@ fun TimeSetterDialog(modifier: Modifier = Modifier, openDialogCustom: MutableSta
                                 .padding(top = 5.dp),
                             fontWeight = FontWeight.W100,
                             maxLines = 2,
-                            overflow = TextOverflow.Ellipsis
+                            overflow = TextOverflow.Ellipsis,
                         )
                     }
-
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 LazyRow(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
-                    items(selectedDays) { singleDay ->
+                    items(reminderDays) { singleDay ->
                         DayItem(
                             color = if (singleDay.isSelected) primaryColor else blackColor,
                             text = singleDay.day,
                             onClick = {
                                 singleDay.isSelected = !singleDay.isSelected
-                            }
+                                // get the selected day and add it to the list
+                            },
                         )
                     }
                 }
-
             }
-            Row(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(top = 10.dp)
-                    .background(Color.White),
-                horizontalArrangement = Arrangement.SpaceAround
-            ) {
-
-                TextButton(onClick = {
-                    openDialogCustom.value = false
-                }) {
-
-                    Text(
-                        "Cancel",
-                        fontWeight = FontWeight.Bold,
-                        fontFamily = roboto,
-                        color = Color.Black,
-                        modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
-                    )
-                }
-                TextButton(onClick = {
-                    openDialogCustom.value = false
-                }) {
-                    Text(
-                        "Okay",
-                        fontWeight = FontWeight.ExtraBold,
-                        fontFamily = roboto,
-                        color = primaryColor,
-                        modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
-                    )
-                }
+        },
+        confirmButton = {
+            TextButton(onClick = {
+                onConfirmClick()
+            }) {
+                Text(
+                    "Confirm",
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = roboto,
+                    color = Color.Black,
+                    modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
+                )
             }
-        }
-    }
+        },
+        dismissButton = {
+            TextButton(onClick = {
+                onDismiss()
+            }) {
+                Text(
+                    "Cancel",
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = roboto,
+                    color = Color.Black,
+                    modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
+                )
+            }
+        },
+    )
 }
 
-
 @Composable
-fun TimePickerForDialogInHours() {
-    var pickerValue by remember { mutableStateOf<Hours>(AMPMHours(0, 0, AMPMHours.DayTime.AM)) }
+fun TimePickerForDialogInHours(
+    currentPickerValueText: Hours,
+    onPickerValueChange: (Hours) -> Unit,
+) {
     HoursNumberPicker(
         dividersColor = blackColor,
-        value = pickerValue,
+        value = currentPickerValueText,
         onValueChange = {
-            pickerValue = it
+            onPickerValueChange(it)
         },
         hoursDivider = {
             Text(
                 modifier = Modifier.padding(horizontal = 8.dp),
                 textAlign = TextAlign.Center,
-                text = ":"
+                text = ":",
             )
         },
         minutesDivider = {
             Text(
                 modifier = Modifier.padding(horizontal = 8.dp),
                 textAlign = TextAlign.Center,
-                text = " "
+                text = " ",
             )
-        }
+        },
     )
 }
 
@@ -215,11 +205,11 @@ fun DayItem(color: Color, text: String, onClick: () -> Unit = {}) {
             .clickable {
                 onClick()
             },
-        elevation = 8.dp
+        elevation = 8.dp,
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.Center,
         ) {
             Text(
                 text = text,
@@ -227,16 +217,8 @@ fun DayItem(color: Color, text: String, onClick: () -> Unit = {}) {
                 color = color,
                 fontSize = 14.sp,
                 fontFamily = roboto,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
             )
         }
-
     }
-
-
 }
-
-data class Days(
-    val day: String,
-    var isSelected: Boolean,
-)

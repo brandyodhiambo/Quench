@@ -41,7 +41,7 @@ android {
 
 dependencies {
 
-    implementation(project(":core:common"))
+    implementation(project(Module.common))
 
     // Room
     implementation("androidx.room:room-runtime:${Versions.room_version}")

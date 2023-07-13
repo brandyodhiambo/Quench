@@ -14,7 +14,7 @@ interface WakeTimeDao {
     suspend fun insertWakeTime(wakeTimeEntity: WakeTimeEntity)
 
     @Query("SELECT *FROM wake_time_table")
-    fun getWakeTime(): LiveData<WakeTimeEntity>
+    fun getWakeTime(): LiveData<WakeTimeEntity?>
 
     @Delete
     suspend fun deleteWakeTime(wakeTimeEntity: WakeTimeEntity)

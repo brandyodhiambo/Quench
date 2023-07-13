@@ -4,7 +4,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath ("com.google.dagger:hilt-android-gradle-plugin:2.40.5")
+        classpath ("com.google.dagger:hilt-android-gradle-plugin:2.42")
     }
 }// Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {

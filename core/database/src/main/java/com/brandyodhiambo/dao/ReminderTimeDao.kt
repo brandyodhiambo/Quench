@@ -5,12 +5,13 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import com.brandyodhiambo.common.domain.model.Days
 import com.brandyodhiambo.entity.ReminderTimeEntity
 
 @Dao
 interface ReminderTimeDao {
     @Insert
-    suspend fun reminderTime(reminderTime: ReminderTimeEntity)
+    suspend fun insertReminderTime(reminderTime: ReminderTimeEntity)
 
     @Query("SELECT *FROM reminder_table")
     fun getReminderTime(): LiveData<ReminderTimeEntity>
@@ -26,7 +27,7 @@ interface ReminderTimeDao {
         ampm: String,
         isRepeated: Boolean,
         isAllDay: Boolean,
-        days: List<String>,
+        days: List<Days>,
     )
 
     @Query("DELETE FROM reminder_table")
