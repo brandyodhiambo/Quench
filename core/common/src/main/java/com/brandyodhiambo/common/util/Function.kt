@@ -24,18 +24,5 @@ fun String.toInitials(): String {
         .reduce { acc, s -> acc + s }
 }
 
-fun formatTime(inputTime: String): String {
-    val inputFormat = SimpleDateFormat("HH:mm.SSSSSSSSS", Locale.getDefault())
-    val outputFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
-
-    try {
-        val parsedTime = inputFormat.parse(inputTime)
-        return outputFormat.format(parsedTime)
-    } catch (e: Exception) {
-        e.printStackTrace()
-    }
-
-    return ""
-}
 
 

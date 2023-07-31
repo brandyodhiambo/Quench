@@ -40,14 +40,13 @@ import com.brandyodhiambo.designsystem.theme.lightBlue
 import com.brandyodhiambo.designsystem.theme.primaryColor
 import com.brandyodhiambo.designsystem.theme.roboto
 import com.brandyodhiambo.home.presentation.component.CircularRating
+import com.brandyodhiambo.home.presentation.component.CongratulationsDialog
+import com.brandyodhiambo.home.presentation.component.DeleteDialog
 import com.brandyodhiambo.home.presentation.component.IdealIntakeGoalDialog
 import com.brandyodhiambo.home.presentation.component.SelectDrinkComposable
 import com.brandyodhiambo.home.presentation.component.TimeSetterDialog
-import com.brandyodhiambo.home.presentation.component.CongratulationsDialog
-import com.brandyodhiambo.home.presentation.component.DeleteDialog
 import com.ramcosta.composedestinations.annotation.Destination
 
-@RequiresApi(Build.VERSION_CODES.O)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Destination
 @Composable
@@ -74,6 +73,10 @@ fun HomeScreen(
     val waterTaken = levelFromDb.value?.waterTaken ?: 0
     var selectedId = 0
 
+    val reminderTimeFromDb = viewModel.reminderTime.observeAsState()
+    val hour = reminderTimeFromDb.value?.hour
+    val minute = reminderTimeFromDb.value?.minute
+
     Scaffold(
         backgroundColor = primaryColor,
     ) { paddingValues ->
@@ -98,6 +101,7 @@ fun HomeScreen(
                         openDialog = openTimeDialog,
                         selectedDrinkDialog = selectedDrinkDialog,
                         amountTaken = amountTaken,
+                        time = if(hour != null && minute != null) "$hour:$minute" else "Add Time",
                         waterTaken = waterTaken,
                         goalWaterIntake = goalWaterIntake,
                         onAddLevelClick = {
@@ -130,8 +134,7 @@ fun HomeScreen(
                 }
             }
 
-
-            if(openDeleteDialog.value) {
+            if (openDeleteDialog.value) {
                 Dialog(onDismissRequest = { openDeleteDialog.value = false }) {
                     DeleteDialog(
                         id = selectedId,
@@ -139,7 +142,7 @@ fun HomeScreen(
                         onConfirmClick = { id ->
                             viewModel.deleteOneSelectedDrink(id)
                             openDeleteDialog.value = false
-                        }
+                        },
                     )
                 }
             }
@@ -193,6 +196,9 @@ fun HomeScreen(
                                 isAllDay = viewModel.isAllDaySelected.value,
                                 days = viewModel.reminderDays.value,
                             )
+                            if(viewModel.reminderTime.value != null){
+                                viewModel.deleteAllRemindTime()
+                            }
                             viewModel.insertRemindTime(
                                 ReminderTime(
                                     hour = viewModel.reminderSelectedTime.value.hour,
@@ -423,6 +429,7 @@ fun WaterRecord(
     openDialog: MutableState<Boolean>,
     amountTaken: Float,
     waterTaken: Int,
+    time: String,
     goalWaterIntake: Int,
     selectedDrinkDialog: MutableState<Boolean>,
     onAddLevelClick: () -> Unit,
@@ -455,7 +462,7 @@ fun WaterRecord(
                 CircularButton(
                     backgroundColor = lightBlue,
                     icon = R.drawable.ic_clock,
-                    title = "Add Time",
+                    title = time,
                     onClick = {
                         openDialog.value = true
                     },

@@ -5,6 +5,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import com.brandyodhiambo.common.domain.model.AlarmData
+import java.time.ZoneId
 
 class AlarmSchedularImpl(
     private val context: Context,
@@ -18,7 +19,7 @@ class AlarmSchedularImpl(
         }
         alarmManager.setExactAndAllowWhileIdle(
             AlarmManager.RTC_WAKEUP,
-            (item.time.hour * 60 * 60 * 1000 + item.time.minute * 60 * 1000).toLong(),
+            item.time.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli(),
             PendingIntent.getBroadcast(
                 context,
                 item.hashCode(),
