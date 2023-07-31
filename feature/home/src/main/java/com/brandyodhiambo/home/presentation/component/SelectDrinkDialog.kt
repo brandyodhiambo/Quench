@@ -46,6 +46,7 @@ import com.vanpra.composematerialdialogs.datetime.time.TimePickerDefaults
 import com.vanpra.composematerialdialogs.datetime.time.timepicker
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 
 val selectedDrinks = listOf(
     SelectDrink(
@@ -229,7 +230,7 @@ fun TimeDialog(
         backgroundColor = PrimaryWhite,
         buttons = {
             positiveButton(text = "Ok", textStyle = TextStyle(color = primaryColor)) {
-                onCurrentSelectedDrinkTime(pickedTime.toString())
+                onCurrentSelectedDrinkTime(pickedTime.format(DateTimeFormatter.ofPattern("HH:mm a")))
             }
             negativeButton(text = "Cancel", textStyle = TextStyle(color = primaryColor))
         },

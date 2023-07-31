@@ -1,4 +1,4 @@
-package com.brandyodhiambo.quench.views.screens.dialogs
+package com.brandyodhiambo.home.presentation.component
 
 import android.content.Intent
 import android.widget.Toast
@@ -23,32 +23,33 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.brandyodhiambo.designsystem.theme.primaryColor
 import com.brandyodhiambo.common.R
+import com.brandyodhiambo.designsystem.theme.primaryColor
+
 @Composable
 fun CongratulationsDialog(
-    openDialogCustom: MutableState<Boolean>
+    openDialogCustom: MutableState<Boolean>,
 ) {
     val context = LocalContext.current
     Card(
         modifier = Modifier.padding(10.dp, 5.dp, 10.dp, 10.dp),
         shape = RoundedCornerShape(12.dp),
-        elevation = 8.dp
+        elevation = 8.dp,
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         ) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(300.dp)
+                    .height(300.dp),
             ) {
                 Image(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(300.dp),
                     painter = painterResource(id = R.drawable.congratulations),
-                    contentDescription = null
+                    contentDescription = null,
                 )
             }
             Text(
@@ -57,20 +58,20 @@ fun CongratulationsDialog(
                 modifier = Modifier
                     .fillMaxWidth(),
                 maxLines = 2,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
             )
             Spacer(modifier = Modifier.height(8.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceEvenly
+                horizontalArrangement = Arrangement.SpaceEvenly,
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.facebook),
                     contentDescription = null,
                     contentScale = ContentScale.Fit,
                     colorFilter = ColorFilter.tint(
-                        color = primaryColor
+                        color = primaryColor,
                     ),
                     modifier = Modifier
                         .width(50.dp)
@@ -85,11 +86,11 @@ fun CongratulationsDialog(
                                     .makeText(
                                         context,
                                         "Facebook is not installed",
-                                        Toast.LENGTH_SHORT
+                                        Toast.LENGTH_SHORT,
                                     )
                                     .show()
                             }
-                        }
+                        },
 
                 )
                 Image(
@@ -97,7 +98,7 @@ fun CongratulationsDialog(
                     contentDescription = null,
                     contentScale = ContentScale.Fit,
                     colorFilter = ColorFilter.tint(
-                        color = primaryColor
+                        color = primaryColor,
                     ),
                     modifier = Modifier
                         .width(50.dp)
@@ -112,11 +113,11 @@ fun CongratulationsDialog(
                                     .makeText(
                                         context,
                                         "Twitter is not installed",
-                                        Toast.LENGTH_SHORT
+                                        Toast.LENGTH_SHORT,
                                     )
                                     .show()
                             }
-                        }
+                        },
 
                 )
                 Image(
@@ -136,11 +137,11 @@ fun CongratulationsDialog(
                                     .makeText(
                                         context,
                                         "Whatsapp is not installed",
-                                        Toast.LENGTH_SHORT
+                                        Toast.LENGTH_SHORT,
                                     )
                                     .show()
                             }
-                        }
+                        },
 
                 )
 
@@ -156,11 +157,11 @@ fun CongratulationsDialog(
                             sendIntent.action = Intent.ACTION_SEND
                             sendIntent.putExtra(
                                 Intent.EXTRA_TEXT,
-                                "Quench App"
+                                "Quench App",
                             )
                             sendIntent.type = "text/plain"
                             context.startActivity(sendIntent)
-                        }
+                        },
 
                 )
             }
@@ -170,7 +171,7 @@ fun CongratulationsDialog(
                     .fillMaxWidth()
                     .padding(top = 10.dp)
                     .background(Color.White),
-                horizontalArrangement = Arrangement.SpaceAround
+                horizontalArrangement = Arrangement.SpaceAround,
             ) {
                 TextButton(onClick = {
                     openDialogCustom.value = false
@@ -179,7 +180,7 @@ fun CongratulationsDialog(
                         "Cancel",
                         fontWeight = FontWeight.Bold,
                         color = Color.Black,
-                        modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
+                        modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
                     )
                 }
                 TextButton(onClick = {
@@ -189,7 +190,7 @@ fun CongratulationsDialog(
                         "Okay",
                         fontWeight = FontWeight.ExtraBold,
                         color = primaryColor,
-                        modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
+                        modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
                     )
                 }
             }

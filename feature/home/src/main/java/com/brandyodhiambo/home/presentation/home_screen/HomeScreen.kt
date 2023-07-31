@@ -43,7 +43,8 @@ import com.brandyodhiambo.home.presentation.component.CircularRating
 import com.brandyodhiambo.home.presentation.component.IdealIntakeGoalDialog
 import com.brandyodhiambo.home.presentation.component.SelectDrinkComposable
 import com.brandyodhiambo.home.presentation.component.TimeSetterDialog
-import com.brandyodhiambo.quench.views.screens.dialogs.CongratulationsDialog
+import com.brandyodhiambo.home.presentation.component.CongratulationsDialog
+import com.brandyodhiambo.home.presentation.component.DeleteDialog
 import com.ramcosta.composedestinations.annotation.Destination
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -54,6 +55,7 @@ fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
     val openTimeDialog = remember { mutableStateOf(false) }
+    val openDeleteDialog = remember { mutableStateOf(false) }
     val openCongratulationsDialog = remember { mutableStateOf(false) }
     val openGoalDialog = remember { mutableStateOf(false) }
     val idealWaterIntakeDialog = remember { mutableStateOf(false) }
@@ -70,6 +72,7 @@ fun HomeScreen(
 
     val amountTaken = levelFromDb.value?.amountTaken ?: 0f
     val waterTaken = levelFromDb.value?.waterTaken ?: 0
+    var selectedId = 0
 
     Scaffold(
         backgroundColor = primaryColor,
@@ -119,8 +122,25 @@ fun HomeScreen(
 
                 items(selectedDrinksFromDB.value) {
                     WaterIntakeTimeAndLevel(intake = it, onDeleteIconClick = { selectedDrink ->
-                        selectedDrink.id?.let { it1 -> viewModel.deleteOneSelectedDrink(it1) }
+                        selectedDrink.id?.let { id ->
+                            selectedId = id
+                            openDeleteDialog.value = true
+                        }
                     })
+                }
+            }
+
+
+            if(openDeleteDialog.value) {
+                Dialog(onDismissRequest = { openDeleteDialog.value = false }) {
+                    DeleteDialog(
+                        id = selectedId,
+                        onDismiss = { openDeleteDialog.value = false },
+                        onConfirmClick = { id ->
+                            viewModel.deleteOneSelectedDrink(id)
+                            openDeleteDialog.value = false
+                        }
+                    )
                 }
             }
 
@@ -435,7 +455,7 @@ fun WaterRecord(
                 CircularButton(
                     backgroundColor = lightBlue,
                     icon = R.drawable.ic_clock,
-                    title = "12:04 AM",
+                    title = "Add Time",
                     onClick = {
                         openDialog.value = true
                     },
