@@ -1,8 +1,6 @@
 package com.brandyodhiambo.home.presentation.home_screen
 
 import android.annotation.SuppressLint
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -40,13 +38,14 @@ import com.brandyodhiambo.designsystem.theme.lightBlue
 import com.brandyodhiambo.designsystem.theme.primaryColor
 import com.brandyodhiambo.designsystem.theme.roboto
 import com.brandyodhiambo.home.presentation.component.CircularRating
+import com.brandyodhiambo.home.presentation.component.CongratulationsDialog
+import com.brandyodhiambo.home.presentation.component.DeleteDialog
+import com.brandyodhiambo.home.presentation.component.EmptyDialog
 import com.brandyodhiambo.home.presentation.component.IdealIntakeGoalDialog
 import com.brandyodhiambo.home.presentation.component.SelectDrinkComposable
 import com.brandyodhiambo.home.presentation.component.TimeSetterDialog
-import com.brandyodhiambo.quench.views.screens.dialogs.CongratulationsDialog
 import com.ramcosta.composedestinations.annotation.Destination
 
-@RequiresApi(Build.VERSION_CODES.O)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Destination
 @Composable
@@ -54,7 +53,9 @@ fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
     val openTimeDialog = remember { mutableStateOf(false) }
+    val openDeleteDialog = remember { mutableStateOf(false) }
     val openCongratulationsDialog = remember { mutableStateOf(false) }
+    val openEmptyStateDialog = remember { mutableStateOf(false) }
     val openGoalDialog = remember { mutableStateOf(false) }
     val idealWaterIntakeDialog = remember { mutableStateOf(false) }
     val selectedDrinkDialog = remember { mutableStateOf(false) }
@@ -70,6 +71,11 @@ fun HomeScreen(
 
     val amountTaken = levelFromDb.value?.amountTaken ?: 0f
     val waterTaken = levelFromDb.value?.waterTaken ?: 0
+    var selectedId = 0
+
+    val reminderTimeFromDb = viewModel.reminderTime.observeAsState()
+    val hour = reminderTimeFromDb.value?.hour
+    val minute = reminderTimeFromDb.value?.minute
 
     Scaffold(
         backgroundColor = primaryColor,
@@ -95,9 +101,14 @@ fun HomeScreen(
                         openDialog = openTimeDialog,
                         selectedDrinkDialog = selectedDrinkDialog,
                         amountTaken = amountTaken,
+                        time = if (hour != null && minute != null) "$hour:$minute" else "Add Time",
                         waterTaken = waterTaken,
                         goalWaterIntake = goalWaterIntake,
                         onAddLevelClick = {
+                            if (selectedDrinksFromDB.value.isEmpty()) {
+                                openEmptyStateDialog.value = true
+                                return@WaterRecord
+                            }
                             val (amount, taken) = incrementProgressCircle(
                                 selectedDrinksFromDB = selectedDrinksFromDB,
                                 goalWaterIntake = goalWaterIntake,
@@ -119,8 +130,35 @@ fun HomeScreen(
 
                 items(selectedDrinksFromDB.value) {
                     WaterIntakeTimeAndLevel(intake = it, onDeleteIconClick = { selectedDrink ->
-                        selectedDrink.id?.let { it1 -> viewModel.deleteOneSelectedDrink(it1) }
+                        selectedDrink.id?.let { id ->
+                            selectedId = id
+                            openDeleteDialog.value = true
+                        }
                     })
+                }
+            }
+
+            if(openEmptyStateDialog.value){
+                Dialog(onDismissRequest = { openEmptyStateDialog.value = false }) {
+                    EmptyDialog(
+                        onConfirmClick = {
+                            openEmptyStateDialog.value = false
+                            selectedDrinkDialog.value = true },
+                        onDismiss = { openEmptyStateDialog.value = false },
+                    )
+                }
+            }
+
+            if (openDeleteDialog.value) {
+                Dialog(onDismissRequest = { openDeleteDialog.value = false }) {
+                    DeleteDialog(
+                        id = selectedId,
+                        onDismiss = { openDeleteDialog.value = false },
+                        onConfirmClick = { id ->
+                            viewModel.deleteOneSelectedDrink(id)
+                            openDeleteDialog.value = false
+                        },
+                    )
                 }
             }
 
@@ -173,6 +211,9 @@ fun HomeScreen(
                                 isAllDay = viewModel.isAllDaySelected.value,
                                 days = viewModel.reminderDays.value,
                             )
+                            if (viewModel.reminderTime.value != null) {
+                                viewModel.deleteAllRemindTime()
+                            }
                             viewModel.insertRemindTime(
                                 ReminderTime(
                                     hour = viewModel.reminderSelectedTime.value.hour,
@@ -403,6 +444,7 @@ fun WaterRecord(
     openDialog: MutableState<Boolean>,
     amountTaken: Float,
     waterTaken: Int,
+    time: String,
     goalWaterIntake: Int,
     selectedDrinkDialog: MutableState<Boolean>,
     onAddLevelClick: () -> Unit,
@@ -435,7 +477,7 @@ fun WaterRecord(
                 CircularButton(
                     backgroundColor = lightBlue,
                     icon = R.drawable.ic_clock,
-                    title = "12:04 AM",
+                    title = time,
                     onClick = {
                         openDialog.value = true
                     },

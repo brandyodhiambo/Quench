@@ -23,3 +23,6 @@ fun String.toInitials(): String {
         .mapNotNull { it.firstOrNull()?.toString() }
         .reduce { acc, s -> acc + s }
 }
+
+
+

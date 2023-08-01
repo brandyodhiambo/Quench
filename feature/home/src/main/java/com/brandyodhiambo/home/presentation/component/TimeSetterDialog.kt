@@ -174,6 +174,7 @@ fun TimePickerForDialogInHours(
     HoursNumberPicker(
         dividersColor = blackColor,
         value = currentPickerValueText,
+        hoursRange = 0..23,
         onValueChange = {
             onPickerValueChange(it)
         },
