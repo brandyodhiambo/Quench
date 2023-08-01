@@ -1,5 +1,6 @@
 package com.brandyodhiambo.home.presentation.component
 
+
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.AlertDialog
@@ -17,17 +18,16 @@ import com.brandyodhiambo.designsystem.theme.blackColor
 import com.brandyodhiambo.designsystem.theme.roboto
 
 @Composable
-fun DeleteDialog(
-    id: Int,
+fun EmptyDialog(
     onDismiss: () -> Unit,
-    onConfirmClick: (Int) -> Unit,
+    onConfirmClick: () -> Unit,
 ) {
     AlertDialog(
         backgroundColor = Color.White,
         onDismissRequest = { onDismiss() },
         title = {
             Text(
-                text = "Delete Drink",
+                text = "No Drinks",
                 textAlign = TextAlign.Center,
                 fontSize = 20.sp,
                 fontFamily = roboto,
@@ -41,7 +41,7 @@ fun DeleteDialog(
                     .padding(top = 5.dp, bottom = 5.dp),
             )
             Text(
-                "Are you sure you want to delete this drink?",
+                "You have no drinks in your list. Add a drink to get started.",
                 fontWeight = FontWeight.Normal,
                 fontFamily = roboto,
                 color = blackColor,
@@ -52,7 +52,7 @@ fun DeleteDialog(
         },
         confirmButton = {
             TextButton(onClick = {
-                onConfirmClick(id)
+                onConfirmClick()
             }) {
                 Text(
                     "Confirm",

@@ -1,8 +1,6 @@
 package com.brandyodhiambo.home.presentation.home_screen
 
 import android.annotation.SuppressLint
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -42,6 +40,7 @@ import com.brandyodhiambo.designsystem.theme.roboto
 import com.brandyodhiambo.home.presentation.component.CircularRating
 import com.brandyodhiambo.home.presentation.component.CongratulationsDialog
 import com.brandyodhiambo.home.presentation.component.DeleteDialog
+import com.brandyodhiambo.home.presentation.component.EmptyDialog
 import com.brandyodhiambo.home.presentation.component.IdealIntakeGoalDialog
 import com.brandyodhiambo.home.presentation.component.SelectDrinkComposable
 import com.brandyodhiambo.home.presentation.component.TimeSetterDialog
@@ -56,6 +55,7 @@ fun HomeScreen(
     val openTimeDialog = remember { mutableStateOf(false) }
     val openDeleteDialog = remember { mutableStateOf(false) }
     val openCongratulationsDialog = remember { mutableStateOf(false) }
+    val openEmptyStateDialog = remember { mutableStateOf(false) }
     val openGoalDialog = remember { mutableStateOf(false) }
     val idealWaterIntakeDialog = remember { mutableStateOf(false) }
     val selectedDrinkDialog = remember { mutableStateOf(false) }
@@ -101,10 +101,14 @@ fun HomeScreen(
                         openDialog = openTimeDialog,
                         selectedDrinkDialog = selectedDrinkDialog,
                         amountTaken = amountTaken,
-                        time = if(hour != null && minute != null) "$hour:$minute" else "Add Time",
+                        time = if (hour != null && minute != null) "$hour:$minute" else "Add Time",
                         waterTaken = waterTaken,
                         goalWaterIntake = goalWaterIntake,
                         onAddLevelClick = {
+                            if (selectedDrinksFromDB.value.isEmpty()) {
+                                openEmptyStateDialog.value = true
+                                return@WaterRecord
+                            }
                             val (amount, taken) = incrementProgressCircle(
                                 selectedDrinksFromDB = selectedDrinksFromDB,
                                 goalWaterIntake = goalWaterIntake,
@@ -131,6 +135,17 @@ fun HomeScreen(
                             openDeleteDialog.value = true
                         }
                     })
+                }
+            }
+
+            if(openEmptyStateDialog.value){
+                Dialog(onDismissRequest = { openEmptyStateDialog.value = false }) {
+                    EmptyDialog(
+                        onConfirmClick = {
+                            openEmptyStateDialog.value = false
+                            selectedDrinkDialog.value = true },
+                        onDismiss = { openEmptyStateDialog.value = false },
+                    )
                 }
             }
 
@@ -196,7 +211,7 @@ fun HomeScreen(
                                 isAllDay = viewModel.isAllDaySelected.value,
                                 days = viewModel.reminderDays.value,
                             )
-                            if(viewModel.reminderTime.value != null){
+                            if (viewModel.reminderTime.value != null) {
                                 viewModel.deleteAllRemindTime()
                             }
                             viewModel.insertRemindTime(
