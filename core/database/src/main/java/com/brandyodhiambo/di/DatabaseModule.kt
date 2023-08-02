@@ -64,6 +64,18 @@ object DatabaseModule {
 
     @Provides
     @Singleton
+    fun provideDailyStatisticsDao(database: QuenchDatabase) = database.dailyStatisticsDao()
+
+    @Provides
+    @Singleton
+    fun provideWeeklyStatisticsDao(database: QuenchDatabase) = database.weeklyStatisticsDao()
+
+    @Provides
+    @Singleton
+    fun provideMonthlyStatisticsDao(database: QuenchDatabase) = database.monthlyStatisticsDao()
+
+    @Provides
+    @Singleton
     fun provideGson(): Gson {
         return Gson()
     }
