@@ -30,11 +30,8 @@ import androidx.compose.ui.unit.sp
 import com.brandyodhiambo.common.R
 import com.brandyodhiambo.designsystem.theme.blackColor
 import com.brandyodhiambo.designsystem.theme.primaryColor
-import com.brandyodhiambo.statistics.presentation.component.barChartDataMonth
-import com.brandyodhiambo.statistics.presentation.component.barChartDataWeek
-import com.brandyodhiambo.statistics.presentation.component.barChartDataYear
-import com.brandyodhiambo.statistics.presentation.component.verticalAxisValues
 import com.mahmoud.composecharts.barchart.BarChart
+import com.mahmoud.composecharts.barchart.BarChartEntity
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
@@ -44,6 +41,41 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 fun StatisticsScreen(
     navigator: DestinationsNavigator,
 ) {
+    val barChartDataMonth = listOf(
+        BarChartEntity(30f, primaryColor, "Week 1"),
+        BarChartEntity(20f, primaryColor, "Week 2"),
+        BarChartEntity(100f, primaryColor, "Week 3"),
+        BarChartEntity(70f, primaryColor, "Week 4"),
+    )
+
+    val barChartDataWeek = listOf(
+        BarChartEntity(30f, primaryColor, "Sun"),
+        BarChartEntity(20f, primaryColor, "Mon"),
+        BarChartEntity(100f, primaryColor, "Tus"),
+        BarChartEntity(70f, primaryColor, "Wed"),
+        BarChartEntity(90f, primaryColor, "Thirs"),
+        BarChartEntity(60f, primaryColor, "Fri"),
+        BarChartEntity(80f, primaryColor, "Sat"),
+    )
+
+    val barChartDataYear = listOf(
+        BarChartEntity(30f, primaryColor, "Jan"),
+        BarChartEntity(50f, primaryColor, "Feb"),
+        BarChartEntity(20f, primaryColor, "Mar"),
+        BarChartEntity(80f, primaryColor, "Apr"),
+        BarChartEntity(20f, primaryColor, "May"),
+        BarChartEntity(90f, primaryColor, "Jun"),
+        BarChartEntity(05f, primaryColor, "Jul"),
+        BarChartEntity(100f, primaryColor, "Aug"),
+        BarChartEntity(40f, primaryColor, "Sep"),
+        BarChartEntity(70f, primaryColor, "Oct"),
+        BarChartEntity(70f, primaryColor, "Nov"),
+        BarChartEntity(70f, primaryColor, "Dec"),
+    )
+
+    val verticalAxisValues =
+        listOf(0.0f, 20.0f, 40.0f, 60.0f, 80.0f, 100.0f)
+
     val setGraphDaily = remember { mutableStateOf(true) }
     val setGraphMonthly = remember { mutableStateOf(false) }
     val setGraphYearly = remember { mutableStateOf(false) }
@@ -76,7 +108,7 @@ fun StatisticsScreen(
                                 Box(
                                     modifier = Modifier
                                         .height(30.dp)
-                                        .width(70.dp)
+                                        .width(100.dp)
                                         .background(
                                             color = if (setGraphDaily.value) {
                                                 primaryColor
@@ -103,7 +135,7 @@ fun StatisticsScreen(
                                 Box(
                                     modifier = Modifier
                                         .height(30.dp)
-                                        .width(70.dp)
+                                        .width(100.dp)
                                         .background(
                                             color = if (setGraphMonthly.value) {
                                                 primaryColor
@@ -121,7 +153,7 @@ fun StatisticsScreen(
                                     contentAlignment = Alignment.Center,
                                 ) {
                                     Text(
-                                        text = "Monthly",
+                                        text = "Weekly",
                                         style = MaterialTheme.typography.h6,
                                         fontWeight = FontWeight.Normal,
                                         color = blackColor,
@@ -130,7 +162,7 @@ fun StatisticsScreen(
                                 Box(
                                     modifier = Modifier
                                         .height(30.dp)
-                                        .width(70.dp)
+                                        .width(100.dp)
                                         .background(
                                             color = if (setGraphYearly.value) {
                                                 primaryColor
@@ -148,7 +180,7 @@ fun StatisticsScreen(
                                     contentAlignment = Alignment.Center,
                                 ) {
                                     Text(
-                                        text = "Yearly",
+                                        text = "Monthly",
                                         style = MaterialTheme.typography.h6,
                                         fontWeight = FontWeight.Normal,
                                         color = blackColor,

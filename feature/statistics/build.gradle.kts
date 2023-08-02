@@ -28,7 +28,7 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }
@@ -50,6 +50,7 @@ android {
 dependencies {
     implementation(project(Module.designsystem))
     implementation(project(Module.common))
+    implementation(project(Module.database))
 
     // RamCosta Navigation
     implementation("io.github.raamcosta.compose-destinations:core:1.5.20-beta")
