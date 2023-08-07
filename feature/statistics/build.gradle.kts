@@ -54,6 +54,7 @@ dependencies {
 
     // RamCosta Navigation
     implementation("io.github.raamcosta.compose-destinations:core:1.5.20-beta")
+    implementation("androidx.work:work-runtime-ktx:2.8.1")
     ksp("io.github.raamcosta.compose-destinations:ksp:1.5.15-beta")
 
     // Navigation animation

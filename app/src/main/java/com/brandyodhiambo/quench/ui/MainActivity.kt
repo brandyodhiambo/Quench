@@ -21,6 +21,9 @@ import com.brandyodhiambo.quench.navigation.FeatureNavigator
 import com.brandyodhiambo.quench.navigation.NavGraphs
 import com.brandyodhiambo.quench.util.AlarmSchedularImpl
 import com.brandyodhiambo.quench.util.createChannel
+import com.brandyodhiambo.statistics.worker.startDailyOnetimeWorkRequest
+import com.brandyodhiambo.statistics.worker.startMonthlyPeriodicWorkRequest
+import com.brandyodhiambo.statistics.worker.startWeeklyOnetimeWorkRequest
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.navigation.dependency
@@ -45,6 +48,9 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background,
                 ) {
+                    startDailyOnetimeWorkRequest(applicationContext)
+                    startWeeklyOnetimeWorkRequest(applicationContext)
+                    startMonthlyPeriodicWorkRequest(applicationContext)
                     val reminderTimeFromDb = viewModel.reminderTime.observeAsState()
                     val hours = reminderTimeFromDb.value?.hour ?: 0
                     val minutes = reminderTimeFromDb.value?.minute ?: 0
