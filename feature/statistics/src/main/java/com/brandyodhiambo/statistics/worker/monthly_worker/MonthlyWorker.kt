@@ -5,6 +5,8 @@ import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.brandyodhiambo.common.domain.model.MonthlyStatistics
+import com.brandyodhiambo.common.domain.repository.MonthlyStatisticsRepository
+import com.brandyodhiambo.common.domain.repository.WeeklyStatisticRepository
 import com.brandyodhiambo.common.util.getCurrentMonth
 import com.brandyodhiambo.common.util.isEndOfMonth
 import com.brandyodhiambo.statistics.presentation.StatisticsViewModel
@@ -16,11 +18,12 @@ import java.time.LocalDate
 class MonthlyWorker @AssistedInject constructor(
     @Assisted context: Context,
     @Assisted params: WorkerParameters,
-    private val statisticsViewModel: StatisticsViewModel,
+    private val weeklyStatisticRepository: WeeklyStatisticRepository,
+    private val monthlyStatisticsRepository: MonthlyStatisticsRepository
 ) : CoroutineWorker(context, params) {
 
     private val amountTaken =
-        statisticsViewModel.weeklyStatisticsFromDB.value?.sumByDouble { it.amountTaken.toDouble() }
+        weeklyStatisticRepository.getWeeklyStatistic().value?.sumByDouble { it.amountTaken.toDouble() }
     private val totalAmountTaken = amountTaken?.div(4) // 4 weeks in a month
 
     companion object {
@@ -31,7 +34,7 @@ class MonthlyWorker @AssistedInject constructor(
     override suspend fun doWork(): Result {
         return try {
             if (isEndOfMonth(LocalDate.now())) {
-                statisticsViewModel.insertMonthlyStatistic(
+                monthlyStatisticsRepository.insertMonthlyStatistics(
                     MonthlyStatistics(
                         amountTaken = totalAmountTaken?.toFloat() ?: 0f,
                         month = getCurrentMonth(),

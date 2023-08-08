@@ -13,10 +13,8 @@ import com.brandyodhiambo.common.domain.repository.MonthlyStatisticsRepository
 import com.brandyodhiambo.common.domain.repository.ReminderTimeRepository
 import com.brandyodhiambo.common.domain.repository.SelectedDrinkRepository
 import com.brandyodhiambo.common.domain.repository.WeeklyStatisticRepository
-import com.brandyodhiambo.common.util.isEndOfDay
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import java.time.LocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel
@@ -61,11 +59,11 @@ class StatisticsViewModel @Inject constructor(
 
     fun emptyDBFromDailyData() {
         viewModelScope.launch {
-                levelRepository.deleteAllLevel()
-                goalWaterIntakeRepository.deleteAllGoalWaterIntakes()
-                idealWaterIntakeRepository.deleteAllIdealWaterIntakes()
-                selectedDrinkRepository.deleteAllSelectedDrinks()
-                reminderTimeRepository.dellAllReminderTimes()
+            levelRepository.deleteAllLevel()
+            goalWaterIntakeRepository.deleteAllGoalWaterIntakes()
+            idealWaterIntakeRepository.deleteAllIdealWaterIntakes()
+            selectedDrinkRepository.deleteAllSelectedDrinks()
+            reminderTimeRepository.dellAllReminderTimes()
         }
     }
 

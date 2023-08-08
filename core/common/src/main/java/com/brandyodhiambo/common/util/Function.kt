@@ -1,6 +1,9 @@
 package com.brandyodhiambo.common.util
 
 import android.annotation.SuppressLint
+import androidx.lifecycle.LiveData
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.suspendCancellableCoroutine
 import java.text.SimpleDateFormat
 import java.time.DayOfWeek
 import java.time.LocalDate
@@ -10,6 +13,7 @@ import java.time.format.TextStyle
 import java.time.temporal.TemporalAdjusters
 import java.time.temporal.WeekFields
 import java.util.*
+import kotlin.coroutines.resume
 
 @SuppressLint("SimpleDateFormat")
 fun formatDate(timestamp: Long): String {
@@ -66,6 +70,20 @@ fun getCurrentWeekNumber(): Int {
 fun getCurrentYear(): String {
     val now = LocalDateTime.now()
     return now.year.toString()
+}
+
+suspend fun <T> LiveData<T>.awaitValue(): T? = suspendCancellableCoroutine { cont ->
+    val observer = object : androidx.lifecycle.Observer<T> {
+        override fun onChanged(value: T) {
+            removeObserver(this)
+            cont.resume(value)
+        }
+    }
+    observeForever(observer)
+
+    cont.invokeOnCancellation {
+        removeObserver(observer)
+    }
 }
 
 
