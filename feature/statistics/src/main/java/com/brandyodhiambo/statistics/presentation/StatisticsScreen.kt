@@ -17,6 +17,7 @@ import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -27,9 +28,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.brandyodhiambo.common.R
+import com.brandyodhiambo.common.domain.model.Achievement
 import com.brandyodhiambo.designsystem.theme.blackColor
 import com.brandyodhiambo.designsystem.theme.primaryColor
+import com.brandyodhiambo.home.presentation.home_screen.HomeViewModel
 import com.mahmoud.composecharts.barchart.BarChart
 import com.mahmoud.composecharts.barchart.BarChartEntity
 import com.ramcosta.composedestinations.annotation.Destination
@@ -40,45 +44,57 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 @Composable
 fun StatisticsScreen(
     navigator: DestinationsNavigator,
+    statisticsViewModel: StatisticsViewModel = hiltViewModel(),
+    homeViewModel: HomeViewModel = hiltViewModel(),
 ) {
-    val barChartDataMonth = listOf(
-        BarChartEntity(30f, primaryColor, "Week 1"),
-        BarChartEntity(20f, primaryColor, "Week 2"),
-        BarChartEntity(100f, primaryColor, "Week 3"),
-        BarChartEntity(70f, primaryColor, "Week 4"),
-    )
+    val dailyStatistics = statisticsViewModel.dailyStatisticsFromDB.observeAsState()
+    val weeklyStatistics = statisticsViewModel.weeklyStatisticsFromDB.observeAsState()
+    val monthlyStatistics = statisticsViewModel.monthlyStatisticsFromDB.observeAsState()
+    val idealWaterIntake = homeViewModel.idealWaterIntakeFromDb.observeAsState()
+    val goalWaterIntake = homeViewModel.goalWaterIntakeFromDb.observeAsState()
 
-    val barChartDataWeek = listOf(
-        BarChartEntity(30f, primaryColor, "Sun"),
-        BarChartEntity(20f, primaryColor, "Mon"),
-        BarChartEntity(100f, primaryColor, "Tus"),
-        BarChartEntity(70f, primaryColor, "Wed"),
-        BarChartEntity(90f, primaryColor, "Thirs"),
-        BarChartEntity(60f, primaryColor, "Fri"),
-        BarChartEntity(80f, primaryColor, "Sat"),
-    )
+    val barChartDataDaily: List<BarChartEntity> = dailyStatistics.value?.map { dailyStat ->
+        BarChartEntity(dailyStat.amountTaken, primaryColor, dailyStat.day.take(3))
+    } ?: emptyList()
 
-    val barChartDataYear = listOf(
-        BarChartEntity(30f, primaryColor, "Jan"),
-        BarChartEntity(50f, primaryColor, "Feb"),
-        BarChartEntity(20f, primaryColor, "Mar"),
-        BarChartEntity(80f, primaryColor, "Apr"),
-        BarChartEntity(20f, primaryColor, "May"),
-        BarChartEntity(90f, primaryColor, "Jun"),
-        BarChartEntity(05f, primaryColor, "Jul"),
-        BarChartEntity(100f, primaryColor, "Aug"),
-        BarChartEntity(40f, primaryColor, "Sep"),
-        BarChartEntity(70f, primaryColor, "Oct"),
-        BarChartEntity(70f, primaryColor, "Nov"),
-        BarChartEntity(70f, primaryColor, "Dec"),
-    )
+    val barChartDataWeek: List<BarChartEntity> = weeklyStatistics.value?.map { weekStat ->
+        BarChartEntity(weekStat.amountTaken, primaryColor, weekStat.week)
+    } ?: emptyList()
+
+    val barChartDataMonth: List<BarChartEntity> = monthlyStatistics.value?.map { monthStat ->
+        BarChartEntity(monthStat.amountTaken, primaryColor, monthStat.month.take(3))
+    } ?: emptyList()
 
     val verticalAxisValues =
         listOf(0.0f, 20.0f, 40.0f, 60.0f, 80.0f, 100.0f)
 
     val setGraphDaily = remember { mutableStateOf(true) }
     val setGraphMonthly = remember { mutableStateOf(false) }
-    val setGraphYearly = remember { mutableStateOf(false) }
+    val setGraphWeek = remember { mutableStateOf(false) }
+
+    val weeklyAverage = weeklyStatistics.value?.map { it.amountTaken }?.average() ?: 0.0
+    val monthlyAverage = monthlyStatistics.value?.map { it.amountTaken }?.average() ?: 0.0
+    val dailyAverage = dailyStatistics.value?.map { it.amountTaken }?.average() ?: 0.0
+
+    val drinkFrequency = goalWaterIntake.value?.waterIntake?.div(idealWaterIntake.value?.waterIntake ?: 1) ?: 0
+
+    val average = if (setGraphDaily.value) {
+        dailyAverage
+    } else if (setGraphWeek.value) {
+        weeklyAverage
+    } else {
+        monthlyAverage
+    }
+
+    val weekAchiement = listOf(
+        Achievement(isAchieved = true, "Sun"),
+        Achievement(isAchieved = true, "Mon"),
+        Achievement(isAchieved = false, "Tue"),
+        Achievement(isAchieved = false, "Wed"),
+        Achievement(isAchieved = true, "Thu"),
+        Achievement(isAchieved = false, "Fri"),
+        Achievement(isAchieved = false, "Sat"),
+    )
 
     Scaffold(
         backgroundColor = primaryColor,
@@ -120,13 +136,40 @@ fun StatisticsScreen(
                                             shape = RoundedCornerShape(8.dp),
                                         ).clickable {
                                             setGraphDaily.value = true
+                                            setGraphWeek.value = false
                                             setGraphMonthly.value = false
-                                            setGraphYearly.value = false
                                         },
                                     contentAlignment = Alignment.Center,
                                 ) {
                                     Text(
                                         text = "Daily",
+                                        style = MaterialTheme.typography.h6,
+                                        fontWeight = FontWeight.Normal,
+                                        color = blackColor,
+                                    )
+                                }
+                                Box(
+                                    modifier = Modifier
+                                        .height(30.dp)
+                                        .width(100.dp)
+                                        .background(
+                                            color = if (setGraphWeek.value) {
+                                                primaryColor
+                                            } else {
+                                                primaryColor.copy(
+                                                    alpha = 0.2f,
+                                                )
+                                            },
+                                            shape = RoundedCornerShape(8.dp),
+                                        ).clickable {
+                                            setGraphDaily.value = false
+                                            setGraphWeek.value = true
+                                            setGraphMonthly.value = false
+                                        },
+                                    contentAlignment = Alignment.Center,
+                                ) {
+                                    Text(
+                                        text = "Weekly",
                                         style = MaterialTheme.typography.h6,
                                         fontWeight = FontWeight.Normal,
                                         color = blackColor,
@@ -147,35 +190,8 @@ fun StatisticsScreen(
                                             shape = RoundedCornerShape(8.dp),
                                         ).clickable {
                                             setGraphDaily.value = false
+                                            setGraphWeek.value = false
                                             setGraphMonthly.value = true
-                                            setGraphYearly.value = false
-                                        },
-                                    contentAlignment = Alignment.Center,
-                                ) {
-                                    Text(
-                                        text = "Weekly",
-                                        style = MaterialTheme.typography.h6,
-                                        fontWeight = FontWeight.Normal,
-                                        color = blackColor,
-                                    )
-                                }
-                                Box(
-                                    modifier = Modifier
-                                        .height(30.dp)
-                                        .width(100.dp)
-                                        .background(
-                                            color = if (setGraphYearly.value) {
-                                                primaryColor
-                                            } else {
-                                                primaryColor.copy(
-                                                    alpha = 0.2f,
-                                                )
-                                            },
-                                            shape = RoundedCornerShape(8.dp),
-                                        ).clickable {
-                                            setGraphDaily.value = false
-                                            setGraphMonthly.value = false
-                                            setGraphYearly.value = true
                                         },
                                     contentAlignment = Alignment.Center,
                                 ) {
@@ -188,6 +204,15 @@ fun StatisticsScreen(
                                 }
                             }
                             if (setGraphDaily.value) {
+                                BarChart(
+                                    modifier = Modifier.fillMaxSize().padding(16.dp),
+                                    barChartData = barChartDataDaily,
+                                    verticalAxisValues = verticalAxisValues,
+                                    isShowHorizontalLines = true,
+                                    isShowVerticalAxis = true,
+                                )
+                            }
+                            if (setGraphWeek.value) {
                                 BarChart(
                                     modifier = Modifier.fillMaxSize().padding(16.dp),
                                     barChartData = barChartDataWeek,
@@ -205,41 +230,30 @@ fun StatisticsScreen(
                                     isShowVerticalAxis = true,
                                 )
                             }
-                            if (setGraphYearly.value) {
-                                BarChart(
-                                    modifier = Modifier.fillMaxSize().padding(16.dp),
-                                    barChartData = barChartDataYear,
-                                    verticalAxisValues = verticalAxisValues,
-                                    isShowHorizontalLines = true,
-                                    isShowVerticalAxis = true,
-                                )
-                            }
                         }
                     }
                 }
                 item {
-                    Last7DayGoals()
+                    Last7DayGoals(
+                        weekAchivement = weekAchiement,
+                    )
                 }
                 item {
-                    DrinkWaterReport()
+                    DrinkWaterReport(
+                        currentDailyAverage = dailyAverage.toInt(),
+                        currentWeeklyAverage = weeklyAverage.toInt(),
+                        currentMonthlyAverage = monthlyAverage.toInt(),
+                        currentAverage = average.toInt(),
+                        currentDrinkFrequency = drinkFrequency,
+                    )
                 }
             }
         }
     }
 }
 
-val weekAchiement = listOf(
-    Weeks(isAcheived = true, "Sun"),
-    Weeks(isAcheived = true, "Mon"),
-    Weeks(isAcheived = false, "Tue"),
-    Weeks(isAcheived = false, "Wed"),
-    Weeks(isAcheived = true, "Thu"),
-    Weeks(isAcheived = false, "Fri"),
-    Weeks(isAcheived = false, "Sat"),
-)
-
 @Composable
-fun Last7DayGoals() {
+fun Last7DayGoals(weekAchivement: List<Achievement>) {
     Card(
         modifier = Modifier
             .height(135.dp)
@@ -260,7 +274,7 @@ fun Last7DayGoals() {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceEvenly,
             ) {
-                items(weekAchiement) { weeks ->
+                items(weekAchivement.takeLast(7)) { weeks ->
                     WeeksAcheive(weeks = weeks)
                 }
             }
@@ -270,12 +284,12 @@ fun Last7DayGoals() {
 
 @Composable
 fun WeeksAcheive(
-    weeks: Weeks,
+    weeks: Achievement,
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        if (weeks.isAcheived == true) {
+        if (weeks.isAchieved) {
             GoldCup()
         } else {
             BlackCup()
@@ -327,7 +341,13 @@ fun BlackCup() {
 }
 
 @Composable
-fun DrinkWaterReport() {
+fun DrinkWaterReport(
+    currentDailyAverage: Int,
+    currentWeeklyAverage: Int,
+    currentMonthlyAverage: Int,
+    currentDrinkFrequency: Int,
+    currentAverage: Int,
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -360,14 +380,14 @@ fun DrinkWaterReport() {
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = "Week Avarage",
+                        text = "Daily Average",
                         fontSize = 16.sp,
                         fontWeight = FontWeight.W400,
                         color = blackColor,
                     )
                 }
                 Text(
-                    text = "1850ml/day",
+                    text = "$currentDailyAverage ml/day",
                     fontSize = 16.sp,
                     fontWeight = FontWeight.W400,
                     color = primaryColor,
@@ -395,14 +415,49 @@ fun DrinkWaterReport() {
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = "Monthly Avarage",
+                        text = "Weekly Average",
                         fontSize = 16.sp,
                         fontWeight = FontWeight.W400,
                         color = blackColor,
                     )
                 }
                 Text(
-                    text = "1450ml/day",
+                    text = "$currentWeeklyAverage ml/day",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.W400,
+                    color = primaryColor,
+                )
+            }
+            Divider(
+                modifier = Modifier.height(1.dp).padding(start = 8.dp, end = 8.dp),
+                color = Color.Gray,
+                thickness = 1.dp,
+            )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.DateRange,
+                        tint = primaryColor,
+                        contentDescription = null,
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = "Monthly Average",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.W400,
+                        color = blackColor,
+                    )
+                }
+                Text(
+                    text = "$currentMonthlyAverage ml/day",
                     fontSize = 16.sp,
                     fontWeight = FontWeight.W400,
                     color = primaryColor,
@@ -430,14 +485,14 @@ fun DrinkWaterReport() {
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = "Avarage Completion",
+                        text = "Average Completion",
                         fontSize = 16.sp,
                         fontWeight = FontWeight.W400,
                         color = blackColor,
                     )
                 }
                 Text(
-                    text = "55%",
+                    text = "$currentAverage%",
                     fontSize = 16.sp,
                     fontWeight = FontWeight.W400,
                     color = primaryColor,
@@ -472,7 +527,7 @@ fun DrinkWaterReport() {
                     )
                 }
                 Text(
-                    text = "5 Times/day",
+                    text = "$currentDrinkFrequency Times/day",
                     fontSize = 16.sp,
                     fontWeight = FontWeight.W400,
                     color = primaryColor,
@@ -481,8 +536,3 @@ fun DrinkWaterReport() {
         }
     }
 }
-
-data class Weeks(
-    val isAcheived: Boolean,
-    val day: String,
-)

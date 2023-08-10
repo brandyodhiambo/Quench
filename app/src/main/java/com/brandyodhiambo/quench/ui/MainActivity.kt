@@ -22,7 +22,7 @@ import com.brandyodhiambo.quench.navigation.NavGraphs
 import com.brandyodhiambo.quench.util.AlarmSchedularImpl
 import com.brandyodhiambo.quench.util.createChannel
 import com.brandyodhiambo.statistics.worker.startDailyOnetimeWorkRequest
-import com.brandyodhiambo.statistics.worker.startMonthlyPeriodicWorkRequest
+import com.brandyodhiambo.statistics.worker.startMonthlyOnetimeWorkRequest
 import com.brandyodhiambo.statistics.worker.startWeeklyOnetimeWorkRequest
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.ramcosta.composedestinations.DestinationsNavHost
@@ -50,7 +50,8 @@ class MainActivity : ComponentActivity() {
                 ) {
                     startDailyOnetimeWorkRequest(applicationContext)
                     startWeeklyOnetimeWorkRequest(applicationContext)
-                    startMonthlyPeriodicWorkRequest(applicationContext)
+                    startMonthlyOnetimeWorkRequest(applicationContext)
+
                     val reminderTimeFromDb = viewModel.reminderTime.observeAsState()
                     val hours = reminderTimeFromDb.value?.hour ?: 0
                     val minutes = reminderTimeFromDb.value?.minute ?: 0

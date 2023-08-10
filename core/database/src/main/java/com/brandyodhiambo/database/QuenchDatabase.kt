@@ -4,6 +4,7 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.brandyodhiambo.converter.Converter
+import com.brandyodhiambo.dao.AchievementDao
 import com.brandyodhiambo.dao.DailyStatisticsDao
 import com.brandyodhiambo.dao.GoalWaterIntakeDao
 import com.brandyodhiambo.dao.IdealWaterIntakeDao
@@ -14,6 +15,7 @@ import com.brandyodhiambo.dao.SelectedDrinkDao
 import com.brandyodhiambo.dao.SleepTimeDao
 import com.brandyodhiambo.dao.WakeTimeDao
 import com.brandyodhiambo.dao.WeeklyStatisticDao
+import com.brandyodhiambo.entity.AchievementEntity
 import com.brandyodhiambo.entity.DailyStatisticsEntity
 import com.brandyodhiambo.entity.GoalWaterIntakeEntity
 import com.brandyodhiambo.entity.IdealWaterIntakeEntity
@@ -27,8 +29,8 @@ import com.brandyodhiambo.entity.WeeklyStatisticsEntity
 
 @TypeConverters(Converter::class)
 @Database(
-    entities = [SelectedDrinkEntity::class, WakeTimeEntity::class, IdealWaterIntakeEntity::class, GoalWaterIntakeEntity::class, SleepTimeEntity::class, LevelEntity::class, ReminderTimeEntity::class, DailyStatisticsEntity::class, WeeklyStatisticsEntity::class, MonthlyStatisticsEntity::class],
-    version = 4,
+    entities = [SelectedDrinkEntity::class, WakeTimeEntity::class, IdealWaterIntakeEntity::class, GoalWaterIntakeEntity::class, SleepTimeEntity::class, LevelEntity::class, ReminderTimeEntity::class, DailyStatisticsEntity::class, WeeklyStatisticsEntity::class, MonthlyStatisticsEntity::class, AchievementEntity::class],
+    version = 5,
     exportSchema = false,
 )
 abstract class QuenchDatabase : RoomDatabase() {
@@ -42,4 +44,5 @@ abstract class QuenchDatabase : RoomDatabase() {
     abstract fun dailyStatisticsDao(): DailyStatisticsDao
     abstract fun weeklyStatisticsDao(): WeeklyStatisticDao
     abstract fun monthlyStatisticsDao(): MonthlyStatisticsDao
+    abstract fun achievementDao(): AchievementDao
 }

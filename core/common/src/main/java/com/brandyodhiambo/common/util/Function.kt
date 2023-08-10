@@ -2,8 +2,12 @@ package com.brandyodhiambo.common.util
 
 import android.annotation.SuppressLint
 import androidx.lifecycle.LiveData
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.time.DayOfWeek
 import java.time.LocalDate
@@ -71,18 +75,26 @@ fun getCurrentYear(): String {
     val now = LocalDateTime.now()
     return now.year.toString()
 }
-
-suspend fun <T> LiveData<T>.awaitValue(): T? = suspendCancellableCoroutine { cont ->
-    val observer = object : androidx.lifecycle.Observer<T> {
-        override fun onChanged(value: T) {
-            removeObserver(this)
-            cont.resume(value)
-        }
+suspend fun <T> LiveData<T>.awaitValue(): T = withContext(Dispatchers.Default) {
+    val flow = MutableSharedFlow<T>(replay = 1)
+    val observer = androidx.lifecycle.Observer<T> {
+        it?.let { value -> flow.tryEmit(value) }
     }
-    observeForever(observer)
 
-    cont.invokeOnCancellation {
-        removeObserver(observer)
+    withContext(Dispatchers.Main) {
+        observeForever(observer)
+    }
+    try {
+        flow.first { value ->
+            withContext(Dispatchers.Main) {
+                removeObserver(observer)
+            }
+            true
+        }
+    } finally {
+        withContext(Dispatchers.Main) {
+            removeObserver(observer)
+        }
     }
 }
 

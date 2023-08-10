@@ -15,6 +15,7 @@ object Constants {
     const val DAILY_STATISTICS_TABLE = "daily_statistics_table"
     const val MONTHLY_STATISTICS_TABLE = "monthly_statistics_table"
     const val WEEKLY_STATISTICS_TABLE = "weekly_statistics_table"
+    const val ACHIEVEMENT_TABLE = "achievement_table"
 
     const val DATABASE_NAME = "water_reminder_db"
 }

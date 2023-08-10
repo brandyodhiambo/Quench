@@ -46,7 +46,11 @@ class DailyWorker @AssistedInject constructor(
                         day = getCurrentDay(),
                     ),
                 )
-                // statisticsViewModel.emptyDBFromDailyData()
+                goalWaterIntakeRepository.deleteAllGoalWaterIntakes()
+                idealWaterIntakeRepository.deleteAllIdealWaterIntakes()
+                selectedDrinkRepository.deleteAllSelectedDrinks()
+                reminderTimeRepository.dellAllReminderTimes()
+                levelRepository.deleteAllLevel()
             }
             Result.success()
         } catch (e: Exception) {

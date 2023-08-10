@@ -1,8 +1,10 @@
 package com.brandyodhiambo.statistics.data.mapper
 
+import com.brandyodhiambo.common.domain.model.Achievement
 import com.brandyodhiambo.common.domain.model.DailyStatistics
 import com.brandyodhiambo.common.domain.model.MonthlyStatistics
 import com.brandyodhiambo.common.domain.model.WeeklyStatistics
+import com.brandyodhiambo.entity.AchievementEntity
 import com.brandyodhiambo.entity.DailyStatisticsEntity
 import com.brandyodhiambo.entity.MonthlyStatisticsEntity
 import com.brandyodhiambo.entity.WeeklyStatisticsEntity
@@ -46,5 +48,19 @@ internal fun MonthlyStatistics.toMonthlyStatisticsEntity(): MonthlyStatisticsEnt
     return MonthlyStatisticsEntity(
         amountTaken = amountTaken,
         month = month,
+    )
+}
+
+internal fun AchievementEntity.toAchievement(): Achievement {
+    return Achievement(
+        isAchieved = isAchieved,
+        day = day,
+    )
+}
+
+internal fun Achievement.toAchievementsEntity(): AchievementEntity {
+    return AchievementEntity(
+        isAchieved = isAchieved,
+        day = day
     )
 }
