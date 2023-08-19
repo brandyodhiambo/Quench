@@ -1,4 +1,19 @@
-package com.brandyodhiambo.home.presentation.sleep_wake_screen
+/*
+ * Copyright (C)2023 Brandy Odhiambo
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.brandyodhiambo.home.presentation.sleepWakeScreen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -37,23 +52,23 @@ interface SleepAndWakeUpScreenScreenNavigator {
 @Composable
 fun SleepAndWakeTimeScreen(
     navigator: SleepAndWakeUpScreenScreenNavigator,
-    viewModel: SleepWakeViewModel = hiltViewModel(),
+    viewModel: SleepWakeViewModel = hiltViewModel()
 ) {
     Box(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize()
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Top,
+            verticalArrangement = Arrangement.Top
         ) {
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = "What's your wake up time?",
                 fontSize = 24.sp,
-                color = blackColor,
+                color = blackColor
             )
             Spacer(modifier = Modifier.height(16.dp))
             WakeTimePickerInHours(
@@ -67,14 +82,14 @@ fun SleepAndWakeTimeScreen(
                         "PM"
                     }
                     viewModel.onTimeWakeSelected(it.hours, it.minutes, ampm)
-                },
+                }
             )
 
             Spacer(modifier = Modifier.height(32.dp))
             Text(
                 text = "What's your Sleeping time?",
                 fontSize = 24.sp,
-                color = blackColor,
+                color = blackColor
             )
             Spacer(modifier = Modifier.height(16.dp))
             SleepTimePickerInHours(
@@ -90,7 +105,7 @@ fun SleepAndWakeTimeScreen(
                         "PM"
                     }
                     viewModel.onTimeSleepSelected(it.hours, it.minutes, ampm)
-                },
+                }
             )
 
             Spacer(modifier = Modifier.height(32.dp))
@@ -99,7 +114,7 @@ fun SleepAndWakeTimeScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(bottom = 16.dp, start = 16.dp, end = 16.dp),
-            verticalArrangement = Arrangement.Bottom,
+            verticalArrangement = Arrangement.Bottom
         ) {
             Button(
                 modifier = Modifier
@@ -109,23 +124,23 @@ fun SleepAndWakeTimeScreen(
                         SleepTime(
                             viewModel.sleepSelectedTime.value.hours,
                             viewModel.sleepSelectedTime.value.minutes,
-                            viewModel.sleepSelectedTime.value.amPm,
-                        ),
+                            viewModel.sleepSelectedTime.value.amPm
+                        )
                     )
 
                     viewModel.insertWakeTime(
                         WakeTime(
                             viewModel.wakeSelectedTime.value.hours,
                             viewModel.wakeSelectedTime.value.minutes,
-                            viewModel.wakeSelectedTime.value.amPm,
-                        ),
+                            viewModel.wakeSelectedTime.value.amPm
+                        )
                     )
 
                     navigator.popBackStack()
                     navigator.navigateToMainScreen()
                 },
                 shape = RoundedCornerShape(15.dp),
-                colors = ButtonDefaults.buttonColors(backgroundColor = primaryColor),
+                colors = ButtonDefaults.buttonColors(backgroundColor = primaryColor)
             ) {
                 Text(text = "Next", Modifier.padding(8.dp), color = Color.White)
             }
@@ -137,7 +152,7 @@ fun SleepAndWakeTimeScreen(
 fun SleepTimePickerInHours(
     currentPickerValueText: Hours,
     onCurrentPickerValueTextChange: (Hours) -> Unit,
-    onTimeSleepSelected: (Hours) -> Unit,
+    onTimeSleepSelected: (Hours) -> Unit
 ) {
     HoursNumberPicker(
         dividersColor = blackColor,
@@ -151,16 +166,16 @@ fun SleepTimePickerInHours(
             Text(
                 modifier = Modifier.padding(horizontal = 8.dp),
                 textAlign = TextAlign.Center,
-                text = ":",
+                text = ":"
             )
         },
         minutesDivider = {
             Text(
                 modifier = Modifier.padding(horizontal = 8.dp),
                 textAlign = TextAlign.Center,
-                text = " ",
+                text = " "
             )
-        },
+        }
     )
 }
 
@@ -168,7 +183,7 @@ fun SleepTimePickerInHours(
 fun WakeTimePickerInHours(
     currentPickerValueText: Hours,
     onCurrentPickerValueTextChange: (Hours) -> Unit,
-    onTimeWakeSelected: (Hours) -> Unit,
+    onTimeWakeSelected: (Hours) -> Unit
 ) {
     HoursNumberPicker(
         dividersColor = blackColor,
@@ -182,15 +197,15 @@ fun WakeTimePickerInHours(
             Text(
                 modifier = Modifier.padding(horizontal = 8.dp),
                 textAlign = TextAlign.Center,
-                text = ":",
+                text = ":"
             )
         },
         minutesDivider = {
             Text(
                 modifier = Modifier.padding(horizontal = 8.dp),
                 textAlign = TextAlign.Center,
-                text = " ",
+                text = " "
             )
-        },
+        }
     )
 }

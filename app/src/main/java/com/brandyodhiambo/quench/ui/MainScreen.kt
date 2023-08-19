@@ -1,3 +1,18 @@
+/*
+ * Copyright (C)2023 Brandy Odhiambo
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.brandyodhiambo.quench.ui
 
 import android.annotation.SuppressLint
@@ -41,19 +56,19 @@ import kotlinx.coroutines.launch
 @Destination
 fun MainScreen(
     navigator: DestinationsNavigator,
-    settingsNavigator: SettingsNavigator,
+    settingsNavigator: SettingsNavigator
 ) {
     Scaffold {
         val tabs = listOf(
             TabItem.Home(navigator = navigator),
             TabItem.Statistic(navigator = navigator),
-            TabItem.Settings(navigator = settingsNavigator),
+            TabItem.Settings(navigator = settingsNavigator)
         )
         val pagerState = rememberPagerState()
 
         Column(
             modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             TopAppBar(
                 title = {
@@ -61,18 +76,18 @@ fun MainScreen(
                         text = "Quench",
                         fontSize = 30.sp,
                         textAlign = TextAlign.Center,
-                        fontFamily = roboto,
+                        fontFamily = roboto
                     )
                 },
                 modifier = Modifier.fillMaxWidth(),
                 backgroundColor = primaryColor,
                 contentColor = Color.White,
-                elevation = 4.dp,
+                elevation = 4.dp
             )
             CustomTab(tabs = tabs, pagerState = pagerState)
             TabContent(
                 tabs = tabs,
-                pagerState = pagerState,
+                pagerState = pagerState
             )
         }
     }
@@ -82,11 +97,11 @@ fun MainScreen(
 @Composable
 fun TabContent(
     tabs: List<TabItem>,
-    pagerState: PagerState,
+    pagerState: PagerState
 ) {
     HorizontalPager(count = tabs.size, state = pagerState) { page ->
         tabs[page].screen(
-            onClick = { },
+            onClick = { }
         )
     }
 }
@@ -95,7 +110,7 @@ fun TabContent(
 @Composable
 fun CustomTab(
     tabs: List<TabItem>,
-    pagerState: PagerState,
+    pagerState: PagerState
 ) {
     val scope = rememberCoroutineScope()
 
@@ -105,16 +120,16 @@ fun CustomTab(
         contentColor = Color.White,
         indicator = { tabPositions ->
             TabRowDefaults.Indicator(
-                Modifier.pagerTabIndicatorOffset(pagerState, tabPositions),
+                Modifier.pagerTabIndicatorOffset(pagerState, tabPositions)
             )
-        },
+        }
     ) {
         tabs.forEachIndexed { index, tabItem ->
             LeadingIconTab(
                 icon = {
                     Icon(
                         painter = painterResource(id = tabItem.icon),
-                        contentDescription = "",
+                        contentDescription = ""
                     )
                 },
                 selected = pagerState.currentPage == index,
@@ -123,7 +138,7 @@ fun CustomTab(
                         pagerState.animateScrollToPage(index)
                     }
                 },
-                text = { Text(text = tabItem.title, fontFamily = roboto) },
+                text = { Text(text = tabItem.title, fontFamily = roboto) }
             )
         }
     }

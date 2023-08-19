@@ -1,3 +1,18 @@
+/*
+ * Copyright (C)2023 Brandy Odhiambo
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.brandyodhiambo.settings.presentation.component
 
 import androidx.compose.foundation.background
@@ -33,7 +48,7 @@ import com.brandyodhiambo.designsystem.theme.secondaryWhite
 fun CustomReminderDialog(
     openDialog: MutableState<Boolean>,
     title: String,
-    items: List<String>,
+    items: List<String>
 ) {
     val selectedValue = remember { mutableStateOf("") }
     val isSelectedItem: (String) -> Boolean = { selectedValue.value == it }
@@ -44,9 +59,11 @@ fun CustomReminderDialog(
         modifier = Modifier.padding(10.dp, 5.dp, 10.dp, 10.dp),
         elevation = 8.dp
     ) {
-        Column(Modifier
-            .padding(8.dp)
-            .background(Color.White)) {
+        Column(
+            Modifier
+                .padding(8.dp)
+                .background(Color.White)
+        ) {
             Text(
                 text = "Select $title",
                 modifier = Modifier.padding(8.dp)
@@ -120,14 +137,14 @@ fun CustomReminderDialog(
                 }
             }
 
-            if(selectedValue.value == "Custom"){
-               Dialog(onDismissRequest = {openDialog.value = false}) {
-                     CustomCheckinDialog(
-                          openDialog = openDialog,
-                          title = "Custom",
-                          items = listOf("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
-                     )
-               }
+            if (selectedValue.value == "Custom") {
+                Dialog(onDismissRequest = { openDialog.value = false }) {
+                    CustomCheckinDialog(
+                        openDialog = openDialog,
+                        title = "Custom",
+                        items = listOf("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
+                    )
+                }
             }
         }
     }

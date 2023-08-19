@@ -1,4 +1,19 @@
-package com.brandyodhiambo.statistics.worker.daily_worker
+/*
+ * Copyright (C)2023 Brandy Odhiambo
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.brandyodhiambo.statistics.worker.dailyWorker
 
 import android.content.Context
 import androidx.hilt.work.HiltWorker
@@ -13,7 +28,6 @@ import com.brandyodhiambo.common.domain.repository.ReminderTimeRepository
 import com.brandyodhiambo.common.domain.repository.SelectedDrinkRepository
 import com.brandyodhiambo.common.util.awaitValue
 import com.brandyodhiambo.common.util.getCurrentDay
-import com.brandyodhiambo.common.util.isEndOfDay
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import java.time.LocalDateTime
@@ -38,8 +52,12 @@ class DailyWorker @AssistedInject constructor(
     override suspend fun doWork(): Result {
         return try {
             val amountTaken = levelRepository.getLevel().awaitValue()?.amountTaken ?: 1f
+            val currentHour = LocalDateTime.now().hour
+            val currentMinute = LocalDateTime.now().minute
 
-            if (isEndOfDay(dateTime = LocalDateTime.now())) {
+            val endOfDayHour = 23
+            val endOfDayMinute = 59
+            if (currentHour >= endOfDayHour && currentMinute >= endOfDayMinute) {
                 dailyStatisticsRepository.insertDailyStatistics(
                     DailyStatistics(
                         amountTaken = amountTaken,

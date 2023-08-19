@@ -1,4 +1,19 @@
-package com.brandyodhiambo.home.presentation.home_screen
+/*
+ * Copyright (C)2023 Brandy Odhiambo
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.brandyodhiambo.home.presentation.homeScreen
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
@@ -28,12 +43,12 @@ class HomeViewModel @Inject constructor(
     private val goalWaterIntakeRepository: GoalWaterIntakeRepository,
     private val selectedDrinkRepository: SelectedDrinkRepository,
     private val levelRepository: LevelRepository,
-    private val reminderTimeRepository: ReminderTimeRepository,
+    private val reminderTimeRepository: ReminderTimeRepository
 ) : ViewModel() {
 
     /*
-    * ideal water intake value and functions
-    * */
+     * ideal water intake value and functions
+     * */
     private val _idealWaterIntake = mutableStateOf("500")
     var idealWaterIntakeValue: State<String> = _idealWaterIntake
     fun setIdealWaterIntakeValue(value: String) {
@@ -60,8 +75,8 @@ class HomeViewModel @Inject constructor(
     }
 
     /*
-    * Goal Water intake values and functions
-    * */
+     * Goal Water intake values and functions
+     * */
     private val _goalWaterIntake = mutableStateOf("2080")
     var goalWaterIntakeValue: State<String> = _goalWaterIntake
     fun setGoalWaterIntakeValue(value: String) {
@@ -88,8 +103,8 @@ class HomeViewModel @Inject constructor(
     }
 
     /*
-    * Selected drink values and functions
-    * */
+     * Selected drink values and functions
+     * */
     private val _size = mutableStateOf("0")
     var size: State<String> = _size
     fun setSize(value: String) {
@@ -129,8 +144,8 @@ class HomeViewModel @Inject constructor(
     }
 
     /*
-    * Level values and functions
-    * */
+     * Level values and functions
+     * */
 
     private val _amountTaken = mutableStateOf(0f)
     var amountTaken: State<Float> = _amountTaken
@@ -171,8 +186,8 @@ class HomeViewModel @Inject constructor(
     }
 
     /*
-    * Reminder Time
-    * */
+     * Reminder Time
+     * */
     private val _reminderTimePickerValue =
         mutableStateOf<Hours>(AMPMHours(0, 0, AMPMHours.DayTime.AM))
     val reminderTimePickerValue: MutableState<Hours> = _reminderTimePickerValue
@@ -198,7 +213,7 @@ class HomeViewModel @Inject constructor(
         amPm: String,
         isReapeated: Boolean,
         isAllDay: Boolean,
-        days: List<Days>,
+        days: List<Days>
     ) {
         _reminderSelectedTime.value = ReminderTime(
             hour = hours,
@@ -206,7 +221,7 @@ class HomeViewModel @Inject constructor(
             ampm = amPm,
             isRepeated = isReapeated,
             isAllDay = isAllDay,
-            days = days,
+            days = days
         )
     }
 

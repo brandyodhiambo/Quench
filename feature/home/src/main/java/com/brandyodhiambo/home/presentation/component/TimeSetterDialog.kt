@@ -1,3 +1,18 @@
+/*
+ * Copyright (C)2023 Brandy Odhiambo
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.brandyodhiambo.home.presentation.component
 
 import androidx.compose.foundation.BorderStroke
@@ -47,7 +62,7 @@ fun TimeSetterDialog(
     onCurrentPickerValueChanged: (Hours) -> Unit,
     onDismiss: () -> Unit,
     onAllDayClicked: () -> Unit,
-    onConfirmClick: () -> Unit,
+    onConfirmClick: () -> Unit
 ) {
     AlertDialog(
         backgroundColor = Color.White,
@@ -58,12 +73,12 @@ fun TimeSetterDialog(
                 contentDescription = null,
                 contentScale = ContentScale.Fit,
                 colorFilter = ColorFilter.tint(
-                    color = primaryColor,
+                    color = primaryColor
                 ),
                 modifier = Modifier
                     .padding(top = 35.dp)
                     .height(70.dp)
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
 
             )
         },
@@ -77,21 +92,21 @@ fun TimeSetterDialog(
                         .fillMaxWidth(),
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
-                    fontFamily = roboto,
+                    fontFamily = roboto
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 TimePickerForDialogInHours(
                     currentPickerValueText = currentPickerValueText,
                     onPickerValueChange = {
                         onCurrentPickerValueChanged(it)
-                    },
+                    }
                 )
                 Row(
                     Modifier
                         .fillMaxWidth()
                         .padding(top = 10.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
                         text = "Reminder Time",
@@ -101,7 +116,7 @@ fun TimeSetterDialog(
                             .padding(top = 5.dp),
                         fontWeight = FontWeight.Bold,
                         maxLines = 2,
-                        overflow = TextOverflow.Ellipsis,
+                        overflow = TextOverflow.Ellipsis
                     )
                     TextButton(onClick = {
                         onAllDayClicked()
@@ -115,14 +130,14 @@ fun TimeSetterDialog(
                                 .padding(top = 5.dp),
                             fontWeight = FontWeight.W100,
                             maxLines = 2,
-                            overflow = TextOverflow.Ellipsis,
+                            overflow = TextOverflow.Ellipsis
                         )
                     }
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 LazyRow(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     items(reminderDays) { singleDay ->
                         DayItem(
@@ -131,7 +146,7 @@ fun TimeSetterDialog(
                             onClick = {
                                 singleDay.isSelected = !singleDay.isSelected
                                 // get the selected day and add it to the list
-                            },
+                            }
                         )
                     }
                 }
@@ -146,7 +161,7 @@ fun TimeSetterDialog(
                     fontWeight = FontWeight.Bold,
                     fontFamily = roboto,
                     color = Color.Black,
-                    modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
+                    modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
                 )
             }
         },
@@ -159,17 +174,17 @@ fun TimeSetterDialog(
                     fontWeight = FontWeight.Bold,
                     fontFamily = roboto,
                     color = Color.Black,
-                    modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
+                    modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
                 )
             }
-        },
+        }
     )
 }
 
 @Composable
 fun TimePickerForDialogInHours(
     currentPickerValueText: Hours,
-    onPickerValueChange: (Hours) -> Unit,
+    onPickerValueChange: (Hours) -> Unit
 ) {
     HoursNumberPicker(
         dividersColor = blackColor,
@@ -182,16 +197,16 @@ fun TimePickerForDialogInHours(
             Text(
                 modifier = Modifier.padding(horizontal = 8.dp),
                 textAlign = TextAlign.Center,
-                text = ":",
+                text = ":"
             )
         },
         minutesDivider = {
             Text(
                 modifier = Modifier.padding(horizontal = 8.dp),
                 textAlign = TextAlign.Center,
-                text = " ",
+                text = " "
             )
-        },
+        }
     )
 }
 
@@ -206,11 +221,11 @@ fun DayItem(color: Color, text: String, onClick: () -> Unit = {}) {
             .clickable {
                 onClick()
             },
-        elevation = 8.dp,
+        elevation = 8.dp
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
+            verticalArrangement = Arrangement.Center
         ) {
             Text(
                 text = text,
@@ -218,7 +233,7 @@ fun DayItem(color: Color, text: String, onClick: () -> Unit = {}) {
                 color = color,
                 fontSize = 14.sp,
                 fontFamily = roboto,
-                fontWeight = FontWeight.Bold,
+                fontWeight = FontWeight.Bold
             )
         }
     }

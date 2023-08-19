@@ -1,3 +1,18 @@
+/*
+ * Copyright (C)2023 Brandy Odhiambo
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.brandyodhiambo.statistics.presentation
 
 import android.annotation.SuppressLint
@@ -5,13 +20,28 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.Card
+import androidx.compose.material.Divider
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.DateRange
@@ -33,7 +63,7 @@ import com.brandyodhiambo.common.R
 import com.brandyodhiambo.common.domain.model.Achievement
 import com.brandyodhiambo.designsystem.theme.blackColor
 import com.brandyodhiambo.designsystem.theme.primaryColor
-import com.brandyodhiambo.home.presentation.home_screen.HomeViewModel
+import com.brandyodhiambo.home.presentation.homeScreen.HomeViewModel
 import com.mahmoud.composecharts.barchart.BarChart
 import com.mahmoud.composecharts.barchart.BarChartEntity
 import com.ramcosta.composedestinations.annotation.Destination
@@ -45,7 +75,7 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 fun StatisticsScreen(
     navigator: DestinationsNavigator,
     statisticsViewModel: StatisticsViewModel = hiltViewModel(),
-    homeViewModel: HomeViewModel = hiltViewModel(),
+    homeViewModel: HomeViewModel = hiltViewModel()
 ) {
     val dailyStatistics = statisticsViewModel.dailyStatisticsFromDB.observeAsState()
     val weeklyStatistics = statisticsViewModel.weeklyStatisticsFromDB.observeAsState()
@@ -93,16 +123,16 @@ fun StatisticsScreen(
         Achievement(isAchieved = false, "Wed"),
         Achievement(isAchieved = true, "Thu"),
         Achievement(isAchieved = false, "Fri"),
-        Achievement(isAchieved = false, "Sat"),
+        Achievement(isAchieved = false, "Sat")
     )
 
     Scaffold(
-        backgroundColor = primaryColor,
+        backgroundColor = primaryColor
     ) { paddingValues ->
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues),
+                .padding(paddingValues)
         ) {
             LazyColumn {
                 item {
@@ -110,16 +140,16 @@ fun StatisticsScreen(
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(top = 16.dp, start = 16.dp, end = 16.dp),
-                        elevation = 4.dp,
+                        elevation = 4.dp
                     ) {
                         Column(
-                            modifier = Modifier.padding(8.dp),
+                            modifier = Modifier.padding(8.dp)
                         ) {
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(top = 8.dp, start = 8.dp, end = 8.dp),
-                                horizontalArrangement = Arrangement.SpaceEvenly,
+                                horizontalArrangement = Arrangement.SpaceEvenly
                             ) {
                                 Box(
                                     modifier = Modifier
@@ -130,22 +160,22 @@ fun StatisticsScreen(
                                                 primaryColor
                                             } else {
                                                 primaryColor.copy(
-                                                    alpha = 0.2f,
+                                                    alpha = 0.2f
                                                 )
                                             },
-                                            shape = RoundedCornerShape(8.dp),
+                                            shape = RoundedCornerShape(8.dp)
                                         ).clickable {
                                             setGraphDaily.value = true
                                             setGraphWeek.value = false
                                             setGraphMonthly.value = false
                                         },
-                                    contentAlignment = Alignment.Center,
+                                    contentAlignment = Alignment.Center
                                 ) {
                                     Text(
                                         text = "Daily",
                                         style = MaterialTheme.typography.h6,
                                         fontWeight = FontWeight.Normal,
-                                        color = blackColor,
+                                        color = blackColor
                                     )
                                 }
                                 Box(
@@ -157,22 +187,22 @@ fun StatisticsScreen(
                                                 primaryColor
                                             } else {
                                                 primaryColor.copy(
-                                                    alpha = 0.2f,
+                                                    alpha = 0.2f
                                                 )
                                             },
-                                            shape = RoundedCornerShape(8.dp),
+                                            shape = RoundedCornerShape(8.dp)
                                         ).clickable {
                                             setGraphDaily.value = false
                                             setGraphWeek.value = true
                                             setGraphMonthly.value = false
                                         },
-                                    contentAlignment = Alignment.Center,
+                                    contentAlignment = Alignment.Center
                                 ) {
                                     Text(
                                         text = "Weekly",
                                         style = MaterialTheme.typography.h6,
                                         fontWeight = FontWeight.Normal,
-                                        color = blackColor,
+                                        color = blackColor
                                     )
                                 }
                                 Box(
@@ -184,22 +214,22 @@ fun StatisticsScreen(
                                                 primaryColor
                                             } else {
                                                 primaryColor.copy(
-                                                    alpha = 0.2f,
+                                                    alpha = 0.2f
                                                 )
                                             },
-                                            shape = RoundedCornerShape(8.dp),
+                                            shape = RoundedCornerShape(8.dp)
                                         ).clickable {
                                             setGraphDaily.value = false
                                             setGraphWeek.value = false
                                             setGraphMonthly.value = true
                                         },
-                                    contentAlignment = Alignment.Center,
+                                    contentAlignment = Alignment.Center
                                 ) {
                                     Text(
                                         text = "Monthly",
                                         style = MaterialTheme.typography.h6,
                                         fontWeight = FontWeight.Normal,
-                                        color = blackColor,
+                                        color = blackColor
                                     )
                                 }
                             }
@@ -209,7 +239,7 @@ fun StatisticsScreen(
                                     barChartData = barChartDataDaily,
                                     verticalAxisValues = verticalAxisValues,
                                     isShowHorizontalLines = true,
-                                    isShowVerticalAxis = true,
+                                    isShowVerticalAxis = true
                                 )
                             }
                             if (setGraphWeek.value) {
@@ -218,7 +248,7 @@ fun StatisticsScreen(
                                     barChartData = barChartDataWeek,
                                     verticalAxisValues = verticalAxisValues,
                                     isShowHorizontalLines = true,
-                                    isShowVerticalAxis = true,
+                                    isShowVerticalAxis = true
                                 )
                             }
                             if (setGraphMonthly.value) {
@@ -227,7 +257,7 @@ fun StatisticsScreen(
                                     barChartData = barChartDataMonth,
                                     verticalAxisValues = verticalAxisValues,
                                     isShowHorizontalLines = true,
-                                    isShowVerticalAxis = true,
+                                    isShowVerticalAxis = true
                                 )
                             }
                         }
@@ -235,7 +265,7 @@ fun StatisticsScreen(
                 }
                 item {
                     Last7DayGoals(
-                        weekAchivement = weekAchiement,
+                        weekAchivement = weekAchiement
                     )
                 }
                 item {
@@ -244,7 +274,7 @@ fun StatisticsScreen(
                         currentWeeklyAverage = weeklyAverage.toInt(),
                         currentMonthlyAverage = monthlyAverage.toInt(),
                         currentAverage = average.toInt(),
-                        currentDrinkFrequency = drinkFrequency,
+                        currentDrinkFrequency = drinkFrequency
                     )
                 }
             }
@@ -259,20 +289,20 @@ fun Last7DayGoals(weekAchivement: List<Achievement>) {
             .height(135.dp)
             .padding(top = 8.dp, start = 16.dp, end = 16.dp)
             .fillMaxWidth(),
-        elevation = 4.dp,
+        elevation = 4.dp
     ) {
         Column(
-            modifier = Modifier.padding(8.dp),
+            modifier = Modifier.padding(8.dp)
         ) {
             Text(
                 text = "Last 7 Days Goals Achieve",
                 fontSize = 16.sp,
                 fontWeight = FontWeight.SemiBold,
-                color = primaryColor,
+                color = primaryColor
             )
             LazyRow(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceEvenly,
+                horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 items(weekAchivement.takeLast(7)) { weeks ->
                     WeeksAcheive(weeks = weeks)
@@ -284,10 +314,10 @@ fun Last7DayGoals(weekAchivement: List<Achievement>) {
 
 @Composable
 fun WeeksAcheive(
-    weeks: Achievement,
+    weeks: Achievement
 ) {
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         if (weeks.isAchieved) {
             GoldCup()
@@ -306,7 +336,7 @@ fun GoldCup() {
         modifier = Modifier
             .size(48.dp)
             .padding(4.dp),
-        elevation = 4.dp,
+        elevation = 4.dp
     ) {
         Image(
             painter = painterResource(id = R.drawable.ic_cup),
@@ -314,7 +344,7 @@ fun GoldCup() {
             modifier = Modifier
                 .size(48.dp)
                 .padding(8.dp),
-            contentDescription = null,
+            contentDescription = null
         )
     }
 }
@@ -327,7 +357,7 @@ fun BlackCup() {
         modifier = Modifier
             .size(48.dp)
             .padding(4.dp),
-        elevation = 4.dp,
+        elevation = 4.dp
     ) {
         Image(
             painter = painterResource(id = R.drawable.ic_black_cup),
@@ -335,7 +365,7 @@ fun BlackCup() {
             modifier = Modifier
                 .size(48.dp)
                 .padding(8.dp),
-            contentDescription = null,
+            contentDescription = null
         )
     }
 }
@@ -346,191 +376,191 @@ fun DrinkWaterReport(
     currentWeeklyAverage: Int,
     currentMonthlyAverage: Int,
     currentDrinkFrequency: Int,
-    currentAverage: Int,
+    currentAverage: Int
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 8.dp, start = 16.dp, end = 16.dp),
-        elevation = 4.dp,
+        elevation = 4.dp
     ) {
         Column(
-            modifier = Modifier.padding(8.dp),
+            modifier = Modifier.padding(8.dp)
         ) {
             Text(
                 text = "Drink Water Report",
                 fontSize = 16.sp,
                 fontWeight = FontWeight.SemiBold,
-                color = primaryColor,
+                color = primaryColor
             )
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Row(
-                    verticalAlignment = Alignment.CenterVertically,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
                         imageVector = Icons.Default.DateRange,
                         tint = primaryColor,
-                        contentDescription = null,
+                        contentDescription = null
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = "Daily Average",
                         fontSize = 16.sp,
                         fontWeight = FontWeight.W400,
-                        color = blackColor,
+                        color = blackColor
                     )
                 }
                 Text(
                     text = "$currentDailyAverage ml/day",
                     fontSize = 16.sp,
                     fontWeight = FontWeight.W400,
-                    color = primaryColor,
+                    color = primaryColor
                 )
             }
             Divider(
                 modifier = Modifier.height(1.dp).padding(start = 8.dp, end = 8.dp),
                 color = Color.Gray,
-                thickness = 1.dp,
+                thickness = 1.dp
             )
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Row(
-                    verticalAlignment = Alignment.CenterVertically,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
                         imageVector = Icons.Default.DateRange,
                         tint = primaryColor,
-                        contentDescription = null,
+                        contentDescription = null
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = "Weekly Average",
                         fontSize = 16.sp,
                         fontWeight = FontWeight.W400,
-                        color = blackColor,
+                        color = blackColor
                     )
                 }
                 Text(
                     text = "$currentWeeklyAverage ml/day",
                     fontSize = 16.sp,
                     fontWeight = FontWeight.W400,
-                    color = primaryColor,
+                    color = primaryColor
                 )
             }
             Divider(
                 modifier = Modifier.height(1.dp).padding(start = 8.dp, end = 8.dp),
                 color = Color.Gray,
-                thickness = 1.dp,
+                thickness = 1.dp
             )
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Row(
-                    verticalAlignment = Alignment.CenterVertically,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
                         imageVector = Icons.Default.DateRange,
                         tint = primaryColor,
-                        contentDescription = null,
+                        contentDescription = null
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = "Monthly Average",
                         fontSize = 16.sp,
                         fontWeight = FontWeight.W400,
-                        color = blackColor,
+                        color = blackColor
                     )
                 }
                 Text(
                     text = "$currentMonthlyAverage ml/day",
                     fontSize = 16.sp,
                     fontWeight = FontWeight.W400,
-                    color = primaryColor,
+                    color = primaryColor
                 )
             }
             Divider(
                 modifier = Modifier.height(1.dp).padding(start = 8.dp, end = 8.dp),
                 color = Color.Gray,
-                thickness = 1.dp,
+                thickness = 1.dp
             )
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Row(
-                    verticalAlignment = Alignment.CenterVertically,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
                         imageVector = Icons.Default.Star,
                         tint = primaryColor,
-                        contentDescription = null,
+                        contentDescription = null
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = "Average Completion",
                         fontSize = 16.sp,
                         fontWeight = FontWeight.W400,
-                        color = blackColor,
+                        color = blackColor
                     )
                 }
                 Text(
                     text = "$currentAverage%",
                     fontSize = 16.sp,
                     fontWeight = FontWeight.W400,
-                    color = primaryColor,
+                    color = primaryColor
                 )
             }
             Divider(
                 modifier = Modifier.height(1.dp).padding(start = 8.dp, end = 8.dp),
                 color = Color.Gray,
-                thickness = 1.dp,
+                thickness = 1.dp
             )
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Row(
-                    verticalAlignment = Alignment.CenterVertically,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
                         imageVector = Icons.Default.AccountCircle,
                         tint = primaryColor,
-                        contentDescription = null,
+                        contentDescription = null
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = "Drink Frequency",
                         fontSize = 16.sp,
                         fontWeight = FontWeight.W400,
-                        color = blackColor,
+                        color = blackColor
                     )
                 }
                 Text(
                     text = "$currentDrinkFrequency Times/day",
                     fontSize = 16.sp,
                     fontWeight = FontWeight.W400,
-                    color = primaryColor,
+                    color = primaryColor
                 )
             }
         }
