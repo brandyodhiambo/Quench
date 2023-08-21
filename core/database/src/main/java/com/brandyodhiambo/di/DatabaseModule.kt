@@ -91,6 +91,10 @@ object DatabaseModule {
 
     @Provides
     @Singleton
+    fun provideAchievementDao(database: QuenchDatabase) = database.achievementDao()
+
+    @Provides
+    @Singleton
     fun provideGson(): Gson {
         return Gson()
     }

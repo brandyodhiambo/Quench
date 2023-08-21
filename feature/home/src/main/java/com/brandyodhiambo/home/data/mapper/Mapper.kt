@@ -15,6 +15,7 @@
  */
 package com.brandyodhiambo.home.data.mapper
 
+import com.brandyodhiambo.common.domain.model.Achievement
 import com.brandyodhiambo.common.domain.model.GoalWaterIntake
 import com.brandyodhiambo.common.domain.model.IdealWaterIntake
 import com.brandyodhiambo.common.domain.model.Level
@@ -22,6 +23,7 @@ import com.brandyodhiambo.common.domain.model.ReminderTime
 import com.brandyodhiambo.common.domain.model.SelectedDrink
 import com.brandyodhiambo.common.domain.model.SleepTime
 import com.brandyodhiambo.common.domain.model.WakeTime
+import com.brandyodhiambo.entity.AchievementEntity
 import com.brandyodhiambo.entity.GoalWaterIntakeEntity
 import com.brandyodhiambo.entity.IdealWaterIntakeEntity
 import com.brandyodhiambo.entity.LevelEntity
@@ -140,5 +142,19 @@ internal fun ReminderTime.toReminderEntity(): ReminderTimeEntity {
         isRepeated = isRepeated,
         isAllDay = isAllDay,
         days = days
+    )
+}
+
+internal fun AchievementEntity.toAchievement(): Achievement {
+    return Achievement(
+        isAchieved = isAchieved,
+        day = day
+    )
+}
+
+internal fun Achievement.toAchievementsEntity(): AchievementEntity {
+    return AchievementEntity(
+        isAchieved = isAchieved,
+        day = day
     )
 }

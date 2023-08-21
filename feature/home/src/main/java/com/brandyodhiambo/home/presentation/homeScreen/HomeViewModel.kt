@@ -45,7 +45,6 @@ class HomeViewModel @Inject constructor(
     private val levelRepository: LevelRepository,
     private val reminderTimeRepository: ReminderTimeRepository
 ) : ViewModel() {
-
     /*
      * ideal water intake value and functions
      * */

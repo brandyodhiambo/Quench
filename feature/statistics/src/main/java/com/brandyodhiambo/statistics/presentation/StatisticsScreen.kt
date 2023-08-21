@@ -63,6 +63,7 @@ import com.brandyodhiambo.common.R
 import com.brandyodhiambo.common.domain.model.Achievement
 import com.brandyodhiambo.designsystem.theme.blackColor
 import com.brandyodhiambo.designsystem.theme.primaryColor
+import com.brandyodhiambo.home.presentation.achievement.AchievementViewModel
 import com.brandyodhiambo.home.presentation.homeScreen.HomeViewModel
 import com.mahmoud.composecharts.barchart.BarChart
 import com.mahmoud.composecharts.barchart.BarChartEntity
@@ -75,7 +76,8 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 fun StatisticsScreen(
     navigator: DestinationsNavigator,
     statisticsViewModel: StatisticsViewModel = hiltViewModel(),
-    homeViewModel: HomeViewModel = hiltViewModel()
+    homeViewModel: HomeViewModel = hiltViewModel(),
+    achievementViewModel: AchievementViewModel = hiltViewModel()
 ) {
     val dailyStatistics = statisticsViewModel.dailyStatisticsFromDB.observeAsState()
     val weeklyStatistics = statisticsViewModel.weeklyStatisticsFromDB.observeAsState()
@@ -106,7 +108,8 @@ fun StatisticsScreen(
     val monthlyAverage = monthlyStatistics.value?.map { it.amountTaken }?.average() ?: 0.0
     val dailyAverage = dailyStatistics.value?.map { it.amountTaken }?.average() ?: 0.0
 
-    val drinkFrequency = goalWaterIntake.value?.waterIntake?.div(idealWaterIntake.value?.waterIntake ?: 1) ?: 0
+    val drinkFrequency =
+        goalWaterIntake.value?.waterIntake?.div(idealWaterIntake.value?.waterIntake ?: 1) ?: 0
 
     val average = if (setGraphDaily.value) {
         dailyAverage
@@ -116,15 +119,7 @@ fun StatisticsScreen(
         monthlyAverage
     }
 
-    val weekAchiement = listOf(
-        Achievement(isAchieved = true, "Sun"),
-        Achievement(isAchieved = true, "Mon"),
-        Achievement(isAchieved = false, "Tue"),
-        Achievement(isAchieved = false, "Wed"),
-        Achievement(isAchieved = true, "Thu"),
-        Achievement(isAchieved = false, "Fri"),
-        Achievement(isAchieved = false, "Sat")
-    )
+    val weekAchievement = achievementViewModel.isAchieved.observeAsState(initial = emptyList())
 
     Scaffold(
         backgroundColor = primaryColor
@@ -265,7 +260,7 @@ fun StatisticsScreen(
                 }
                 item {
                     Last7DayGoals(
-                        weekAchivement = weekAchiement
+                        weekAchivement = weekAchievement.value ?: emptyList()
                     )
                 }
                 item {
@@ -292,7 +287,8 @@ fun Last7DayGoals(weekAchivement: List<Achievement>) {
         elevation = 4.dp
     ) {
         Column(
-            modifier = Modifier.padding(8.dp)
+            modifier = Modifier.padding(8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
                 text = "Last 7 Days Goals Achieve",
@@ -300,12 +296,24 @@ fun Last7DayGoals(weekAchivement: List<Achievement>) {
                 fontWeight = FontWeight.SemiBold,
                 color = primaryColor
             )
-            LazyRow(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceEvenly
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier.fillMaxSize()
             ) {
-                items(weekAchivement.takeLast(7)) { weeks ->
-                    WeeksAcheive(weeks = weeks)
+                if (weekAchivement.isEmpty()) {
+                    Text(
+                        text = "You have no achievements yet",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Normal
+                    )
+                }
+                LazyRow(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    items(weekAchivement.takeLast(7)) { weeks ->
+                        WeeksAcheive(weeks = weeks)
+                    }
                 }
             }
         }
@@ -324,7 +332,7 @@ fun WeeksAcheive(
         } else {
             BlackCup()
         }
-        Text(text = weeks.day, fontSize = 16.sp, fontWeight = FontWeight.W400)
+        Text(text = weeks.day.take(3), fontSize = 16.sp, fontWeight = FontWeight.W400)
     }
 }
 

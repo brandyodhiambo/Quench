@@ -22,12 +22,9 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
-import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.LocalDateTime
-import java.time.LocalTime
 import java.time.format.TextStyle
-import java.time.temporal.TemporalAdjusters
 import java.time.temporal.WeekFields
 import java.util.*
 
@@ -72,6 +69,17 @@ fun getCurrentYear(): String {
     val now = LocalDateTime.now()
     return now.year.toString()
 }
+
+fun isEndOfDay(dateTime: LocalDateTime): Boolean {
+    val currentHour = dateTime.hour
+    val currentMinute = dateTime.minute
+
+    val endOfDayHour = 23
+    val endOfDayMinute = 59
+
+    return currentHour >= endOfDayHour && currentMinute >= endOfDayMinute
+}
+
 suspend fun <T> LiveData<T>.awaitValue(): T = withContext(Dispatchers.Default) {
     val flow = MutableSharedFlow<T>(replay = 1)
     val observer = androidx.lifecycle.Observer<T> {

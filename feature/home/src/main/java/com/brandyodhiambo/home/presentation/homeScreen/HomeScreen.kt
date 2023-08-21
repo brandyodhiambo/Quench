@@ -57,6 +57,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.brandyodhiambo.common.R
+import com.brandyodhiambo.common.domain.model.Achievement
 import com.brandyodhiambo.common.domain.model.Days
 import com.brandyodhiambo.common.domain.model.GoalWaterIntake
 import com.brandyodhiambo.common.domain.model.IdealWaterIntake
@@ -64,10 +65,13 @@ import com.brandyodhiambo.common.domain.model.Level
 import com.brandyodhiambo.common.domain.model.ReminderTime
 import com.brandyodhiambo.common.domain.model.SelectedDrink
 import com.brandyodhiambo.common.presentation.component.WaterIntakeDialog
+import com.brandyodhiambo.common.util.getCurrentDay
+import com.brandyodhiambo.common.util.isEndOfDay
 import com.brandyodhiambo.designsystem.components.CircularButton
 import com.brandyodhiambo.designsystem.theme.lightBlue
 import com.brandyodhiambo.designsystem.theme.primaryColor
 import com.brandyodhiambo.designsystem.theme.roboto
+import com.brandyodhiambo.home.presentation.achievement.AchievementViewModel
 import com.brandyodhiambo.home.presentation.component.CircularRating
 import com.brandyodhiambo.home.presentation.component.CongratulationsDialog
 import com.brandyodhiambo.home.presentation.component.DeleteDialog
@@ -76,12 +80,14 @@ import com.brandyodhiambo.home.presentation.component.IdealIntakeGoalDialog
 import com.brandyodhiambo.home.presentation.component.SelectDrinkComposable
 import com.brandyodhiambo.home.presentation.component.TimeSetterDialog
 import com.ramcosta.composedestinations.annotation.Destination
+import java.time.LocalDateTime
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Destination
 @Composable
 fun HomeScreen(
-    viewModel: HomeViewModel = hiltViewModel()
+    viewModel: HomeViewModel = hiltViewModel(),
+    achievementViewModel: AchievementViewModel = hiltViewModel()
 ) {
     val openTimeDialog = remember { mutableStateOf(false) }
     val openDeleteDialog = remember { mutableStateOf(false) }
@@ -196,13 +202,28 @@ fun HomeScreen(
 
             if ((waterTaken >= goalWaterIntake) && (goalWaterIntake != 0)) {
                 openCongratulationsDialog.value = true
-
             }
 
             if (openCongratulationsDialog.value) {
                 Dialog(onDismissRequest = { openCongratulationsDialog.value }) {
-                    CongratulationsDialog(openDialogCustom = openCongratulationsDialog)
+                    CongratulationsDialog(
+                        onCancelClicked = {
+                            openCongratulationsDialog.value = false
+                        },
+                        onOkayClicked = {
+                            openCongratulationsDialog.value = false
+                        }
+                    )
                 }
+            }
+
+            if (isEndOfDay(LocalDateTime.now()) && openCongratulationsDialog.value) {
+                achievementViewModel.insertIsAchieved(
+                    Achievement(
+                        isAchieved = true,
+                        day = getCurrentDay()
+                    )
+                )
             }
 
             if (openTimeDialog.value) {

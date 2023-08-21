@@ -39,7 +39,11 @@ fun startDailyOnetimeWorkRequest(context: Context) {
 
     val dailyWorkRequest = OneTimeWorkRequestBuilder<DailyWorker>()
         .setConstraints(constraints)
-
+        .setBackoffCriteria(
+            BackoffPolicy.LINEAR,
+            PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS,
+            TimeUnit.MILLISECONDS
+        )
         .build()
 
     WorkManager.getInstance(context).enqueue(dailyWorkRequest)

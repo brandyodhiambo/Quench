@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.brandyodhiambo.statistics.data.repository
+package com.brandyodhiambo.home.data.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.brandyodhiambo.common.domain.model.Achievement
 import com.brandyodhiambo.common.domain.repository.AchievementRepository
 import com.brandyodhiambo.dao.AchievementDao
-import com.brandyodhiambo.statistics.data.mapper.toAchievement
-import com.brandyodhiambo.statistics.data.mapper.toAchievementsEntity
+import com.brandyodhiambo.home.data.mapper.toAchievement
+import com.brandyodhiambo.home.data.mapper.toAchievementsEntity
 
 class AchievementRepositoryImpl(
     private val achievementDao: AchievementDao

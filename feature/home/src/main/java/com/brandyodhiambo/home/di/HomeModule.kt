@@ -15,6 +15,7 @@
  */
 package com.brandyodhiambo.home.di
 
+import com.brandyodhiambo.common.domain.repository.AchievementRepository
 import com.brandyodhiambo.common.domain.repository.GoalWaterIntakeRepository
 import com.brandyodhiambo.common.domain.repository.IdealWaterIntakeRepository
 import com.brandyodhiambo.common.domain.repository.LevelRepository
@@ -22,6 +23,7 @@ import com.brandyodhiambo.common.domain.repository.ReminderTimeRepository
 import com.brandyodhiambo.common.domain.repository.SelectedDrinkRepository
 import com.brandyodhiambo.common.domain.repository.SleepTimeRepository
 import com.brandyodhiambo.common.domain.repository.WakeTimeRepository
+import com.brandyodhiambo.dao.AchievementDao
 import com.brandyodhiambo.dao.GoalWaterIntakeDao
 import com.brandyodhiambo.dao.IdealWaterIntakeDao
 import com.brandyodhiambo.dao.LevelDao
@@ -29,6 +31,7 @@ import com.brandyodhiambo.dao.ReminderTimeDao
 import com.brandyodhiambo.dao.SelectedDrinkDao
 import com.brandyodhiambo.dao.SleepTimeDao
 import com.brandyodhiambo.dao.WakeTimeDao
+import com.brandyodhiambo.home.data.repository.AchievementRepositoryImpl
 import com.brandyodhiambo.home.data.repository.GoalWaterIntakeRepositoryImpl
 import com.brandyodhiambo.home.data.repository.IdealWaterInkateRepositoryImpl
 import com.brandyodhiambo.home.data.repository.LevelRepositoryImpl
@@ -86,5 +89,11 @@ object HomeModule {
     @Singleton
     fun provideReminderTimeRepository(reminderTimeDao: ReminderTimeDao): ReminderTimeRepository {
         return ReminderTimeRepositoryImpl(reminderTimeDao = reminderTimeDao)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAchievementRepository(achievementDao: AchievementDao): AchievementRepository {
+        return AchievementRepositoryImpl(achievementDao = achievementDao)
     }
 }
