@@ -41,7 +41,7 @@ class DailyWorker @AssistedInject constructor(
     private val idealWaterIntakeRepository: IdealWaterIntakeRepository,
     private val selectedDrinkRepository: SelectedDrinkRepository,
     private val reminderTimeRepository: ReminderTimeRepository,
-    private val dailyStatisticsRepository: DailyStatisticsRepository,
+    private val dailyStatisticsRepository: DailyStatisticsRepository
 ) : CoroutineWorker(context, params) {
 
     companion object {
@@ -61,8 +61,8 @@ class DailyWorker @AssistedInject constructor(
                 dailyStatisticsRepository.insertDailyStatistics(
                     DailyStatistics(
                         amountTaken = amountTaken,
-                        day = getCurrentDay(),
-                    ),
+                        day = getCurrentDay()
+                    )
                 )
                 goalWaterIntakeRepository.deleteAllGoalWaterIntakes()
                 idealWaterIntakeRepository.deleteAllIdealWaterIntakes()
