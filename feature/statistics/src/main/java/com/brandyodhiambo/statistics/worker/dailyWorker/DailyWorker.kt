@@ -30,7 +30,6 @@ import com.brandyodhiambo.common.util.awaitValue
 import com.brandyodhiambo.common.util.getCurrentDay
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import java.time.LocalDateTime
 
 @HiltWorker
 class DailyWorker @AssistedInject constructor(
@@ -41,35 +40,24 @@ class DailyWorker @AssistedInject constructor(
     private val idealWaterIntakeRepository: IdealWaterIntakeRepository,
     private val selectedDrinkRepository: SelectedDrinkRepository,
     private val reminderTimeRepository: ReminderTimeRepository,
-    private val dailyStatisticsRepository: DailyStatisticsRepository
+    private val dailyStatisticsRepository: DailyStatisticsRepository,
 ) : CoroutineWorker(context, params) {
-
-    companion object {
-        const val DAILY_WORK_NAME = "com.brandyodhiambo.common.worker.daily_worker.DailyWorker"
-        private const val TAG = "DailyWorker"
-    }
 
     override suspend fun doWork(): Result {
         return try {
             val amountTaken = levelRepository.getLevel().awaitValue()?.amountTaken ?: 1f
-            val currentHour = LocalDateTime.now().hour
-            val currentMinute = LocalDateTime.now().minute
+            dailyStatisticsRepository.insertDailyStatistics(
+                DailyStatistics(
+                    amountTaken = amountTaken,
+                    day = getCurrentDay(),
+                ),
+            )
+            goalWaterIntakeRepository.deleteAllGoalWaterIntakes()
+            idealWaterIntakeRepository.deleteAllIdealWaterIntakes()
+            selectedDrinkRepository.deleteAllSelectedDrinks()
+            reminderTimeRepository.dellAllReminderTimes()
+            levelRepository.deleteAllLevel()
 
-            val endOfDayHour = 23
-            val endOfDayMinute = 59
-            if (currentHour >= endOfDayHour && currentMinute >= endOfDayMinute) {
-                dailyStatisticsRepository.insertDailyStatistics(
-                    DailyStatistics(
-                        amountTaken = amountTaken,
-                        day = getCurrentDay()
-                    )
-                )
-                goalWaterIntakeRepository.deleteAllGoalWaterIntakes()
-                idealWaterIntakeRepository.deleteAllIdealWaterIntakes()
-                selectedDrinkRepository.deleteAllSelectedDrinks()
-                reminderTimeRepository.dellAllReminderTimes()
-                levelRepository.deleteAllLevel()
-            }
             Result.success()
         } catch (e: Exception) {
             Result.failure()

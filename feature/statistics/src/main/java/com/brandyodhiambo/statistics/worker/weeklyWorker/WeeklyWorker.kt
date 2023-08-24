@@ -26,16 +26,13 @@ import com.brandyodhiambo.common.util.awaitValue
 import com.brandyodhiambo.common.util.getCurrentWeekNumber
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import java.time.DayOfWeek
-import java.time.LocalDate
-import java.time.temporal.TemporalAdjusters
 
 @HiltWorker
 class WeeklyWorker @AssistedInject constructor(
     @Assisted context: Context,
     @Assisted params: WorkerParameters,
     private val dailyStatisticsRepository: DailyStatisticsRepository,
-    private val weeklyStatisticRepository: WeeklyStatisticRepository
+    private val weeklyStatisticRepository: WeeklyStatisticRepository,
 ) : CoroutineWorker(context, params) {
     companion object {
         const val WEEKLY_WORK_NAME = "com.brandyodhiambo.common.worker.weekly_worker.WeeklyWorker"
@@ -46,17 +43,14 @@ class WeeklyWorker @AssistedInject constructor(
         return try {
             val amountTaken = dailyStatisticsRepository.getDailyStatistics().awaitValue()
                 ?.sumByDouble { it.amountTaken.toDouble() }
-            val totalAmountTaken = amountTaken?.div(7) // 7 days in a week
+            val totalAmountTaken = amountTaken?.div(7)
 
-            val lastDayOfWeek = LocalDate.now().with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY))
-            if (LocalDate.now() == lastDayOfWeek) {
-                weeklyStatisticRepository.insertWeeklyStatistic(
-                    WeeklyStatistics(
-                        amountTaken = totalAmountTaken?.toFloat() ?: 0f,
-                        week = getCurrentWeekNumber().toString()
-                    )
-                )
-            }
+            weeklyStatisticRepository.insertWeeklyStatistic(
+                WeeklyStatistics(
+                    amountTaken = totalAmountTaken?.toFloat() ?: 0f,
+                    week = getCurrentWeekNumber().toString(),
+                ),
+            )
 
             Result.success()
         } catch (e: Exception) {

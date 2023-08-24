@@ -16,20 +16,15 @@
 package com.brandyodhiambo.statistics.worker
 
 import android.content.Context
-import androidx.work.BackoffPolicy
 import androidx.work.Constraints
-import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.PeriodicWorkRequest
-import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
+import com.brandyodhiambo.statistics.worker.achievement.AchievementWorker
 import com.brandyodhiambo.statistics.worker.dailyWorker.DailyWorker
-import com.brandyodhiambo.statistics.worker.dailyWorker.DailyWorker.Companion.DAILY_WORK_NAME
 import com.brandyodhiambo.statistics.worker.monthlyWorker.MonthlyWorker
-import com.brandyodhiambo.statistics.worker.monthlyWorker.MonthlyWorker.Companion.MONTHLY_WORK_NAME
 import com.brandyodhiambo.statistics.worker.weeklyWorker.WeeklyWorker
-import com.brandyodhiambo.statistics.worker.weeklyWorker.WeeklyWorker.Companion.WEEKLY_WORK_NAME
+import java.util.Calendar
 import java.util.concurrent.TimeUnit
 
 fun startDailyOnetimeWorkRequest(context: Context) {
@@ -37,42 +32,26 @@ fun startDailyOnetimeWorkRequest(context: Context) {
         .setRequiredNetworkType(NetworkType.NOT_REQUIRED)
         .build()
 
+    val currentDate = Calendar.getInstance()
+    val midnight = Calendar.getInstance().apply {
+        set(Calendar.HOUR_OF_DAY, 23)
+        set(Calendar.MINUTE, 59)
+        set(Calendar.SECOND, 0)
+        set(Calendar.MILLISECOND, 0)
+    }
+
+    if (currentDate.after(midnight)) {
+        midnight.add(Calendar.DAY_OF_MONTH, 1)
+    }
+
+    val timeDiff = midnight.timeInMillis - currentDate.timeInMillis
+
     val dailyWorkRequest = OneTimeWorkRequestBuilder<DailyWorker>()
         .setConstraints(constraints)
-        .setBackoffCriteria(
-            BackoffPolicy.LINEAR,
-            PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS,
-            TimeUnit.MILLISECONDS
-        )
+        .setInitialDelay(timeDiff, TimeUnit.MILLISECONDS)
         .build()
 
     WorkManager.getInstance(context).enqueue(dailyWorkRequest)
-}
-
-fun startDailyPeriodicWorkRequest(context: Context) {
-    val constraints = Constraints.Builder()
-        .setRequiredNetworkType(NetworkType.NOT_REQUIRED)
-        .setRequiresBatteryNotLow(true)
-        .setRequiresCharging(true)
-        .build()
-
-    val workRequest = PeriodicWorkRequestBuilder<DailyWorker>(
-        1,
-        TimeUnit.DAYS
-    )
-        .setConstraints(constraints)
-        .setBackoffCriteria(
-            BackoffPolicy.LINEAR,
-            PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS,
-            TimeUnit.MILLISECONDS
-        )
-        .build()
-
-    WorkManager.getInstance(context).enqueueUniquePeriodicWork(
-        DAILY_WORK_NAME,
-        ExistingPeriodicWorkPolicy.REPLACE,
-        workRequest
-    )
 }
 
 // weekly requests
@@ -81,37 +60,25 @@ fun startWeeklyOnetimeWorkRequest(context: Context) {
         .setRequiredNetworkType(NetworkType.NOT_REQUIRED)
         .build()
 
+    val currentDate = Calendar.getInstance()
+
+    val endOfWeek = Calendar.getInstance().apply {
+        set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY)
+        set(Calendar.HOUR_OF_DAY, 23)
+        set(Calendar.MINUTE, 59)
+        set(Calendar.SECOND, 59)
+        set(Calendar.MILLISECOND, 999)
+        add(Calendar.WEEK_OF_YEAR, 1) // Move to the next week
+    }
+
+    val timeDiff = endOfWeek.timeInMillis - currentDate.timeInMillis
+
     val weeklyWorkRequest = OneTimeWorkRequestBuilder<WeeklyWorker>()
         .setConstraints(constraints)
+        .setInitialDelay(timeDiff, TimeUnit.MILLISECONDS)
         .build()
 
     WorkManager.getInstance(context).enqueue(weeklyWorkRequest)
-}
-
-fun startWeeklyPeriodicWorkRequest(context: Context) {
-    val constraints = Constraints.Builder()
-        .setRequiredNetworkType(NetworkType.NOT_REQUIRED)
-        .setRequiresBatteryNotLow(true)
-        .setRequiresCharging(true)
-        .build()
-
-    val workRequest = PeriodicWorkRequestBuilder<WeeklyWorker>(
-        1,
-        TimeUnit.DAYS
-    )
-        .setConstraints(constraints)
-        .setBackoffCriteria(
-            BackoffPolicy.LINEAR,
-            PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS,
-            TimeUnit.MILLISECONDS
-        )
-        .build()
-
-    WorkManager.getInstance(context).enqueueUniquePeriodicWork(
-        WEEKLY_WORK_NAME,
-        ExistingPeriodicWorkPolicy.REPLACE,
-        workRequest
-    )
 }
 
 // monthly requests
@@ -120,35 +87,53 @@ fun startMonthlyOnetimeWorkRequest(context: Context) {
         .setRequiredNetworkType(NetworkType.NOT_REQUIRED)
         .build()
 
-    val monthlyWorkRequest = OneTimeWorkRequestBuilder<MonthlyWorker>()
+    val currentDate = Calendar.getInstance()
+    val endOfMonth = Calendar.getInstance().apply {
+        set(Calendar.DAY_OF_MONTH, getActualMaximum(Calendar.DAY_OF_MONTH))
+        set(Calendar.HOUR_OF_DAY, 23)
+        set(Calendar.MINUTE, 59)
+        set(Calendar.SECOND, 59)
+        set(Calendar.MILLISECOND, 999)
+    }
+
+    if (currentDate.after(endOfMonth)) {
+        endOfMonth.add(Calendar.MONTH, 1)
+    }
+
+    val timeDiff = endOfMonth.timeInMillis - currentDate.timeInMillis
+
+    val endOfMonthWorkRequest = OneTimeWorkRequestBuilder<MonthlyWorker>()
         .setConstraints(constraints)
+        .setInitialDelay(timeDiff, TimeUnit.MILLISECONDS)
         .build()
 
-    WorkManager.getInstance(context).enqueue(monthlyWorkRequest)
+    WorkManager.getInstance(context).enqueue(endOfMonthWorkRequest)
 }
 
-fun startMonthlyPeriodicWorkRequest(context: Context) {
+// achievement worker request
+fun startAchievementOnetimeWorkRequest(context: Context) {
     val constraints = Constraints.Builder()
         .setRequiredNetworkType(NetworkType.NOT_REQUIRED)
-        .setRequiresBatteryNotLow(true)
-        .setRequiresCharging(true)
         .build()
 
-    val workRequest = PeriodicWorkRequestBuilder<MonthlyWorker>(
-        1,
-        TimeUnit.DAYS
-    )
+    val currentDate = Calendar.getInstance()
+    val midnight = Calendar.getInstance().apply {
+        set(Calendar.HOUR_OF_DAY, 23)
+        set(Calendar.MINUTE, 59)
+        set(Calendar.SECOND, 0)
+        set(Calendar.MILLISECOND, 0)
+    }
+
+    if (currentDate.after(midnight)) {
+        midnight.add(Calendar.DAY_OF_MONTH, 1)
+    }
+
+    val timeDiff = midnight.timeInMillis - currentDate.timeInMillis
+
+    val achievementWorkRequest = OneTimeWorkRequestBuilder<AchievementWorker>()
         .setConstraints(constraints)
-        .setBackoffCriteria(
-            BackoffPolicy.LINEAR,
-            PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS,
-            TimeUnit.MILLISECONDS
-        )
+        .setInitialDelay(timeDiff, TimeUnit.MILLISECONDS)
         .build()
 
-    WorkManager.getInstance(context).enqueueUniquePeriodicWork(
-        MONTHLY_WORK_NAME,
-        ExistingPeriodicWorkPolicy.REPLACE,
-        workRequest
-    )
+    WorkManager.getInstance(context).enqueue(achievementWorkRequest)
 }

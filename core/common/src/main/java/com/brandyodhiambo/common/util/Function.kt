@@ -70,16 +70,6 @@ fun getCurrentYear(): String {
     return now.year.toString()
 }
 
-fun isEndOfDay(dateTime: LocalDateTime): Boolean {
-    val currentHour = dateTime.hour
-    val currentMinute = dateTime.minute
-
-    val endOfDayHour = 23
-    val endOfDayMinute = 59
-
-    return currentHour >= endOfDayHour && currentMinute >= endOfDayMinute
-}
-
 suspend fun <T> LiveData<T>.awaitValue(): T = withContext(Dispatchers.Default) {
     val flow = MutableSharedFlow<T>(replay = 1)
     val observer = androidx.lifecycle.Observer<T> {

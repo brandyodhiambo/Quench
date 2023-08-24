@@ -36,6 +36,7 @@ import com.brandyodhiambo.quench.navigation.FeatureNavigator
 import com.brandyodhiambo.quench.navigation.NavGraphs
 import com.brandyodhiambo.quench.util.AlarmSchedularImpl
 import com.brandyodhiambo.quench.util.createChannel
+import com.brandyodhiambo.statistics.worker.startAchievementOnetimeWorkRequest
 import com.brandyodhiambo.statistics.worker.startDailyOnetimeWorkRequest
 import com.brandyodhiambo.statistics.worker.startMonthlyOnetimeWorkRequest
 import com.brandyodhiambo.statistics.worker.startWeeklyOnetimeWorkRequest
@@ -66,6 +67,7 @@ class MainActivity : ComponentActivity() {
                     startDailyOnetimeWorkRequest(applicationContext)
                     startMonthlyOnetimeWorkRequest(applicationContext)
                     startWeeklyOnetimeWorkRequest(applicationContext)
+                    startAchievementOnetimeWorkRequest(applicationContext)
 
                     val reminderTimeFromDb = viewModel.reminderTime.observeAsState()
                     val hours = reminderTimeFromDb.value?.hour ?: 0

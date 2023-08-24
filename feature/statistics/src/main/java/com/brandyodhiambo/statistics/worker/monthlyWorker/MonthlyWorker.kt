@@ -26,15 +26,13 @@ import com.brandyodhiambo.common.util.awaitValue
 import com.brandyodhiambo.common.util.getCurrentMonth
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import java.time.LocalDate
-import java.time.temporal.TemporalAdjusters
 
 @HiltWorker
 class MonthlyWorker @AssistedInject constructor(
     @Assisted context: Context,
     @Assisted params: WorkerParameters,
     private val weeklyStatisticRepository: WeeklyStatisticRepository,
-    private val monthlyStatisticsRepository: MonthlyStatisticsRepository
+    private val monthlyStatisticsRepository: MonthlyStatisticsRepository,
 ) : CoroutineWorker(context, params) {
 
     companion object {
@@ -50,15 +48,12 @@ class MonthlyWorker @AssistedInject constructor(
                     ?.sumByDouble { it.amountTaken.toDouble() }
             val totalAmountTaken = amountTaken?.div(4) // 4 weeks in a month
 
-            val lastDayOfMonth = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth())
-            if (LocalDate.now() == lastDayOfMonth) {
-                monthlyStatisticsRepository.insertMonthlyStatistics(
-                    MonthlyStatistics(
-                        amountTaken = totalAmountTaken?.toFloat() ?: 0f,
-                        month = getCurrentMonth()
-                    )
-                )
-            }
+            monthlyStatisticsRepository.insertMonthlyStatistics(
+                MonthlyStatistics(
+                    amountTaken = totalAmountTaken?.toFloat() ?: 0f,
+                    month = getCurrentMonth(),
+                ),
+            )
 
             Result.success()
         } catch (e: Exception) {
