@@ -15,16 +15,7 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling:${Versions.compose_version}")
     debugImplementation("androidx.compose.ui:ui-test-manifest:${Versions.compose_version}")
 
-
-
-    // Room
-    implementation("androidx.room:room-runtime:${Versions.room_version}")
-    kapt("androidx.room:room-compiler:${Versions.room_version}")
-
-    // Kotlin Extensions and Coroutines support for Room
-    implementation("androidx.room:room-ktx:${Versions.room_version}")
-
-
+    
     // Compose dependencies
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1")
     implementation("androidx.navigation:navigation-compose:2.6.0-alpha04")
@@ -73,8 +64,6 @@ dependencies {
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.6'
 
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
-
-    implementation('androidx.work:work-runtime:2.7.1')
 
 
 }

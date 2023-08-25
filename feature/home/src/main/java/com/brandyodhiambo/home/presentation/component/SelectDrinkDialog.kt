@@ -1,3 +1,18 @@
+/*
+ * Copyright (C)2023 Brandy Odhiambo
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.brandyodhiambo.home.presentation.component
 
 import android.os.Build
@@ -51,44 +66,44 @@ import java.time.format.DateTimeFormatter
 val selectedDrinks = listOf(
     SelectDrink(
         icon = R.drawable.small_cup,
-        size = "300ml",
+        size = "300ml"
     ),
     SelectDrink(
         icon = R.drawable.small_cup,
-        size = "350ml",
+        size = "350ml"
     ),
     SelectDrink(
         icon = R.drawable.small_glass,
-        size = "400ml",
+        size = "400ml"
     ),
     SelectDrink(
         icon = R.drawable.ic_glass,
-        size = "450ml",
+        size = "450ml"
     ),
     SelectDrink(
         icon = R.drawable.ic_cup,
-        size = "500ml",
+        size = "500ml"
     ),
     SelectDrink(
         icon = R.drawable.big_cup,
-        size = "550ml",
+        size = "550ml"
     ),
     SelectDrink(
         icon = R.drawable.kettle,
-        size = "600ml",
+        size = "600ml"
     ),
     SelectDrink(
         icon = R.drawable.big_cup,
-        size = "650ml",
+        size = "650ml"
     ),
     SelectDrink(
         icon = R.drawable.kettle,
-        size = "700ml",
+        size = "700ml"
     ),
     SelectDrink(
         icon = R.drawable.kettle,
-        size = "1000ml",
-    ),
+        size = "1000ml"
+    )
 )
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -99,18 +114,18 @@ fun SelectDrinkComposable(
     onCurrentSelectedDrinkTime: (String) -> Unit,
     onCurrentSelectedDrinkSize: (String) -> Unit,
     onCurrentSelectedDrinkIcon: (Int) -> Unit,
-    onClick: () -> Unit,
+    onClick: () -> Unit
 ) {
     val openTimeDialog = rememberMaterialDialogState()
     Card(
         shape = RoundedCornerShape(10.dp),
         modifier = Modifier.padding(10.dp, 5.dp, 5.dp, 5.dp),
-        elevation = 8.dp,
+        elevation = 8.dp
     ) {
         Column(
             modifier
                 .background(Color.White)
-                .padding(8.dp),
+                .padding(8.dp)
         ) {
             Text(
                 text = "Select Drink",
@@ -121,7 +136,7 @@ fun SelectDrinkComposable(
                 maxLines = 2,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.W500,
-                overflow = TextOverflow.Ellipsis,
+                overflow = TextOverflow.Ellipsis
             )
             Spacer(modifier = Modifier.height(12.dp))
             LazyVerticalGrid(columns = GridCells.Fixed(count = 4)) {
@@ -131,7 +146,7 @@ fun SelectDrinkComposable(
                         openTimeDialog = openTimeDialog,
                         onCurrentSelectedDrinkTime = onCurrentSelectedDrinkTime,
                         onCurrentSelectedDrinkSize = onCurrentSelectedDrinkSize,
-                        onCurrentSelectedDrinkIcon = onCurrentSelectedDrinkIcon,
+                        onCurrentSelectedDrinkIcon = onCurrentSelectedDrinkIcon
                     )
                 }
             }
@@ -141,7 +156,7 @@ fun SelectDrinkComposable(
                     .fillMaxWidth()
                     .padding(top = 10.dp)
                     .background(Color.White),
-                horizontalArrangement = Arrangement.SpaceAround,
+                horizontalArrangement = Arrangement.SpaceAround
             ) {
                 TextButton(onClick = {
                     openDialog.value = false
@@ -150,7 +165,7 @@ fun SelectDrinkComposable(
                         "Cancel",
                         fontWeight = FontWeight.Bold,
                         color = Color.Black,
-                        modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
+                        modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
                     )
                 }
                 TextButton(onClick = {
@@ -161,7 +176,7 @@ fun SelectDrinkComposable(
                         "Okay",
                         fontWeight = FontWeight.ExtraBold,
                         color = primaryColor,
-                        modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
+                        modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
                     )
                 }
             }
@@ -176,7 +191,7 @@ fun SelectCard(
     openTimeDialog: MaterialDialogState,
     onCurrentSelectedDrinkSize: (String) -> Unit,
     onCurrentSelectedDrinkIcon: (Int) -> Unit,
-    onCurrentSelectedDrinkTime: (String) -> Unit,
+    onCurrentSelectedDrinkTime: (String) -> Unit
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -184,18 +199,18 @@ fun SelectCard(
             openTimeDialog.show()
             onCurrentSelectedDrinkIcon(selectDrink.icon)
             onCurrentSelectedDrinkSize(selectDrink.size)
-        },
+        }
     ) {
         Image(
             painter = painterResource(id = selectDrink.icon),
             contentDescription = null,
             contentScale = ContentScale.Fit,
             colorFilter = ColorFilter.tint(
-                color = primaryColor,
+                color = primaryColor
             ),
             modifier = Modifier
                 .padding(top = 8.dp)
-                .height(20.dp),
+                .height(20.dp)
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
@@ -205,12 +220,12 @@ fun SelectCard(
             maxLines = 2,
             fontSize = 14.sp,
             fontWeight = FontWeight.W300,
-            overflow = TextOverflow.Ellipsis,
+            overflow = TextOverflow.Ellipsis
         )
         if (openTimeDialog.showing) {
             TimeDialog(
                 openDialog = openTimeDialog,
-                onCurrentSelectedDrinkTime = onCurrentSelectedDrinkTime,
+                onCurrentSelectedDrinkTime = onCurrentSelectedDrinkTime
             )
         }
     }
@@ -220,7 +235,7 @@ fun SelectCard(
 @Composable
 fun TimeDialog(
     onCurrentSelectedDrinkTime: (String) -> Unit,
-    openDialog: MaterialDialogState,
+    openDialog: MaterialDialogState
 ) {
     var pickedTime by remember {
         mutableStateOf(LocalTime.MAX)
@@ -233,7 +248,7 @@ fun TimeDialog(
                 onCurrentSelectedDrinkTime(pickedTime.format(DateTimeFormatter.ofPattern("HH:mm a")))
             }
             negativeButton(text = "Cancel", textStyle = TextStyle(color = primaryColor))
-        },
+        }
     ) {
         timepicker(
             initialTime = pickedTime,
@@ -246,8 +261,8 @@ fun TimeDialog(
                 activeBackgroundColor = primaryColor,
                 activeTextColor = Color.White,
                 inactiveBackgroundColor = Color.White,
-                inactiveTextColor = Color.Black,
-            ),
+                inactiveTextColor = Color.Black
+            )
         ) {
             pickedTime = it
         }
@@ -256,5 +271,5 @@ fun TimeDialog(
 
 data class SelectDrink(
     val size: String,
-    val icon: Int,
+    val icon: Int
 )
