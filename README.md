@@ -1,4 +1,4 @@
-<p align="center"><img src="project/animcorner.png" alt="AnimeCorner" height="250px"></p>
+<p align="center"><img src="project/animcorner.png" alt="Quench" height="250px"></p>
 
 # Quench
 Quench is a water reminder App  designed with one primary goal in mind, to help users stay adequately hydrated throughout their day. it is created using the cutting-edge [Jetpack compose](https://developer.android.com/jetpack/compose?gclid=Cj0KCQjwlemWBhDUARIsAFp1rLVEasIdkuT4ctD9QlZypDNFdoY-yRXDP_QQ8mE75u7P20MBBzuQiW8aAs5AEALw_wcB&gclsrc=aw.ds) and leveraging a range of modern Android libraries, this app serves as a simple yet effective tool to promote healthy hydration habits.
@@ -10,19 +10,19 @@ The app is built with the Model-View-ViewModel (MVVM) as its structural design p
   - View models transform model information into values that can be displayed on a view. They’re usually classes, so they can be passed around as references.
 
 ### Home Screen
-<img src="project/home.png" width="250"/> <img src="project/fav2.png" width="250"/>
+<img src="project/q_home.png" width="250"/> <img src="project/q_home2.png" width="250"/>
 
 ### Statistics Screen
-<img src="project/detail.png" width="250"/> <img src="project/fav2.png" width="250"/>
+<img src="project/q_statistics.png" width="250"/> <img src="project/q_statistics2.png" width="250"/>
 
 ### Settings Screen
-<img src="project/fav1.png" width="250"/> 
+<img src="project/q_settings.png" width="250"/> 
 
 ### Notification Screen
-<img src="project/characters.png" width="250"/> 
+<img src="project/q_notif.png" width="250"/> 
 
 ### Add Notification Screen
-<img src="project/account.png" width="250"/>
+<img src="project/q_add_notif.png" width="250"/>
 
 ## Tech Stack.
 - [Kotlin](https://developer.android.com/kotlin) - Kotlin is a programming language that can run on JVM. Google has announced Kotlin as one of its officially supported programming languages in Android Studio; and the Android community is migrating at a pace from Java to Kotlin
