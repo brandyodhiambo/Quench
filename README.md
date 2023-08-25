@@ -1,4 +1,4 @@
-<p align="center"><img src="project/animcorner.png" alt="Quench" height="250px"></p>
+<p align="center"><img src="project/quench.png" alt="Quench" height="250px"></p>
 
 # Quench
 Quench is a water reminder App  designed with one primary goal in mind, to help users stay adequately hydrated throughout their day. it is created using the cutting-edge [Jetpack compose](https://developer.android.com/jetpack/compose?gclid=Cj0KCQjwlemWBhDUARIsAFp1rLVEasIdkuT4ctD9QlZypDNFdoY-yRXDP_QQ8mE75u7P20MBBzuQiW8aAs5AEALw_wcB&gclsrc=aw.ds) and leveraging a range of modern Android libraries, this app serves as a simple yet effective tool to promote healthy hydration habits.
