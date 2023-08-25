@@ -19,7 +19,7 @@ class AchievementWorker @AssistedInject constructor(
     @Assisted params: WorkerParameters,
     private val achievementRepository: AchievementRepository,
     private val levelRepository: LevelRepository,
-    private val goalWaterIntakeRepository: GoalWaterIntakeRepository
+    private val goalWaterIntakeRepository: GoalWaterIntakeRepository,
 ) : CoroutineWorker(context, params) {
     override suspend fun doWork(): Result {
         return try {
@@ -29,8 +29,8 @@ class AchievementWorker @AssistedInject constructor(
             achievementRepository.insertAchievement(
                 Achievement(
                     isAchieved = amountTaken.toInt() >= goalWaterIntake.toInt(),
-                    day = getCurrentDay()
-                )
+                    day = getCurrentDay(),
+                ),
             )
             Result.success()
         } catch (e: Exception) {

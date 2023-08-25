@@ -62,12 +62,12 @@ class MainActivity : ComponentActivity() {
             QuenchTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
+                    color = MaterialTheme.colors.background,
                 ) {
+                    startAchievementOnetimeWorkRequest(applicationContext)
                     startDailyOnetimeWorkRequest(applicationContext)
                     startMonthlyOnetimeWorkRequest(applicationContext)
                     startWeeklyOnetimeWorkRequest(applicationContext)
-                    startAchievementOnetimeWorkRequest(applicationContext)
 
                     val reminderTimeFromDb = viewModel.reminderTime.observeAsState()
                     val hours = reminderTimeFromDb.value?.hour ?: 0
@@ -75,7 +75,7 @@ class MainActivity : ComponentActivity() {
                     val scheduler = AlarmSchedularImpl(this)
                     val alarmItem = AlarmData(
                         time = LocalDateTime.now().withHour(hours).withMinute(minutes),
-                        message = getString(R.string.it_s_time_to_drink_water)
+                        message = getString(R.string.it_s_time_to_drink_water),
                     )
                     alarmItem.let(scheduler::schedule)
                     val navController = rememberAnimatedNavController()
@@ -87,9 +87,9 @@ class MainActivity : ComponentActivity() {
                         engine = navHostEngine,
                         dependenciesContainerBuilder = {
                             dependency(
-                                currentNavigator()
+                                currentNavigator(),
                             )
-                        }
+                        },
                     )
                 }
             }
@@ -100,7 +100,7 @@ class MainActivity : ComponentActivity() {
 fun DestinationScope<*>.currentNavigator(): FeatureNavigator {
     return FeatureNavigator(
         navController = navController,
-        navGraph = navBackStackEntry.destination.navGraph()
+        navGraph = navBackStackEntry.destination.navGraph(),
     )
 }
 
