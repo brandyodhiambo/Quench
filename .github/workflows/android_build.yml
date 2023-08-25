@@ -8,9 +8,10 @@ on:
 
 jobs:
   build:
+    name: 🔨 Build
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v2.3.4
 
       - name: Set up JDK 11
@@ -18,8 +19,11 @@ jobs:
         with:
           java-version: 11
 
+      - name: Make gradle executable
+        run: chmod +x ./gradlew
+
       - name: Build with Gradle
-        run: ./gradlew build
+        run: ./gradlew build --stacktrace
 
       - name: Run Tests
         run: ./gradlew test

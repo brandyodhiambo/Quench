@@ -32,7 +32,7 @@ class WeeklyWorker @AssistedInject constructor(
     @Assisted context: Context,
     @Assisted params: WorkerParameters,
     private val dailyStatisticsRepository: DailyStatisticsRepository,
-    private val weeklyStatisticRepository: WeeklyStatisticRepository,
+    private val weeklyStatisticRepository: WeeklyStatisticRepository
 ) : CoroutineWorker(context, params) {
     companion object {
         const val WEEKLY_WORK_NAME = "com.brandyodhiambo.common.worker.weekly_worker.WeeklyWorker"
@@ -48,8 +48,8 @@ class WeeklyWorker @AssistedInject constructor(
             weeklyStatisticRepository.insertWeeklyStatistic(
                 WeeklyStatistics(
                     amountTaken = totalAmountTaken?.toFloat() ?: 0f,
-                    week = getCurrentWeekNumber().toString(),
-                ),
+                    week = getCurrentWeekNumber().toString()
+                )
             )
 
             Result.success()

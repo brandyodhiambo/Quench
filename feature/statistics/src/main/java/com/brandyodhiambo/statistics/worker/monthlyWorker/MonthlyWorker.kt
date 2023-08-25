@@ -32,7 +32,7 @@ class MonthlyWorker @AssistedInject constructor(
     @Assisted context: Context,
     @Assisted params: WorkerParameters,
     private val weeklyStatisticRepository: WeeklyStatisticRepository,
-    private val monthlyStatisticsRepository: MonthlyStatisticsRepository,
+    private val monthlyStatisticsRepository: MonthlyStatisticsRepository
 ) : CoroutineWorker(context, params) {
 
     companion object {
@@ -51,8 +51,8 @@ class MonthlyWorker @AssistedInject constructor(
             monthlyStatisticsRepository.insertMonthlyStatistics(
                 MonthlyStatistics(
                     amountTaken = totalAmountTaken?.toFloat() ?: 0f,
-                    month = getCurrentMonth(),
-                ),
+                    month = getCurrentMonth()
+                )
             )
 
             Result.success()
