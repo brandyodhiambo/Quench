@@ -57,7 +57,7 @@ fun NotificationManager.sendReminderNotification(
             NotificationCompat.BigTextStyle()
                 .bigText(message)
         )
-        .setSmallIcon(R.drawable.ic_notification)
+        .setSmallIcon(R.drawable.ic_notifications)
         .setPriority(NotificationCompat.PRIORITY_HIGH)
         .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
         .setContentIntent(contentPendingIntent)
