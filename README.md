@@ -13,6 +13,9 @@ The app is built with the Model-View-ViewModel (MVVM) as its structural design p
   - Views display visual elements and controls on the screen. They’re typically subclasses of UIView.
   - View models transform model information into values that can be displayed on a view. They’re usually classes, so they can be passed around as references.
 
+## Important Note on App's Stability
+This app is a work in progress and is currently in heavy development. Bugs may be present and any feedback or bug reports are welcome.
+
 ### Home Screen
 <img src="project/q_home.png" width="250"/> <img src="project/q_home2.png" width="250"/>
 
