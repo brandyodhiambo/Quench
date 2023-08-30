@@ -3,11 +3,18 @@
 # Quench
 Quench is a water reminder App  designed with one primary goal in mind, to help users stay adequately hydrated throughout their day. it is created using the cutting-edge [Jetpack compose](https://developer.android.com/jetpack/compose?gclid=Cj0KCQjwlemWBhDUARIsAFp1rLVEasIdkuT4ctD9QlZypDNFdoY-yRXDP_QQ8mE75u7P20MBBzuQiW8aAs5AEALw_wcB&gclsrc=aw.ds) and leveraging a range of modern Android libraries, this app serves as a simple yet effective tool to promote healthy hydration habits.
 
+Currently available on the Play Store
+
+<a href='https://play.google.com/store/apps/details?id=com.brandyodhiambo.quench'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height='80px'/></a>
+
 ## Structural design pattern
 The app is built with the Model-View-ViewModel (MVVM) as its structural design pattern that separates objects into three distinct groups:
   - Models hold application data. They’re usually structs or simple classes.
   - Views display visual elements and controls on the screen. They’re typically subclasses of UIView.
   - View models transform model information into values that can be displayed on a view. They’re usually classes, so they can be passed around as references.
+
+## Important Note on App's Stability
+This app is a work in progress and is currently in heavy development. Bugs may be present and any feedback or bug reports are welcome.
 
 ### Home Screen
 <img src="project/q_home.png" width="250"/> <img src="project/q_home2.png" width="250"/>
