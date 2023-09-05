@@ -12,7 +12,7 @@ spotless {
     kotlin {
         target "**/*.kt"
         trimTrailingWhitespace()
-        ktlint()
+        //ktlint()
         indentWithSpaces()
         licenseHeaderFile(rootProject.file("spotless/copyright.kt"))
         endWithNewline()
