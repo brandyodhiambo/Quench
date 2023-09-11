@@ -25,7 +25,7 @@ jobs:
         uses: android-actions/setup-android@v2
 
       - name: Grant rights
-        run: chmod +x build.gradle
+        run: chmod +x ./gradlew
 
       - name: Build with Gradle
         id: build
