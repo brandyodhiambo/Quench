@@ -31,6 +31,10 @@ jobs:
         id: build
         run: ./gradlew build --stacktrace
 
+      - name: Unit Test
+        id: test
+        run: ./gradlew test
+
       - name: Build Release AAB
         id: buildRelease
         run: ./gradlew bundleRelease --stacktrace
