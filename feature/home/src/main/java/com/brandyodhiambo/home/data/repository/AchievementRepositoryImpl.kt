@@ -16,7 +16,7 @@
 package com.brandyodhiambo.home.data.repository
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.map
 import com.brandyodhiambo.common.domain.model.Achievement
 import com.brandyodhiambo.common.domain.repository.AchievementRepository
 import com.brandyodhiambo.dao.AchievementDao
@@ -24,7 +24,7 @@ import com.brandyodhiambo.home.data.mapper.toAchievement
 import com.brandyodhiambo.home.data.mapper.toAchievementsEntity
 
 class AchievementRepositoryImpl(
-    private val achievementDao: AchievementDao
+    private val achievementDao: AchievementDao,
 ) : AchievementRepository {
     override suspend fun insertAchievement(achievement: Achievement) {
         achievementDao.insertAchievement(achievement.toAchievementsEntity())
@@ -43,7 +43,7 @@ class AchievementRepositoryImpl(
     }
 
     override fun getAchievement(): LiveData<List<Achievement>?> {
-        return Transformations.map(achievementDao.getAchievement()) { achievementEntity ->
+        return achievementDao.getAchievement().map { achievementEntity ->
             achievementEntity?.map { it.toAchievement() }
         }
     }

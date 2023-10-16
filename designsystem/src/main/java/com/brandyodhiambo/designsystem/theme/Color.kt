@@ -17,14 +17,21 @@ package com.brandyodhiambo.designsystem.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple200 = Color(0xFFBB86FC)
-val Purple500 = Color(0xFF6200EE)
-val Purple700 = Color(0xFF3700B3)
-val Teal200 = Color(0xFF03DAC5)
+val PrimaryColor = Color(0xFF1F93F8)
+val PrimaryLightColor = Color(0xfffdf2cf)
 
-val primaryColor = Color(0xFF1F93F8)
-val blackColor = Color(0xFF2D2D2D)
-val secondaryWhite = Color(0xFFF2FBFF)
-val PrimaryWhite = Color(0xFFFFFFFF)
-val lightBlue = Color(0xFFD5F4FD)
-val GoldColor = Color(0xFFFFD700)
+val SecondaryColor = Color(0xffFFD700)
+val SecondaryLightColor = Color(0xffD2B48C)
+
+val PrimaryTextColor = Color(0xffFFFFFF)
+val SecondaryTextColor = Color(0xffFFFFFF)
+
+val SurfaceDark = Color(0xFF121212)
+val SurfaceLight = Color(0xFFFFFFFF)
+
+val BackgroundLightColor = Color(0xffFFFFFF)
+val BackgroundDarkColor = Color(0xff121212)
+
+val ErrorColor = Color(0xFFFF0000)
+val OnErrorColor = Color(0xFF000000)
+

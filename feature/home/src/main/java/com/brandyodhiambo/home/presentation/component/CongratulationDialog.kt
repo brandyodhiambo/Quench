@@ -28,41 +28,40 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.brandyodhiambo.common.R
-import com.brandyodhiambo.designsystem.theme.primaryColor
 
 @Composable
 fun CongratulationsDialog(
     onOkayClicked: () -> Unit,
-    onCancelClicked: () -> Unit
+    onCancelClicked: () -> Unit,
 ) {
     val context = LocalContext.current
     Card(
         modifier = Modifier.padding(10.dp, 5.dp, 10.dp, 10.dp),
         shape = RoundedCornerShape(12.dp),
-        elevation = 8.dp
+        elevation = 8.dp,
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         ) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(300.dp)
+                    .height(300.dp),
             ) {
                 Image(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(300.dp),
                     painter = painterResource(id = R.drawable.congratulations),
-                    contentDescription = null
+                    contentDescription = null,
                 )
             }
 
@@ -71,16 +70,16 @@ fun CongratulationsDialog(
                     .fillMaxWidth()
                     .padding(top = 10.dp)
                     .background(Color.White),
-                horizontalArrangement = Arrangement.SpaceAround
+                horizontalArrangement = Arrangement.SpaceAround,
             ) {
                 TextButton(onClick = {
                     onCancelClicked()
                 }) {
                     Text(
                         "Cancel",
-                        fontWeight = FontWeight.Bold,
+                        style = MaterialTheme.typography.labelLarge,
                         color = Color.Black,
-                        modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
+                        modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
                     )
                 }
                 TextButton(onClick = {
@@ -88,9 +87,9 @@ fun CongratulationsDialog(
                 }) {
                     Text(
                         "Okay",
-                        fontWeight = FontWeight.ExtraBold,
-                        color = primaryColor,
-                        modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
+                        style = MaterialTheme.typography.labelLarge,
+                        color = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
                     )
                 }
             }

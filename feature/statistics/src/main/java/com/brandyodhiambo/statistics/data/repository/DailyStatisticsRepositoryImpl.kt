@@ -16,7 +16,7 @@
 package com.brandyodhiambo.statistics.data.repository
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.map
 import com.brandyodhiambo.common.domain.model.DailyStatistics
 import com.brandyodhiambo.common.domain.repository.DailyStatisticsRepository
 import com.brandyodhiambo.dao.DailyStatisticsDao
@@ -43,8 +43,8 @@ class DailyStatisticsRepositoryImpl(
     }
 
     override fun getDailyStatistics(): LiveData<List<DailyStatistics>?> {
-        return Transformations.map(dailyStatisticsDao.getDailyStatistics()) { dailyStatisticsEntity ->
-            dailyStatisticsEntity?.map { it.toDailyStatistics() }
+        return dailyStatisticsDao.getDailyStatistics().map { listofdailystats ->
+            listofdailystats?.map { it.toDailyStatistics() }
         }
     }
 }

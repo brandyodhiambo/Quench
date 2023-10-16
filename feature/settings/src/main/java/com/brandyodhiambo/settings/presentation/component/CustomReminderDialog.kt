@@ -26,9 +26,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.RadioButton
-import androidx.compose.material.Text
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -37,18 +39,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import com.brandyodhiambo.designsystem.theme.primaryColor
-import com.brandyodhiambo.designsystem.theme.secondaryWhite
 
 @Composable
 fun CustomReminderDialog(
     openDialog: MutableState<Boolean>,
     title: String,
-    items: List<String>
+    items: List<String>,
 ) {
     val selectedValue = remember { mutableStateOf("") }
     val isSelectedItem: (String) -> Boolean = { selectedValue.value == it }
@@ -57,16 +56,15 @@ fun CustomReminderDialog(
     Card(
         shape = RoundedCornerShape(12.dp),
         modifier = Modifier.padding(10.dp, 5.dp, 10.dp, 10.dp),
-        elevation = 8.dp
     ) {
         Column(
             Modifier
                 .padding(8.dp)
-                .background(Color.White)
+                .background(MaterialTheme.colorScheme.background),
         ) {
             Text(
                 text = "Select $title",
-                modifier = Modifier.padding(8.dp)
+                modifier = Modifier.padding(8.dp),
             )
             items.forEach { item ->
                 Row(
@@ -75,18 +73,18 @@ fun CustomReminderDialog(
                         .selectable(
                             selected = isSelectedItem(item),
                             onClick = { onChangeState(item) },
-                            role = Role.RadioButton
+                            role = Role.RadioButton,
                         )
-                        .padding(8.dp)
+                        .padding(8.dp),
                 ) {
                     RadioButton(
                         selected = isSelectedItem(item),
-                        onClick = null
+                        onClick = null,
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = item,
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
                     )
                 }
             }
@@ -95,44 +93,46 @@ fun CustomReminderDialog(
                 Modifier
                     .fillMaxWidth()
                     .padding(top = 10.dp)
-                    .background(Color.White),
-                horizontalArrangement = Arrangement.SpaceAround
+                    .background(MaterialTheme.colorScheme.background),
+                horizontalArrangement = Arrangement.SpaceAround,
             ) {
                 Card(
                     shape = RoundedCornerShape(20.dp),
-                    elevation = 10.dp,
                     modifier = Modifier
                         .fillMaxWidth(0.5f)
                         .padding(10.dp)
                         .clickable {
                             openDialog.value = false
                         },
-                    backgroundColor = Color.LightGray
+                    colors = CardDefaults.cardColors(
+                        MaterialTheme.colorScheme.onBackground.copy(
+                            alpha = 0.12f,
+                        ),
+                    ),
                 ) {
                     Text(
                         "Cancel",
-                        fontWeight = FontWeight.Bold,
-                        color = Color.Black,
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onBackground,
                         modifier = Modifier.padding(10.dp),
-                        textAlign = TextAlign.Center
+                        textAlign = TextAlign.Center,
                     )
                 }
                 Card(
                     shape = RoundedCornerShape(20.dp),
-                    elevation = 10.dp,
                     modifier = Modifier
                         .padding(10.dp)
                         .clickable {
                             openDialog.value = false
                         },
-                    backgroundColor = primaryColor
+                    colors = CardDefaults.cardColors(MaterialTheme.colorScheme.primary),
                 ) {
                     Text(
                         "Okay",
-                        fontWeight = FontWeight.Bold,
-                        color = secondaryWhite,
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onPrimary,
                         modifier = Modifier.padding(10.dp),
-                        textAlign = TextAlign.Center
+                        textAlign = TextAlign.Center,
                     )
                 }
             }
@@ -142,7 +142,15 @@ fun CustomReminderDialog(
                     CustomCheckinDialog(
                         openDialog = openDialog,
                         title = "Custom",
-                        items = listOf("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
+                        items = listOf(
+                            "Monday",
+                            "Tuesday",
+                            "Wednesday",
+                            "Thursday",
+                            "Friday",
+                            "Saturday",
+                            "Sunday",
+                        ),
                     )
                 }
             }

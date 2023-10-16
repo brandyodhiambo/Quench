@@ -16,7 +16,7 @@
 package com.brandyodhiambo.home.data.repository
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.map
 import com.brandyodhiambo.common.domain.model.Level
 import com.brandyodhiambo.common.domain.repository.LevelRepository
 import com.brandyodhiambo.dao.LevelDao
@@ -40,8 +40,8 @@ class LevelRepositoryImpl(
     }
 
     override fun getLevel(): LiveData<Level?> {
-        return Transformations.map(levelDao.getLevel()) { levelEntity ->
-            levelEntity?.toLevel()
+        return levelDao.getLevel().map {
+            it?.toLevel()
         }
     }
 

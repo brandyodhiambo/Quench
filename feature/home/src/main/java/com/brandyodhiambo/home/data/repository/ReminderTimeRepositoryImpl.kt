@@ -16,7 +16,7 @@
 package com.brandyodhiambo.home.data.repository
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.map
 import com.brandyodhiambo.common.domain.model.ReminderTime
 import com.brandyodhiambo.common.domain.repository.ReminderTimeRepository
 import com.brandyodhiambo.dao.ReminderTimeDao
@@ -24,7 +24,7 @@ import com.brandyodhiambo.home.data.mapper.toReminderEntity
 import com.brandyodhiambo.home.data.mapper.toReminderTime
 
 class ReminderTimeRepositoryImpl(
-    private val reminderTimeDao: ReminderTimeDao
+    private val reminderTimeDao: ReminderTimeDao,
 ) : ReminderTimeRepository {
     override suspend fun insertReminderTime(reminderTime: ReminderTime) {
         reminderTimeDao.insertReminderTime(reminderTime.toReminderEntity())
@@ -39,13 +39,13 @@ class ReminderTimeRepositoryImpl(
             ampm = entityData.ampm,
             isRepeated = entityData.isRepeated,
             isAllDay = entityData.isAllDay,
-            days = entityData.days
+            days = entityData.days,
         )
     }
 
     override fun getReminderTime(): LiveData<ReminderTime?> {
-        return Transformations.map(reminderTimeDao.getReminderTime()) { reminderTimeEntity ->
-            reminderTimeEntity?.toReminderTime()
+        return reminderTimeDao.getReminderTime().map {
+            it.toReminderTime()
         }
     }
 

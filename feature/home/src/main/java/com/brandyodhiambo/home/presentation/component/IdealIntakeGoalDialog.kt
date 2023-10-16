@@ -35,6 +35,7 @@ import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
@@ -55,7 +56,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.brandyodhiambo.common.R
-import com.brandyodhiambo.designsystem.theme.primaryColor
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -75,13 +75,13 @@ fun IdealIntakeGoalDialog(
 
     ) {
         Column(
-            modifier.background(Color.White)
+            modifier.background(MaterialTheme.colorScheme.background)
         ) {
             Image(
                 painter = painterResource(id = R.drawable.ic_glass),
                 contentScale = ContentScale.Fit,
                 colorFilter = ColorFilter.tint(
-                    color = primaryColor
+                    color = MaterialTheme.colorScheme.primary
                 ),
                 contentDescription = null,
                 modifier = Modifier
@@ -99,8 +99,8 @@ fun IdealIntakeGoalDialog(
                         .padding(top = 5.dp)
                         .fillMaxWidth(),
                     maxLines = 2,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.W500,
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onBackground,
                     overflow = TextOverflow.Ellipsis
                 )
                 Spacer(modifier = Modifier.height(8.dp))
@@ -195,8 +195,8 @@ fun IdealIntakeGoalDialog(
                 }) {
                     Text(
                         "Cancel",
-                        fontWeight = FontWeight.Bold,
-                        color = Color.Black,
+                        style = MaterialTheme.typography.labelLarge,
+                        color = MaterialTheme.colorScheme.background,
                         modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
                     )
                 }
@@ -206,8 +206,8 @@ fun IdealIntakeGoalDialog(
                 }) {
                     Text(
                         "Okay",
-                        fontWeight = FontWeight.ExtraBold,
-                        color = primaryColor,
+                        style = MaterialTheme.typography.labelLarge,
+                        color = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
                     )
                 }

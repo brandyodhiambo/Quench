@@ -18,25 +18,22 @@ package com.brandyodhiambo.quench.ui
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.Icon
-import androidx.compose.material.LeadingIconTab
-import androidx.compose.material.Scaffold
 import androidx.compose.material.TabRow
-import androidx.compose.material.TabRowDefaults
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.LeadingIconTab
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TabRowDefaults
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.brandyodhiambo.designsystem.theme.primaryColor
-import com.brandyodhiambo.designsystem.theme.roboto
 import com.brandyodhiambo.quench.models.TabItem
 import com.brandyodhiambo.settings.presentation.SettingsNavigator
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -48,44 +45,44 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalPagerApi::class, ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 @Destination
 fun MainScreen(
     navigator: DestinationsNavigator,
-    settingsNavigator: SettingsNavigator
+    settingsNavigator: SettingsNavigator,
 ) {
-    Scaffold {
+    Scaffold { paddingValue ->
         val tabs = listOf(
             TabItem.Home(navigator = navigator),
             TabItem.Statistic(navigator = navigator),
-            TabItem.Settings(navigator = settingsNavigator)
+            TabItem.Settings(navigator = settingsNavigator),
         )
         val pagerState = rememberPagerState()
 
         Column(
             modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             TopAppBar(
                 title = {
                     Text(
                         text = "Quench",
-                        fontSize = 30.sp,
-                        textAlign = TextAlign.Center,
-                        fontFamily = roboto
+                        style = MaterialTheme.typography.titleLarge,
+                        color = MaterialTheme.colorScheme.onPrimary,
                     )
                 },
                 modifier = Modifier.fillMaxWidth(),
-                backgroundColor = primaryColor,
-                contentColor = Color.White,
-                elevation = 4.dp
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                ),
             )
             CustomTab(tabs = tabs, pagerState = pagerState)
             TabContent(
                 tabs = tabs,
-                pagerState = pagerState
+                pagerState = pagerState,
             )
         }
     }
@@ -95,11 +92,11 @@ fun MainScreen(
 @Composable
 fun TabContent(
     tabs: List<TabItem>,
-    pagerState: PagerState
+    pagerState: PagerState,
 ) {
     HorizontalPager(count = tabs.size, state = pagerState) { page ->
         tabs[page].screen(
-            onClick = { }
+            onClick = { },
         )
     }
 }
@@ -108,26 +105,26 @@ fun TabContent(
 @Composable
 fun CustomTab(
     tabs: List<TabItem>,
-    pagerState: PagerState
+    pagerState: PagerState,
 ) {
     val scope = rememberCoroutineScope()
 
     TabRow(
         selectedTabIndex = pagerState.currentPage,
-        backgroundColor = primaryColor,
-        contentColor = Color.White,
+        backgroundColor = MaterialTheme.colorScheme.primary,
+        contentColor = MaterialTheme.colorScheme.onPrimary,
         indicator = { tabPositions ->
             TabRowDefaults.Indicator(
-                Modifier.pagerTabIndicatorOffset(pagerState, tabPositions)
+                Modifier.pagerTabIndicatorOffset(pagerState, tabPositions),
             )
-        }
+        },
     ) {
         tabs.forEachIndexed { index, tabItem ->
             LeadingIconTab(
                 icon = {
                     Icon(
                         painter = painterResource(id = tabItem.icon),
-                        contentDescription = ""
+                        contentDescription = "",
                     )
                 },
                 selected = pagerState.currentPage == index,
@@ -136,7 +133,14 @@ fun CustomTab(
                         pagerState.animateScrollToPage(index)
                     }
                 },
-                text = { Text(text = tabItem.title, maxLines = 1, overflow = TextOverflow.Ellipsis, fontFamily = roboto) }
+                text = {
+                    Text(
+                        text = tabItem.title,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        style = MaterialTheme.typography.titleMedium,
+                    )
+                },
             )
         }
     }

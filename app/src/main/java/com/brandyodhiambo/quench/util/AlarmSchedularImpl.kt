@@ -23,7 +23,7 @@ import com.brandyodhiambo.common.domain.model.AlarmData
 import java.time.ZoneId
 
 class AlarmSchedularImpl(
-    private val context: Context
+    private val context: Context,
 ) : AlarmSchedular {
 
     private val alarmManager = context.getSystemService(AlarmManager::class.java)
@@ -39,8 +39,8 @@ class AlarmSchedularImpl(
                 context,
                 item.hashCode(),
                 intent,
-                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-            )
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
+            ),
         )
     }
 
@@ -50,8 +50,8 @@ class AlarmSchedularImpl(
                 context,
                 item.hashCode(),
                 Intent(context, AlarmReceiver::class.java),
-                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-            )
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
+            ),
         )
     }
 }

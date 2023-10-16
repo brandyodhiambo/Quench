@@ -21,6 +21,7 @@ import androidx.compose.material.AlertDialog
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,7 +29,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.brandyodhiambo.designsystem.theme.blackColor
 import com.brandyodhiambo.designsystem.theme.roboto
 
 @Composable
@@ -50,19 +50,17 @@ fun DeleteDialog(
         },
         text = {
             Divider(
-                color = blackColor,
+                color = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 5.dp, bottom = 5.dp)
             )
             Text(
                 "Are you sure you want to delete this drink?",
-                fontWeight = FontWeight.Normal,
-                fontFamily = roboto,
-                color = blackColor,
+                color = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
                 textAlign = TextAlign.Center,
-                fontSize = 16.sp
+                style = MaterialTheme.typography.labelMedium
             )
         },
         confirmButton = {
@@ -71,8 +69,7 @@ fun DeleteDialog(
             }) {
                 Text(
                     "Confirm",
-                    fontWeight = FontWeight.Bold,
-                    fontFamily = roboto,
+                    style = MaterialTheme.typography.labelLarge,
                     color = Color.Black,
                     modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
                 )
@@ -84,8 +81,7 @@ fun DeleteDialog(
             }) {
                 Text(
                     "Cancel",
-                    fontWeight = FontWeight.Bold,
-                    fontFamily = roboto,
+                    style = MaterialTheme.typography.labelLarge,
                     color = Color.Black,
                     modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
                 )

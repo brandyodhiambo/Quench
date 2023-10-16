@@ -32,6 +32,7 @@ import androidx.compose.material.TextButton
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -41,14 +42,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.brandyodhiambo.common.R
 import com.brandyodhiambo.designsystem.components.NotificationSwitcher
-import com.brandyodhiambo.designsystem.theme.blackColor
 import com.brandyodhiambo.settings.presentation.component.CustomReminderDialog
 import com.chargemap.compose.numberpicker.AMPMHours
 import com.chargemap.compose.numberpicker.Hours
@@ -63,48 +62,46 @@ interface AddReminderNavigator {
 @Destination
 @Composable
 fun AddReminderScreen(
-    navigator: AddReminderNavigator
+    navigator: AddReminderNavigator,
 ) {
     val repeateModeDialog = remember { mutableStateOf(false) }
     Scaffold(
         topBar = {
             TopAppBarAddReminder(navigator = navigator)
-        }
+        },
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(start = 16.dp, end = 16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             ReminderTimePickerInHours()
             Spacer(modifier = Modifier.height(8.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
                     text = "Reminder Sound",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.W400,
-                    color = blackColor
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onBackground,
                 )
 
                 Row(
                     horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
                         text = "Default Sound",
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.W400,
-                        color = blackColor
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onBackground,
                     )
                     IconButton(onClick = { /*TODO*/ }) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_chevron_right),
-                            contentDescription = null
+                            contentDescription = null,
                         )
                     }
                 }
@@ -113,29 +110,27 @@ fun AddReminderScreen(
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
                     text = "Reminder Mode",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.W400,
-                    color = blackColor
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onBackground,
                 )
 
                 Row(
                     horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
                         text = "Mon to Fri",
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.W400,
-                        color = blackColor
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onBackground,
                     )
                     IconButton(onClick = { repeateModeDialog.value = true }) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_chevron_right),
-                            contentDescription = null
+                            contentDescription = null,
                         )
                     }
                 }
@@ -145,20 +140,19 @@ fun AddReminderScreen(
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
                     text = "Vibrate when alarm sounds",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.W400,
-                    color = blackColor
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onBackground,
                 )
                 NotificationSwitcher(
                     isOn = true,
                     size = 35.dp,
                     padding = 5.dp,
                     onToggle = {
-                    }
+                    },
                 )
             }
 
@@ -166,27 +160,30 @@ fun AddReminderScreen(
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
                     text = "Delete after goes off",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.W400,
-                    color = blackColor
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onBackground,
                 )
                 NotificationSwitcher(
                     isOn = false,
                     size = 35.dp,
                     padding = 5.dp,
                     onToggle = {
-                    }
+                    },
                 )
             }
 
             if (repeateModeDialog.value) {
                 Dialog(onDismissRequest = { repeateModeDialog.value }) {
                     val repeatMode = listOf("Once", "Mon to Fri", "Daily", "Custom")
-                    CustomReminderDialog(openDialog = repeateModeDialog, items = repeatMode, title = "Repeat Mode")
+                    CustomReminderDialog(
+                        openDialog = repeateModeDialog,
+                        items = repeatMode,
+                        title = "Repeat Mode",
+                    )
                 }
             }
         }
@@ -209,7 +206,7 @@ fun TopAppBarAddReminder(navigator: AddReminderNavigator) {
                 Text(text = "Save", color = Color.Black, fontSize = 16.sp)
             }
         },
-        backgroundColor = Color.White
+        backgroundColor = Color.White,
     )
 }
 
@@ -218,11 +215,11 @@ fun ReminderTimePickerInHours() {
     Column(
         modifier = Modifier.fillMaxWidth().height(200.dp).padding(16.dp),
         verticalArrangement = Arrangement.Top,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         var pickerValue by remember { mutableStateOf<Hours>(AMPMHours(0, 0, AMPMHours.DayTime.AM)) }
         HoursNumberPicker(
-            dividersColor = blackColor,
+            dividersColor = MaterialTheme.colorScheme.onBackground,
             value = pickerValue,
             onValueChange = {
                 pickerValue = it
@@ -231,16 +228,16 @@ fun ReminderTimePickerInHours() {
                 Text(
                     modifier = Modifier.padding(horizontal = 8.dp),
                     textAlign = TextAlign.Center,
-                    text = ":"
+                    text = ":",
                 )
             },
             minutesDivider = {
                 Text(
                     modifier = Modifier.padding(horizontal = 8.dp),
                     textAlign = TextAlign.Center,
-                    text = " "
+                    text = " ",
                 )
-            }
+            },
         )
     }
 }

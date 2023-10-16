@@ -43,6 +43,7 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -54,7 +55,6 @@ import androidx.compose.ui.unit.sp
 import com.brandyodhiambo.common.domain.model.Day
 import com.brandyodhiambo.common.util.toInitials
 import com.brandyodhiambo.designsystem.components.NotificationSwitcher
-import com.brandyodhiambo.designsystem.theme.primaryColor
 import com.ramcosta.composedestinations.annotation.Destination
 
 interface NotificationNavigator {
@@ -88,18 +88,18 @@ fun NotificationScreen(
     )
 
     Scaffold(
-        backgroundColor = primaryColor,
+        backgroundColor = MaterialTheme.colorScheme.primary,
         topBar = {
             TopAppBar(
-                title = { Text(text = "Notification", color = Color.White, fontSize = 16.sp) },
-                backgroundColor = primaryColor,
+                title = { Text(text = "Notification", color = MaterialTheme.colorScheme.onPrimary, fontSize = 16.sp) },
+                backgroundColor = MaterialTheme.colorScheme.onBackground,
                 navigationIcon = {
                     IconButton(onClick = {
                         navigator.popBackStack()
                     }) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
-                            tint = Color.White,
+                            tint = MaterialTheme.colorScheme.onPrimary,
                             contentDescription = null
                         )
                     }
@@ -175,7 +175,7 @@ fun ReminderNotificationTime(reminder: Reminder) {
                 .fillMaxSize()
                 .background(
                     if (reminder.isOn) {
-                        Color.White
+                        MaterialTheme.colorScheme.onPrimary
                     } else {
                         Color.LightGray
                     }
@@ -236,9 +236,9 @@ fun WeeksReminder(day: Day, reminder: Reminder) {
                     border = BorderStroke(
                         2.dp,
                         color = if (day.isOn && reminder.isOn) {
-                            primaryColor
+                            MaterialTheme.colorScheme.primary
                         } else {
-                            Color.Gray
+                            MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f)
                         }
                     ),
                     shape = CircleShape

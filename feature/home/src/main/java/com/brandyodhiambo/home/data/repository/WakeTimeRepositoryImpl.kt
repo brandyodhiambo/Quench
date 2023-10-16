@@ -16,7 +16,7 @@
 package com.brandyodhiambo.home.data.repository
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.map
 import com.brandyodhiambo.common.domain.model.WakeTime
 import com.brandyodhiambo.common.domain.repository.WakeTimeRepository
 import com.brandyodhiambo.dao.WakeTimeDao
@@ -24,7 +24,7 @@ import com.brandyodhiambo.home.data.mapper.toWakeTime
 import com.brandyodhiambo.home.data.mapper.toWakeTimeEntity
 
 class WakeTimeRepositoryImpl(
-    private val wakeTimeDao: WakeTimeDao
+    private val wakeTimeDao: WakeTimeDao,
 ) : WakeTimeRepository {
     override suspend fun insertWakeTime(wakeTime: WakeTime) {
         wakeTimeDao.insertWakeTime(wakeTime.toWakeTimeEntity())
@@ -36,13 +36,13 @@ class WakeTimeRepositoryImpl(
             id = entityData.id,
             hours = entityData.hour.toString(),
             minutes = entityData.minute.toString(),
-            ampm = entityData.ampm
+            ampm = entityData.ampm,
         )
     }
 
     override fun getWakeTime(): LiveData<WakeTime?> {
-        return Transformations.map(wakeTimeDao.getWakeTime()) { wakeTimeEntity ->
-            wakeTimeEntity?.toWakeTime()
+        return wakeTimeDao.getWakeTime().map {
+            it?.toWakeTime()
         }
     }
 

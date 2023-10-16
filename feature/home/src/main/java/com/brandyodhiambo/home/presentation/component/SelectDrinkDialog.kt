@@ -34,6 +34,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
@@ -53,8 +54,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.brandyodhiambo.common.R
-import com.brandyodhiambo.designsystem.theme.PrimaryWhite
-import com.brandyodhiambo.designsystem.theme.primaryColor
 import com.vanpra.composematerialdialogs.MaterialDialog
 import com.vanpra.composematerialdialogs.MaterialDialogState
 import com.vanpra.composematerialdialogs.datetime.time.TimePickerDefaults
@@ -106,7 +105,6 @@ val selectedDrinks = listOf(
     )
 )
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun SelectDrinkComposable(
     modifier: Modifier = Modifier,
@@ -124,7 +122,7 @@ fun SelectDrinkComposable(
     ) {
         Column(
             modifier
-                .background(Color.White)
+                .background(MaterialTheme.colorScheme.background)
                 .padding(8.dp)
         ) {
             Text(
@@ -134,8 +132,7 @@ fun SelectDrinkComposable(
                     .padding(top = 5.dp)
                     .fillMaxWidth(),
                 maxLines = 2,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.W500,
+                style = MaterialTheme.typography.titleMedium,
                 overflow = TextOverflow.Ellipsis
             )
             Spacer(modifier = Modifier.height(12.dp))
@@ -163,8 +160,8 @@ fun SelectDrinkComposable(
                 }) {
                     Text(
                         "Cancel",
-                        fontWeight = FontWeight.Bold,
-                        color = Color.Black,
+                        style = MaterialTheme.typography.labelLarge,
+                        color = MaterialTheme.colorScheme.onBackground,
                         modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
                     )
                 }
@@ -174,8 +171,8 @@ fun SelectDrinkComposable(
                 }) {
                     Text(
                         "Okay",
-                        fontWeight = FontWeight.ExtraBold,
-                        color = primaryColor,
+                        style = MaterialTheme.typography.labelLarge,
+                        color = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
                     )
                 }
@@ -184,7 +181,6 @@ fun SelectDrinkComposable(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun SelectCard(
     selectDrink: SelectDrink,
@@ -206,7 +202,7 @@ fun SelectCard(
             contentDescription = null,
             contentScale = ContentScale.Fit,
             colorFilter = ColorFilter.tint(
-                color = primaryColor
+                color = MaterialTheme.colorScheme.primary
             ),
             modifier = Modifier
                 .padding(top = 8.dp)
@@ -231,7 +227,6 @@ fun SelectCard(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun TimeDialog(
     onCurrentSelectedDrinkTime: (String) -> Unit,
@@ -242,12 +237,12 @@ fun TimeDialog(
     }
     MaterialDialog(
         dialogState = openDialog,
-        backgroundColor = PrimaryWhite,
+        backgroundColor = MaterialTheme.colorScheme.background.copy(alpha = 0.67f),
         buttons = {
-            positiveButton(text = "Ok", textStyle = TextStyle(color = primaryColor)) {
+            positiveButton(text = "Ok", textStyle = TextStyle(color = MaterialTheme.colorScheme.primary)) {
                 onCurrentSelectedDrinkTime(pickedTime.format(DateTimeFormatter.ofPattern("HH:mm a")))
             }
-            negativeButton(text = "Cancel", textStyle = TextStyle(color = primaryColor))
+            negativeButton(text = "Cancel", textStyle = TextStyle(color = MaterialTheme.colorScheme.primary))
         }
     ) {
         timepicker(
@@ -255,13 +250,13 @@ fun TimeDialog(
             title = "Pick a time",
             is24HourClock = false,
             colors = TimePickerDefaults.colors(
-                selectorColor = primaryColor,
-                selectorTextColor = primaryColor,
-                headerTextColor = Color.White,
-                activeBackgroundColor = primaryColor,
-                activeTextColor = Color.White,
-                inactiveBackgroundColor = Color.White,
-                inactiveTextColor = Color.Black
+                selectorColor = MaterialTheme.colorScheme.primary,
+                selectorTextColor = MaterialTheme.colorScheme.primary,
+                headerTextColor = MaterialTheme.colorScheme.background,
+                activeBackgroundColor = MaterialTheme.colorScheme.primary,
+                activeTextColor = MaterialTheme.colorScheme.background,
+                inactiveBackgroundColor = MaterialTheme.colorScheme.background,
+                inactiveTextColor = MaterialTheme.colorScheme.onBackground
             )
         ) {
             pickedTime = it
