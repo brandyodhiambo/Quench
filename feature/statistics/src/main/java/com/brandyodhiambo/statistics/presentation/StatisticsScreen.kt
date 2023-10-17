@@ -36,16 +36,16 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.Divider
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.Done
+import androidx.compose.material3.Card
+import androidx.compose.material3.Divider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -55,14 +55,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.brandyodhiambo.common.R
 import com.brandyodhiambo.common.domain.model.Achievement
-import com.brandyodhiambo.designsystem.theme.blackColor
-import com.brandyodhiambo.designsystem.theme.primaryColor
 import com.brandyodhiambo.home.presentation.achievement.AchievementViewModel
 import com.brandyodhiambo.home.presentation.homeScreen.HomeViewModel
 import com.mahmoud.composecharts.barchart.BarChart
@@ -86,15 +82,23 @@ fun StatisticsScreen(
     val goalWaterIntake = homeViewModel.goalWaterIntakeFromDb.observeAsState()
 
     val barChartDataDaily: List<BarChartEntity> = dailyStatistics.value?.map { dailyStat ->
-        BarChartEntity(dailyStat.amountTaken, primaryColor, dailyStat.day.take(3))
+        BarChartEntity(
+            dailyStat.amountTaken,
+            MaterialTheme.colorScheme.primary,
+            dailyStat.day.take(3)
+        )
     } ?: emptyList()
 
     val barChartDataWeek: List<BarChartEntity> = weeklyStatistics.value?.map { weekStat ->
-        BarChartEntity(weekStat.amountTaken, primaryColor, weekStat.week)
+        BarChartEntity(weekStat.amountTaken, MaterialTheme.colorScheme.primary, weekStat.week)
     } ?: emptyList()
 
     val barChartDataMonth: List<BarChartEntity> = monthlyStatistics.value?.map { monthStat ->
-        BarChartEntity(monthStat.amountTaken, primaryColor, monthStat.month.take(3))
+        BarChartEntity(
+            monthStat.amountTaken,
+            MaterialTheme.colorScheme.primary,
+            monthStat.month.take(3)
+        )
     } ?: emptyList()
 
     val verticalAxisValues =
@@ -122,7 +126,7 @@ fun StatisticsScreen(
     val weekAchievement = achievementViewModel.isAchieved.observeAsState(initial = emptyList())
 
     Scaffold(
-        backgroundColor = primaryColor
+        containerColor = MaterialTheme.colorScheme.primary
     ) { paddingValues ->
         Box(
             modifier = Modifier
@@ -134,8 +138,7 @@ fun StatisticsScreen(
                     Card(
                         modifier = Modifier
                             .fillMaxSize()
-                            .padding(top = 16.dp, start = 16.dp, end = 16.dp),
-                        elevation = 4.dp
+                            .padding(top = 16.dp, start = 16.dp, end = 16.dp)
                     ) {
                         Column(
                             modifier = Modifier.padding(8.dp)
@@ -152,9 +155,9 @@ fun StatisticsScreen(
                                         .width(100.dp)
                                         .background(
                                             color = if (setGraphDaily.value) {
-                                                primaryColor
+                                                MaterialTheme.colorScheme.primary
                                             } else {
-                                                primaryColor.copy(
+                                                MaterialTheme.colorScheme.primary.copy(
                                                     alpha = 0.2f
                                                 )
                                             },
@@ -168,9 +171,8 @@ fun StatisticsScreen(
                                 ) {
                                     Text(
                                         text = "Daily",
-                                        style = MaterialTheme.typography.h6,
-                                        fontWeight = FontWeight.Normal,
-                                        color = blackColor
+                                        style = MaterialTheme.typography.labelMedium,
+                                        color = MaterialTheme.colorScheme.onPrimary
                                     )
                                 }
                                 Box(
@@ -179,9 +181,9 @@ fun StatisticsScreen(
                                         .width(100.dp)
                                         .background(
                                             color = if (setGraphWeek.value) {
-                                                primaryColor
+                                                MaterialTheme.colorScheme.primary
                                             } else {
-                                                primaryColor.copy(
+                                                MaterialTheme.colorScheme.primary.copy(
                                                     alpha = 0.2f
                                                 )
                                             },
@@ -195,9 +197,8 @@ fun StatisticsScreen(
                                 ) {
                                     Text(
                                         text = "Weekly",
-                                        style = MaterialTheme.typography.h6,
-                                        fontWeight = FontWeight.Normal,
-                                        color = blackColor
+                                        style = MaterialTheme.typography.labelMedium,
+                                        color = MaterialTheme.colorScheme.onPrimary
                                     )
                                 }
                                 Box(
@@ -206,9 +207,9 @@ fun StatisticsScreen(
                                         .width(100.dp)
                                         .background(
                                             color = if (setGraphMonthly.value) {
-                                                primaryColor
+                                                MaterialTheme.colorScheme.primary
                                             } else {
-                                                primaryColor.copy(
+                                                MaterialTheme.colorScheme.primary.copy(
                                                     alpha = 0.2f
                                                 )
                                             },
@@ -222,9 +223,8 @@ fun StatisticsScreen(
                                 ) {
                                     Text(
                                         text = "Monthly",
-                                        style = MaterialTheme.typography.h6,
-                                        fontWeight = FontWeight.Normal,
-                                        color = blackColor
+                                        style = MaterialTheme.typography.labelMedium,
+                                        color = MaterialTheme.colorScheme.onPrimary
                                     )
                                 }
                             }
@@ -283,8 +283,7 @@ fun Last7DayGoals(weekAchivement: List<Achievement>) {
         modifier = Modifier
             .height(135.dp)
             .padding(top = 8.dp, start = 16.dp, end = 16.dp)
-            .fillMaxWidth(),
-        elevation = 4.dp
+            .fillMaxWidth()
     ) {
         Column(
             modifier = Modifier.padding(8.dp),
@@ -292,9 +291,8 @@ fun Last7DayGoals(weekAchivement: List<Achievement>) {
         ) {
             Text(
                 text = "Last 7 Days Goals Achieve",
-                fontSize = 16.sp,
-                fontWeight = FontWeight.SemiBold,
-                color = primaryColor
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.primary
             )
             Box(
                 contentAlignment = Alignment.Center,
@@ -303,8 +301,8 @@ fun Last7DayGoals(weekAchivement: List<Achievement>) {
                 if (weekAchivement.isEmpty()) {
                     Text(
                         text = "You have no achievements yet",
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Normal
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onBackground
                     )
                 }
                 LazyRow(
@@ -332,7 +330,11 @@ fun WeeksAcheive(
         } else {
             BlackCup()
         }
-        Text(text = weeks.day.take(3), fontSize = 16.sp, fontWeight = FontWeight.W400)
+        Text(
+            text = weeks.day.take(3),
+            style = MaterialTheme.typography.labelMedium,
+            color = MaterialTheme.colorScheme.onBackground
+        )
     }
 }
 
@@ -340,11 +342,10 @@ fun WeeksAcheive(
 fun GoldCup() {
     Card(
         shape = CircleShape,
-        border = BorderStroke(2.dp, color = primaryColor),
+        border = BorderStroke(2.dp, color = MaterialTheme.colorScheme.primary),
         modifier = Modifier
             .size(48.dp)
-            .padding(4.dp),
-        elevation = 4.dp
+            .padding(4.dp)
     ) {
         Image(
             painter = painterResource(id = R.drawable.ic_cup),
@@ -361,11 +362,13 @@ fun GoldCup() {
 fun BlackCup() {
     Card(
         shape = CircleShape,
-        border = BorderStroke(2.dp, color = Color.Gray),
+        border = BorderStroke(
+            2.dp,
+            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f)
+        ),
         modifier = Modifier
             .size(48.dp)
-            .padding(4.dp),
-        elevation = 4.dp
+            .padding(4.dp)
     ) {
         Image(
             painter = painterResource(id = R.drawable.ic_black_cup),
@@ -389,17 +392,15 @@ fun DrinkWaterReport(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 8.dp, start = 16.dp, end = 16.dp),
-        elevation = 4.dp
+            .padding(top = 8.dp, start = 16.dp, end = 16.dp)
     ) {
         Column(
             modifier = Modifier.padding(8.dp)
         ) {
             Text(
                 text = "Drink Water Report",
-                fontSize = 16.sp,
-                fontWeight = FontWeight.SemiBold,
-                color = primaryColor
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.primary
             )
             Row(
                 modifier = Modifier
@@ -413,22 +414,20 @@ fun DrinkWaterReport(
                 ) {
                     Icon(
                         imageVector = Icons.Default.DateRange,
-                        tint = primaryColor,
+                        tint = MaterialTheme.colorScheme.primary,
                         contentDescription = null
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = "Daily Average",
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.W400,
-                        color = blackColor
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onBackground
                     )
                 }
                 Text(
                     text = "$currentDailyAverage ml/day",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.W400,
-                    color = primaryColor
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.primary
                 )
             }
             Divider(
@@ -448,27 +447,25 @@ fun DrinkWaterReport(
                 ) {
                     Icon(
                         imageVector = Icons.Default.DateRange,
-                        tint = primaryColor,
+                        tint = MaterialTheme.colorScheme.primary,
                         contentDescription = null
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = "Weekly Average",
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.W400,
-                        color = blackColor
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onBackground
                     )
                 }
                 Text(
                     text = "$currentWeeklyAverage ml/day",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.W400,
-                    color = primaryColor
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.primary
                 )
             }
             Divider(
                 modifier = Modifier.height(1.dp).padding(start = 8.dp, end = 8.dp),
-                color = Color.Gray,
+                color = MaterialTheme.colorScheme.background.copy(alpha = 0.2f),
                 thickness = 1.dp
             )
             Row(
@@ -483,22 +480,20 @@ fun DrinkWaterReport(
                 ) {
                     Icon(
                         imageVector = Icons.Default.DateRange,
-                        tint = primaryColor,
+                        tint = MaterialTheme.colorScheme.primary,
                         contentDescription = null
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = "Monthly Average",
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.W400,
-                        color = blackColor
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onBackground
                     )
                 }
                 Text(
                     text = "$currentMonthlyAverage ml/day",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.W400,
-                    color = primaryColor
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.primary
                 )
             }
             Divider(
@@ -517,28 +512,26 @@ fun DrinkWaterReport(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
-                        imageVector = Icons.Default.Star,
-                        tint = primaryColor,
+                        imageVector = Icons.Default.Done,
+                        tint = MaterialTheme.colorScheme.primary,
                         contentDescription = null
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = "Average Completion",
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.W400,
-                        color = blackColor
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onBackground
                     )
                 }
                 Text(
                     text = "$currentAverage%",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.W400,
-                    color = primaryColor
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.primary
                 )
             }
             Divider(
                 modifier = Modifier.height(1.dp).padding(start = 8.dp, end = 8.dp),
-                color = Color.Gray,
+                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.12f),
                 thickness = 1.dp
             )
             Row(
@@ -553,22 +546,20 @@ fun DrinkWaterReport(
                 ) {
                     Icon(
                         imageVector = Icons.Default.AccountCircle,
-                        tint = primaryColor,
+                        tint = MaterialTheme.colorScheme.primary,
                         contentDescription = null
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = "Drink Frequency",
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.W400,
-                        color = blackColor
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onBackground
                     )
                 }
                 Text(
                     text = "$currentDrinkFrequency Times/day",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.W400,
-                    color = primaryColor
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.primary
                 )
             }
         }

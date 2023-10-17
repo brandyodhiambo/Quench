@@ -15,7 +15,6 @@
  */
 package com.brandyodhiambo.home.presentation.component
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -25,18 +24,19 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.brandyodhiambo.common.R
-import com.brandyodhiambo.designsystem.theme.primaryColor
 
 @Composable
 fun CongratulationsDialog(
@@ -47,7 +47,7 @@ fun CongratulationsDialog(
     Card(
         modifier = Modifier.padding(10.dp, 5.dp, 10.dp, 10.dp),
         shape = RoundedCornerShape(12.dp),
-        elevation = 8.dp
+        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.background)
     ) {
         Column(
             modifier = Modifier.fillMaxWidth()
@@ -57,7 +57,7 @@ fun CongratulationsDialog(
                     .fillMaxWidth()
                     .height(300.dp)
             ) {
-                Image(
+                Icon(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(300.dp),
@@ -78,8 +78,8 @@ fun CongratulationsDialog(
                 }) {
                     Text(
                         "Cancel",
-                        fontWeight = FontWeight.Bold,
-                        color = Color.Black,
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onBackground,
                         modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
                     )
                 }
@@ -88,8 +88,8 @@ fun CongratulationsDialog(
                 }) {
                     Text(
                         "Okay",
-                        fontWeight = FontWeight.ExtraBold,
-                        color = primaryColor,
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
                     )
                 }

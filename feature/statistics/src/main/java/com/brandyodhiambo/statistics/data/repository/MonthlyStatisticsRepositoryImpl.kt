@@ -16,7 +16,7 @@
 package com.brandyodhiambo.statistics.data.repository
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.map
 import com.brandyodhiambo.common.domain.model.MonthlyStatistics
 import com.brandyodhiambo.common.domain.repository.MonthlyStatisticsRepository
 import com.brandyodhiambo.dao.MonthlyStatisticsDao
@@ -35,7 +35,7 @@ class MonthlyStatisticsRepositoryImpl(
     }
 
     override fun getMonthlyStatistics(): LiveData<List<MonthlyStatistics>?> {
-        return Transformations.map(monthlyStatisticalDao.getMonthlyStatistics()) { monthlyStatisticsEntity ->
+        return monthlyStatisticalDao.getMonthlyStatistics().map { monthlyStatisticsEntity ->
             monthlyStatisticsEntity?.map { it.toMonthlyStatistics() }
         }
     }

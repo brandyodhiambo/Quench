@@ -28,7 +28,7 @@ interface IdealWaterIntakeDao {
     suspend fun insertIdealWaterIntake(idealWaterIntake: IdealWaterIntakeEntity)
 
     @Query("SELECT *FROM ideal_water_table")
-    fun getIdealWaterIntake(): LiveData<IdealWaterIntakeEntity>
+    fun getIdealWaterIntake(): LiveData<IdealWaterIntakeEntity?>
 
     @Delete
     suspend fun deleteIdealIntake(idealWaterIntake: IdealWaterIntakeEntity)

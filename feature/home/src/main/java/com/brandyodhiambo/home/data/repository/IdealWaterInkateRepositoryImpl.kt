@@ -16,7 +16,7 @@
 package com.brandyodhiambo.home.data.repository
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.map
 import com.brandyodhiambo.common.domain.model.IdealWaterIntake
 import com.brandyodhiambo.common.domain.repository.IdealWaterIntakeRepository
 import com.brandyodhiambo.dao.IdealWaterIntakeDao
@@ -49,7 +49,7 @@ class IdealWaterInkateRepositoryImpl(
     }
 
     override fun getIdealWaterIntake(): LiveData<IdealWaterIntake?> {
-        return Transformations.map(idealWaterIntakeDao.getIdealWaterIntake()) { idealWaterIntakeEntity ->
+        return idealWaterIntakeDao.getIdealWaterIntake().map { idealWaterIntakeEntity ->
             idealWaterIntakeEntity?.toIdealWaterIntake()
         }
     }

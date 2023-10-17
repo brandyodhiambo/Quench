@@ -27,7 +27,14 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.* // ktlint-disable no-wildcard-imports
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.* // ktlint-disable no-wildcard-imports
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Divider
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -45,8 +52,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.brandyodhiambo.common.R
 import com.brandyodhiambo.common.domain.model.GoalWaterIntake
 import com.brandyodhiambo.common.presentation.component.WaterIntakeDialog
-import com.brandyodhiambo.designsystem.theme.blackColor
-import com.brandyodhiambo.designsystem.theme.primaryColor
 import com.brandyodhiambo.home.presentation.homeScreen.HomeViewModel
 import com.brandyodhiambo.settings.presentation.component.CustomReminderDialog
 import com.ramcosta.composedestinations.annotation.Destination
@@ -70,7 +75,7 @@ fun SettingScreen(
     val context = LocalContext.current
 
     Scaffold(
-        backgroundColor = primaryColor
+        containerColor = MaterialTheme.colorScheme.primary
     ) { paddingValues ->
         Box(
             modifier = Modifier
@@ -165,7 +170,7 @@ fun UnitsWaterIntake(
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 8.dp, start = 16.dp, end = 16.dp),
-        elevation = 4.dp
+        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.background)
     ) {
         Column(
             modifier = Modifier.padding(8.dp)
@@ -179,9 +184,8 @@ fun UnitsWaterIntake(
             ) {
                 Text(
                     text = "Water Unit",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.W400,
-                    color = blackColor
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onBackground
                 )
 
                 TextButton(onClick = { openWaterUnitDialog.value = true }) {
@@ -189,7 +193,7 @@ fun UnitsWaterIntake(
                         text = "ml",
                         fontSize = 16.sp,
                         fontWeight = FontWeight.W300,
-                        color = primaryColor
+                        color = MaterialTheme.colorScheme.primary
                     )
                 }
             }
@@ -209,17 +213,15 @@ fun UnitsWaterIntake(
             ) {
                 Text(
                     text = "Weight Unit",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.W400,
-                    color = blackColor
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onBackground
                 )
 
                 TextButton(onClick = { openWeightUnitDialog.value = true }) {
                     Text(
                         text = "Kg",
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.W300,
-                        color = primaryColor
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.primary
                     )
                 }
             }
@@ -227,7 +229,7 @@ fun UnitsWaterIntake(
                 modifier = Modifier
                     .height(1.dp)
                     .padding(start = 8.dp, end = 8.dp),
-                color = Color.Gray,
+                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.12f),
                 thickness = 1.dp
             )
             Row(
@@ -239,16 +241,14 @@ fun UnitsWaterIntake(
             ) {
                 Text(
                     text = "Time Format",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.W400,
-                    color = blackColor
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onBackground
                 )
                 TextButton(onClick = { openTimeFormatDialog.value = true }) {
                     Text(
                         text = "12 hours",
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.W300,
-                        color = primaryColor
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.primary
                     )
                 }
             }
@@ -263,7 +263,7 @@ fun ReminderWaterIntake(navigator: SettingsNavigator) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 8.dp, start = 16.dp, end = 16.dp, bottom = 16.dp),
-        elevation = 4.dp
+        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.background)
     ) {
         Column(
             modifier = Modifier.padding(8.dp)
@@ -280,9 +280,8 @@ fun ReminderWaterIntake(navigator: SettingsNavigator) {
                 ) {
                     Text(
                         text = "Reminder Sound",
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.W400,
-                        color = blackColor
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onBackground
                     )
                 }
                 IconButton(onClick = {
@@ -350,9 +349,8 @@ fun ReminderWaterIntake(navigator: SettingsNavigator) {
                 ) {
                     Text(
                         text = "Notifications",
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.W400,
-                        color = blackColor
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onBackground
                     )
                 }
                 IconButton(onClick = {
@@ -378,7 +376,7 @@ fun Goals(
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 8.dp, start = 16.dp, end = 16.dp),
-        elevation = 4.dp
+        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.background)
     ) {
         Column(
             modifier = Modifier.padding(8.dp)
@@ -395,9 +393,8 @@ fun Goals(
                 ) {
                     Text(
                         text = "Intake Goal",
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.W400,
-                        color = blackColor
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onBackground
                     )
                 }
                 Row(
@@ -409,9 +406,8 @@ fun Goals(
                 ) {
                     Text(
                         text = "$currentIntake $currentForm",
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.W300,
-                        color = primaryColor
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.primary
                     )
                     Image(
                         painter = painterResource(id = R.drawable.ic_chevron_right),

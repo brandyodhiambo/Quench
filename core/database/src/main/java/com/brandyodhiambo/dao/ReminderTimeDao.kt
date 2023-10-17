@@ -29,7 +29,7 @@ interface ReminderTimeDao {
     suspend fun insertReminderTime(reminderTime: ReminderTimeEntity)
 
     @Query("SELECT *FROM reminder_table")
-    fun getReminderTime(): LiveData<ReminderTimeEntity>
+    fun getReminderTime(): LiveData<ReminderTimeEntity?>
 
     @Delete
     suspend fun deleteReminderTime(reminderTime: ReminderTimeEntity)

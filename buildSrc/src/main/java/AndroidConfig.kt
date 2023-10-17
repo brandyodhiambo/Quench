@@ -3,6 +3,6 @@ object AndroidConfig {
     const val minSdk = 26
     const val targetSdk = 33
     const val compileSdk = 33
-    const val versionCode = 2
-    const val versionName = "0.0.2"
+    const val versionCode = 3
+    const val versionName = "0.0.3"
 }

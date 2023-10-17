@@ -25,9 +25,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.Checkbox
-import androidx.compose.material.Text
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
@@ -35,11 +37,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.brandyodhiambo.designsystem.theme.primaryColor
-import com.brandyodhiambo.designsystem.theme.secondaryWhite
 
 @Composable
 fun CustomCheckinDialog(
@@ -59,8 +58,7 @@ fun CustomCheckinDialog(
 
     Card(
         shape = RoundedCornerShape(12.dp),
-        modifier = Modifier.padding(10.dp, 5.dp, 10.dp, 10.dp),
-        elevation = 8.dp
+        modifier = Modifier.padding(10.dp, 5.dp, 10.dp, 10.dp)
     ) {
         Column(
             Modifier
@@ -98,37 +96,35 @@ fun CustomCheckinDialog(
             ) {
                 Card(
                     shape = RoundedCornerShape(20.dp),
-                    elevation = 10.dp,
                     modifier = Modifier
                         .fillMaxWidth(0.5f)
                         .padding(10.dp)
                         .clickable {
                             openDialog.value = false
                         },
-                    backgroundColor = Color.LightGray
+                    colors = CardDefaults.cardColors(MaterialTheme.colorScheme.background)
                 ) {
                     Text(
                         "Cancel",
-                        fontWeight = FontWeight.Bold,
-                        color = Color.Black,
+                        style = MaterialTheme.typography.labelLarge,
+                        color = MaterialTheme.colorScheme.onBackground,
                         modifier = Modifier.padding(10.dp),
                         textAlign = TextAlign.Center
                     )
                 }
                 Card(
                     shape = RoundedCornerShape(20.dp),
-                    elevation = 10.dp,
                     modifier = Modifier
                         .padding(10.dp)
                         .clickable {
                             openDialog.value = false
                         },
-                    backgroundColor = primaryColor
+                    colors = CardDefaults.cardColors(MaterialTheme.colorScheme.primary)
                 ) {
                     Text(
                         "Okay",
-                        fontWeight = FontWeight.Bold,
-                        color = secondaryWhite,
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onPrimary,
                         modifier = Modifier.padding(10.dp),
                         textAlign = TextAlign.Center
                     )

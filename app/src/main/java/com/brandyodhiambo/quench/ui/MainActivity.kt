@@ -30,6 +30,7 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import com.brandyodhiambo.common.domain.model.AlarmData
 import com.brandyodhiambo.designsystem.theme.QuenchTheme
+import com.brandyodhiambo.designsystem.theme.Theme
 import com.brandyodhiambo.home.presentation.homeScreen.HomeViewModel
 import com.brandyodhiambo.quench.R
 import com.brandyodhiambo.quench.navigation.FeatureNavigator
@@ -59,7 +60,9 @@ class MainActivity : ComponentActivity() {
         val viewModel: HomeViewModel by viewModels()
         setContent {
             createChannel(this)
-            QuenchTheme {
+            QuenchTheme(
+                theme = Theme.FOLLOW_SYSTEM.themeValue
+            ) {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
@@ -69,9 +72,9 @@ class MainActivity : ComponentActivity() {
                     startMonthlyOnetimeWorkRequest(applicationContext)
                     startWeeklyOnetimeWorkRequest(applicationContext)
 
-                    val reminderTimeFromDb = viewModel.reminderTime.observeAsState()
-                    val hours = reminderTimeFromDb.value?.hour ?: 0
-                    val minutes = reminderTimeFromDb.value?.minute ?: 0
+                    val reminderTimeFromDb = viewModel.reminderTime?.observeAsState()
+                    val hours = reminderTimeFromDb?.value?.hour ?: 0
+                    val minutes = reminderTimeFromDb?.value?.minute ?: 0
                     val scheduler = AlarmSchedularImpl(this)
                     val alarmItem = AlarmData(
                         time = LocalDateTime.now().withHour(hours).withMinute(minutes),

@@ -16,7 +16,7 @@
 package com.brandyodhiambo.home.data.repository
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.map
 import com.brandyodhiambo.common.domain.model.WakeTime
 import com.brandyodhiambo.common.domain.repository.WakeTimeRepository
 import com.brandyodhiambo.dao.WakeTimeDao
@@ -41,8 +41,8 @@ class WakeTimeRepositoryImpl(
     }
 
     override fun getWakeTime(): LiveData<WakeTime?> {
-        return Transformations.map(wakeTimeDao.getWakeTime()) { wakeTimeEntity ->
-            wakeTimeEntity?.toWakeTime()
+        return wakeTimeDao.getWakeTime().map {
+            it?.toWakeTime()
         }
     }
 

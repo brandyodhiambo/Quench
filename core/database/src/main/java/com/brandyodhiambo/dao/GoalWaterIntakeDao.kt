@@ -29,7 +29,7 @@ interface GoalWaterIntakeDao {
     suspend fun insertGoalWaterIntake(goalWaterIntake: GoalWaterIntakeEntity)
 
     @Query("SELECT *FROM goal_table")
-    fun getGoalWaterIntake(): LiveData<GoalWaterIntakeEntity>
+    fun getGoalWaterIntake(): LiveData<GoalWaterIntakeEntity?>
 
     @Delete
     suspend fun deleteGoalIntake(goalWaterIntake: GoalWaterIntakeEntity)

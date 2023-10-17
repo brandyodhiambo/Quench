@@ -26,15 +26,17 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Card
 import androidx.compose.material.DropdownMenuItem
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ExposedDropdownMenuBox
-import androidx.compose.material.ExposedDropdownMenuDefaults
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
-import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
@@ -43,22 +45,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Color.Companion.Gray
-import androidx.compose.ui.graphics.Color.Companion.LightGray
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.brandyodhiambo.common.R
-import com.brandyodhiambo.designsystem.theme.GoldColor
-import com.brandyodhiambo.designsystem.theme.primaryColor
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WaterIntakeDialog(
     modifier: Modifier = Modifier,
@@ -71,19 +67,16 @@ fun WaterIntakeDialog(
 
 ) {
     Card(
-        shape = RoundedCornerShape(10.dp),
+        shape = MaterialTheme.shapes.medium,
         modifier = Modifier.padding(10.dp, 5.dp, 10.dp, 10.dp),
-        elevation = 8.dp
-
+        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.background)
     ) {
-        Column(
-            modifier.background(Color.White)
-        ) {
+        Column() {
             Image(
                 painter = painterResource(id = R.drawable.ic_cup),
                 contentScale = ContentScale.Fit,
                 colorFilter = ColorFilter.tint(
-                    color = GoldColor
+                    color = MaterialTheme.colorScheme.secondary
                 ),
                 contentDescription = null,
                 modifier = Modifier
@@ -101,9 +94,9 @@ fun WaterIntakeDialog(
                         .padding(top = 5.dp)
                         .fillMaxWidth(),
                     maxLines = 2,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.W500,
-                    overflow = TextOverflow.Ellipsis
+                    style = MaterialTheme.typography.labelLarge,
+                    overflow = TextOverflow.Ellipsis,
+                    color = MaterialTheme.colorScheme.onBackground
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Row(
@@ -124,13 +117,13 @@ fun WaterIntakeDialog(
                         label = {
                             Text(
                                 "2810",
-                                color = Gray
+                                color = MaterialTheme.colorScheme.onBackground
                             )
                         },
                         shape = RoundedCornerShape(30.dp),
                         colors = TextFieldDefaults.outlinedTextFieldColors(
-                            focusedBorderColor = Gray,
-                            unfocusedBorderColor = LightGray
+                            focusedBorderColor = MaterialTheme.colorScheme.primary,
+                            unfocusedBorderColor = MaterialTheme.colorScheme.onBackground
                         )
                     )
 
@@ -158,8 +151,8 @@ fun WaterIntakeDialog(
                             },
                             shape = RoundedCornerShape(45.dp),
                             colors = TextFieldDefaults.outlinedTextFieldColors(
-                                focusedBorderColor = Gray,
-                                unfocusedBorderColor = LightGray
+                                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                                unfocusedBorderColor = MaterialTheme.colorScheme.onBackground
                             )
                         )
                         ExposedDropdownMenu(
@@ -194,8 +187,8 @@ fun WaterIntakeDialog(
                 }) {
                     Text(
                         "Cancel",
-                        fontWeight = FontWeight.Bold,
-                        color = Color.Black,
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onBackground,
                         modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
                     )
                 }
@@ -205,8 +198,8 @@ fun WaterIntakeDialog(
                 }) {
                     Text(
                         "Okay",
-                        fontWeight = FontWeight.ExtraBold,
-                        color = primaryColor,
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
                     )
                 }

@@ -24,10 +24,10 @@ import com.brandyodhiambo.common.domain.model.Days
 data class ReminderTimeEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
-    val hour: Int,
-    val minute: Int,
-    val ampm: String,
-    val isRepeated: Boolean,
-    val isAllDay: Boolean,
-    val days: List<Days>
+    val hour: Int?,
+    val minute: Int?,
+    val ampm: String?,
+    val isRepeated: Boolean?,
+    val isAllDay: Boolean?,
+    val days: List<Days>?
 )

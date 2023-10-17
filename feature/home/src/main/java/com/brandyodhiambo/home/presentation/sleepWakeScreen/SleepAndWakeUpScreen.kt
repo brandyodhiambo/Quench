@@ -27,18 +27,15 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.brandyodhiambo.common.domain.model.SleepTime
 import com.brandyodhiambo.common.domain.model.WakeTime
-import com.brandyodhiambo.designsystem.theme.blackColor
-import com.brandyodhiambo.designsystem.theme.primaryColor
 import com.chargemap.compose.numberpicker.Hours
 import com.chargemap.compose.numberpicker.HoursNumberPicker
 import com.ramcosta.composedestinations.annotation.Destination
@@ -67,8 +64,8 @@ fun SleepAndWakeTimeScreen(
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = "What's your wake up time?",
-                fontSize = 24.sp,
-                color = blackColor
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.onBackground
             )
             Spacer(modifier = Modifier.height(16.dp))
             WakeTimePickerInHours(
@@ -88,8 +85,8 @@ fun SleepAndWakeTimeScreen(
             Spacer(modifier = Modifier.height(32.dp))
             Text(
                 text = "What's your Sleeping time?",
-                fontSize = 24.sp,
-                color = blackColor
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.onBackground
             )
             Spacer(modifier = Modifier.height(16.dp))
             SleepTimePickerInHours(
@@ -140,9 +137,9 @@ fun SleepAndWakeTimeScreen(
                     navigator.navigateToMainScreen()
                 },
                 shape = RoundedCornerShape(15.dp),
-                colors = ButtonDefaults.buttonColors(backgroundColor = primaryColor)
+                colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colorScheme.primary)
             ) {
-                Text(text = "Next", Modifier.padding(8.dp), color = Color.White)
+                Text(text = "Next", Modifier.padding(8.dp), color = MaterialTheme.colorScheme.onPrimary)
             }
         }
     }
@@ -155,7 +152,7 @@ fun SleepTimePickerInHours(
     onTimeSleepSelected: (Hours) -> Unit
 ) {
     HoursNumberPicker(
-        dividersColor = blackColor,
+        dividersColor = MaterialTheme.colorScheme.onBackground,
         value = currentPickerValueText,
         hoursRange = 0..23,
         onValueChange = {
@@ -186,7 +183,7 @@ fun WakeTimePickerInHours(
     onTimeWakeSelected: (Hours) -> Unit
 ) {
     HoursNumberPicker(
-        dividersColor = blackColor,
+        dividersColor = MaterialTheme.colorScheme.onBackground,
         value = currentPickerValueText,
         hoursRange = 0..23,
         onValueChange = {

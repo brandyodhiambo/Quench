@@ -33,14 +33,16 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Card
-import androidx.compose.material.Divider
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Divider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
@@ -49,11 +51,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.brandyodhiambo.common.R
@@ -65,9 +66,6 @@ import com.brandyodhiambo.common.domain.model.ReminderTime
 import com.brandyodhiambo.common.domain.model.SelectedDrink
 import com.brandyodhiambo.common.presentation.component.WaterIntakeDialog
 import com.brandyodhiambo.designsystem.components.CircularButton
-import com.brandyodhiambo.designsystem.theme.lightBlue
-import com.brandyodhiambo.designsystem.theme.primaryColor
-import com.brandyodhiambo.designsystem.theme.roboto
 import com.brandyodhiambo.home.presentation.component.CircularRating
 import com.brandyodhiambo.home.presentation.component.CongratulationsDialog
 import com.brandyodhiambo.home.presentation.component.DeleteDialog
@@ -109,7 +107,7 @@ fun HomeScreen(
     val minute = reminderTimeFromDb.value?.minute
 
     Scaffold(
-        backgroundColor = primaryColor
+        containerColor = MaterialTheme.colorScheme.primary
     ) { paddingValues ->
         Box(
             modifier = Modifier
@@ -400,7 +398,7 @@ fun WaterIntake(
             .height(100.dp)
             .padding(16.dp)
             .fillMaxWidth(),
-        elevation = 4.dp
+        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.background)
     ) {
         Row(
             modifier = Modifier
@@ -413,7 +411,7 @@ fun WaterIntake(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Image(
+                Icon(
                     painter = painterResource(id = R.drawable.ic_glass),
                     contentDescription = null
                 )
@@ -426,16 +424,14 @@ fun WaterIntake(
                 ) {
                     Text(
                         text = "Ideal water intake",
-                        fontSize = 14.sp,
-                        color = Color.Gray,
-                        fontFamily = roboto
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
                     )
                     Text(
                         text = "$waterIntake $form",
-                        fontSize = 16.sp,
-                        color = Color.Gray,
-                        fontWeight = FontWeight.Bold,
-                        fontFamily = roboto
+                        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
+                        style = MaterialTheme.typography.labelMedium
+
                     )
                 }
             }
@@ -444,7 +440,7 @@ fun WaterIntake(
                     .fillMaxHeight()
                     .width(2.dp),
                 thickness = 2.dp,
-                color = primaryColor
+                color = MaterialTheme.colorScheme.primary
             )
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -460,16 +456,13 @@ fun WaterIntake(
                 ) {
                     Text(
                         text = "Water intake goal",
-                        fontSize = 14.sp,
-                        color = Color.Gray,
-                        fontFamily = roboto
+                        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
+                        style = MaterialTheme.typography.labelMedium
                     )
                     Text(
                         text = "$goalWaterIntake $goalForm",
-                        fontSize = 16.sp,
-                        color = Color.Gray,
-                        fontWeight = FontWeight.Bold,
-                        fontFamily = roboto
+                        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
+                        style = MaterialTheme.typography.labelSmall
                     )
                 }
             }
@@ -492,7 +485,7 @@ fun WaterRecord(
             .fillMaxWidth()
             .height(350.dp)
             .padding(start = 16.dp, end = 16.dp),
-        elevation = 4.dp
+        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.background)
     ) {
         Column(
             modifier = Modifier
@@ -513,7 +506,8 @@ fun WaterRecord(
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 CircularButton(
-                    backgroundColor = lightBlue,
+                    backgroundColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.67f),
+                    contentColor = MaterialTheme.colorScheme.onPrimary,
                     icon = R.drawable.ic_clock,
                     title = time,
                     onClick = {
@@ -521,7 +515,8 @@ fun WaterRecord(
                     }
                 )
                 CircularButton(
-                    backgroundColor = lightBlue,
+                    backgroundColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.67f),
+                    contentColor = MaterialTheme.colorScheme.onPrimary,
                     icon = R.drawable.ic_add,
                     title = "Add Level",
                     onClick = {
@@ -529,7 +524,8 @@ fun WaterRecord(
                     }
                 )
                 CircularButton(
-                    backgroundColor = lightBlue,
+                    backgroundColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.67f),
+                    contentColor = MaterialTheme.colorScheme.onPrimary,
                     icon = R.drawable.ic_glass,
                     title = "Add Drink",
                     onClick = {
@@ -549,13 +545,14 @@ fun WaterIntakeTimeAndLevel(
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .clip(MaterialTheme.shapes.medium)
             .padding(start = 16.dp, end = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(Color.White)
+                .background(MaterialTheme.colorScheme.background)
                 .padding(4.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
@@ -566,15 +563,14 @@ fun WaterIntakeTimeAndLevel(
             ) {
                 Icon(
                     modifier = Modifier.size(20.dp),
-                    painter = painterResource(id = intake.icon),
-                    tint = primaryColor,
+                    painter = painterResource(id = R.drawable.ic_glass),
+                    tint = MaterialTheme.colorScheme.primary,
                     contentDescription = null
                 )
                 Text(
                     text = intake.drinkValue,
-                    fontFamily = roboto,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.W400
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
                 )
             }
             Row(
@@ -583,10 +579,8 @@ fun WaterIntakeTimeAndLevel(
             ) {
                 Text(
                     text = intake.time,
-                    fontSize = 14.sp,
-                    color = Color.Gray,
-                    fontFamily = roboto,
-                    fontWeight = FontWeight.W300
+                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
+                    style = MaterialTheme.typography.labelMedium
                 )
                 IconButton(onClick = { onDeleteIconClick(intake) }) {
                     Icon(
@@ -599,7 +593,7 @@ fun WaterIntakeTimeAndLevel(
         }
         Divider(
             thickness = 1.dp,
-            color = Color.Gray
+            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f)
         )
     }
 }

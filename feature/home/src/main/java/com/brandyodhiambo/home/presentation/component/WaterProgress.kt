@@ -30,7 +30,6 @@ import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.brandyodhiambo.designsystem.theme.primaryColor
 import java.lang.Math.PI
 import java.lang.Math.sin
 
@@ -67,7 +66,7 @@ fun WaterProgress(progress: Float, modifier: Modifier = Modifier) {
         val textBounds = Rect()
         val textPaint = Paint().apply {
             textSize = 24.sp.toPx()
-            color = primaryColor.toArgb()
+            color = Color.Blue.copy(alpha = 0.67f).toArgb()
             textAlign = Paint.Align.CENTER
             getTextBounds(progressText, 0, progressText.length, textBounds)
         }

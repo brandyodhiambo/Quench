@@ -16,7 +16,7 @@
 package com.brandyodhiambo.home.data.repository
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.map
 import com.brandyodhiambo.common.domain.model.SelectedDrink
 import com.brandyodhiambo.common.domain.repository.SelectedDrinkRepository
 import com.brandyodhiambo.dao.SelectedDrinkDao
@@ -27,7 +27,7 @@ class SelectedDrinkRepositoryImpl(
     private val selectedDrinkDao: SelectedDrinkDao
 ) : SelectedDrinkRepository {
     override fun getSelectedDrink(): LiveData<List<SelectedDrink>> {
-        return Transformations.map(selectedDrinkDao.getSelectedDrink()) { selectedDrinkEntity ->
+        return selectedDrinkDao.getSelectedDrink().map { selectedDrinkEntity ->
             selectedDrinkEntity.map { it.toSelectedDrink() }
         }
     }

@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -33,13 +34,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.brandyodhiambo.designsystem.theme.primaryColor
-import com.brandyodhiambo.designsystem.theme.roboto
 
 @Composable
 fun CircularRating(
@@ -50,7 +48,7 @@ fun CircularRating(
     number: Int = 1,
     fontSize: TextUnit = 16.sp,
     radius: Dp = 110.dp,
-    color: Color = primaryColor,
+    color: Color = MaterialTheme.colorScheme.primary,
     strokeWidth: Dp = 8.dp,
     animationDuration: Int = 1000,
     animDelay: Int = 0
@@ -92,17 +90,13 @@ fun CircularRating(
         ) {
             Text(
                 text = "$drunk /$goal ml",
-                color = primaryColor,
-                fontSize = fontSize,
-                fontFamily = roboto,
-                fontWeight = FontWeight.Bold
+                color = MaterialTheme.colorScheme.primary,
+                style = MaterialTheme.typography.labelMedium
             )
             Text(
                 text = " You have completed ${(currentPercentage.value * number).toInt()}% of daily target",
-                color = Color.Gray,
-                fontSize = 12.sp,
-                fontFamily = roboto,
-                fontWeight = FontWeight.Normal
+                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f),
+                style = MaterialTheme.typography.labelSmall
             )
         }
     }

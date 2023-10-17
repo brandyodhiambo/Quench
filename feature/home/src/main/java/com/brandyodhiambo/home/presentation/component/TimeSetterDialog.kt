@@ -33,9 +33,8 @@ import androidx.compose.material.AlertDialog
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -46,12 +45,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.brandyodhiambo.common.R
 import com.brandyodhiambo.common.domain.model.Days
-import com.brandyodhiambo.designsystem.theme.blackColor
-import com.brandyodhiambo.designsystem.theme.primaryColor
-import com.brandyodhiambo.designsystem.theme.roboto
 import com.chargemap.compose.numberpicker.Hours
 import com.chargemap.compose.numberpicker.HoursNumberPicker
 
@@ -65,7 +60,7 @@ fun TimeSetterDialog(
     onConfirmClick: () -> Unit
 ) {
     AlertDialog(
-        backgroundColor = Color.White,
+        backgroundColor = MaterialTheme.colorScheme.background,
         onDismissRequest = { onDismiss() },
         title = {
             Image(
@@ -73,7 +68,7 @@ fun TimeSetterDialog(
                 contentDescription = null,
                 contentScale = ContentScale.Fit,
                 colorFilter = ColorFilter.tint(
-                    color = primaryColor
+                    color = MaterialTheme.colorScheme.primary
                 ),
                 modifier = Modifier
                     .padding(top = 35.dp)
@@ -92,7 +87,8 @@ fun TimeSetterDialog(
                         .fillMaxWidth(),
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
-                    fontFamily = roboto
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onBackground
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 TimePickerForDialogInHours(
@@ -110,25 +106,23 @@ fun TimeSetterDialog(
                 ) {
                     Text(
                         text = "Reminder Time",
-                        fontSize = 14.sp,
-                        fontFamily = roboto,
+                        style = MaterialTheme.typography.labelMedium,
                         modifier = Modifier
                             .padding(top = 5.dp),
                         fontWeight = FontWeight.Bold,
                         maxLines = 2,
-                        overflow = TextOverflow.Ellipsis
+                        overflow = TextOverflow.Ellipsis,
+                        color = MaterialTheme.colorScheme.onBackground
                     )
                     TextButton(onClick = {
                         onAllDayClicked()
                     }) {
                         Text(
                             text = "All Day",
-                            color = primaryColor,
-                            fontSize = 12.sp,
-                            fontFamily = roboto,
+                            color = MaterialTheme.colorScheme.primary,
+                            style = MaterialTheme.typography.labelMedium,
                             modifier = Modifier
                                 .padding(top = 5.dp),
-                            fontWeight = FontWeight.W100,
                             maxLines = 2,
                             overflow = TextOverflow.Ellipsis
                         )
@@ -141,7 +135,7 @@ fun TimeSetterDialog(
                 ) {
                     items(reminderDays) { singleDay ->
                         DayItem(
-                            color = if (singleDay.isSelected) primaryColor else blackColor,
+                            color = if (singleDay.isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground,
                             text = singleDay.day,
                             onClick = {
                                 singleDay.isSelected = !singleDay.isSelected
@@ -158,9 +152,8 @@ fun TimeSetterDialog(
             }) {
                 Text(
                     "Confirm",
-                    fontWeight = FontWeight.Bold,
-                    fontFamily = roboto,
-                    color = Color.Black,
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onBackground,
                     modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
                 )
             }
@@ -171,9 +164,8 @@ fun TimeSetterDialog(
             }) {
                 Text(
                     "Cancel",
-                    fontWeight = FontWeight.Bold,
-                    fontFamily = roboto,
-                    color = Color.Black,
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onBackground,
                     modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
                 )
             }
@@ -187,7 +179,7 @@ fun TimePickerForDialogInHours(
     onPickerValueChange: (Hours) -> Unit
 ) {
     HoursNumberPicker(
-        dividersColor = blackColor,
+        dividersColor = MaterialTheme.colorScheme.onBackground,
         value = currentPickerValueText,
         hoursRange = 0..23,
         onValueChange = {
@@ -197,7 +189,8 @@ fun TimePickerForDialogInHours(
             Text(
                 modifier = Modifier.padding(horizontal = 8.dp),
                 textAlign = TextAlign.Center,
-                text = ":"
+                text = ":",
+                color = MaterialTheme.colorScheme.onBackground
             )
         },
         minutesDivider = {
@@ -231,9 +224,8 @@ fun DayItem(color: Color, text: String, onClick: () -> Unit = {}) {
                 text = text,
                 textAlign = TextAlign.Center,
                 color = color,
-                fontSize = 14.sp,
-                fontFamily = roboto,
-                fontWeight = FontWeight.Bold
+                style = MaterialTheme.typography.labelMedium
+
             )
         }
     }

@@ -34,6 +34,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -43,7 +44,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.brandyodhiambo.designsystem.theme.primaryColor
 
 @Composable
 fun NotificationSwitcher(
@@ -68,7 +68,7 @@ fun NotificationSwitcher(
             .height(size)
             .clip(shape = parentShape)
             .clickable { onToggle() }
-            .background(color = if (isOn) primaryColor else Color.LightGray)
+            .background(color = if (isOn) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f))
     ) {
         Box(
             modifier = Modifier
@@ -98,7 +98,7 @@ fun NotificationSwitcher(
                     modifier = Modifier.size(iconSize),
                     imageVector = Icons.Default.Notifications,
                     contentDescription = "Notification_icon",
-                    tint = if (isOn) primaryColor else Color.LightGray
+                    tint = if (isOn) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f)
                 )
             }
 
@@ -112,7 +112,7 @@ fun NotificationSwitcher(
                     modifier = Modifier.size(iconSize),
                     imageVector = Icons.Default.Star,
                     contentDescription = "Notification_icon",
-                    tint = if (isOn) Color.LightGray else primaryColor
+                    tint = if (isOn) MaterialTheme.colorScheme.onBackground.copy(alpha = 0.02f) else MaterialTheme.colorScheme.primary
                 )
             }
         }
