@@ -26,16 +26,17 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Card
 import androidx.compose.material.DropdownMenuItem
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ExposedDropdownMenuBox
-import androidx.compose.material.ExposedDropdownMenuDefaults
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
-import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
@@ -53,7 +54,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.brandyodhiambo.common.R
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WaterIntakeDialog(
     modifier: Modifier = Modifier,
@@ -62,31 +63,29 @@ fun WaterIntakeDialog(
     currentWaterIntakeFormText: String,
     onCurrentWaterIntakeTextChange: (String) -> Unit,
     onCurrentWaterIntakeFormTextChange: (String) -> Unit,
-    onOkayClick: () -> Unit,
+    onOkayClick: () -> Unit
 
 ) {
     Card(
         shape = MaterialTheme.shapes.medium,
         modifier = Modifier.padding(10.dp, 5.dp, 10.dp, 10.dp),
-        elevation = 0.dp,
-        backgroundColor = MaterialTheme.colorScheme.background,
+        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.background)
     ) {
-        Column(
-        ) {
+        Column() {
             Image(
                 painter = painterResource(id = R.drawable.ic_cup),
                 contentScale = ContentScale.Fit,
                 colorFilter = ColorFilter.tint(
-                    color = MaterialTheme.colorScheme.secondary,
+                    color = MaterialTheme.colorScheme.secondary
                 ),
                 contentDescription = null,
                 modifier = Modifier
                     .padding(top = 35.dp)
                     .height(70.dp)
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
             )
             Column(
-                modifier = Modifier.padding(16.dp),
+                modifier = Modifier.padding(16.dp)
             ) {
                 Text(
                     text = "Water intake goal",
@@ -97,13 +96,14 @@ fun WaterIntakeDialog(
                     maxLines = 2,
                     style = MaterialTheme.typography.labelLarge,
                     overflow = TextOverflow.Ellipsis,
+                    color = MaterialTheme.colorScheme.onBackground
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Row(
                     Modifier
                         .fillMaxWidth()
                         .padding(top = 10.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     OutlinedTextField(
                         modifier = Modifier
@@ -112,19 +112,19 @@ fun WaterIntakeDialog(
                         value = currentWaterIntakeText,
                         onValueChange = onCurrentWaterIntakeTextChange,
                         keyboardOptions = KeyboardOptions.Default.copy(
-                            keyboardType = KeyboardType.Number,
+                            keyboardType = KeyboardType.Number
                         ),
                         label = {
                             Text(
                                 "2810",
-                                color = MaterialTheme.colorScheme.onBackground,
+                                color = MaterialTheme.colorScheme.onBackground
                             )
                         },
                         shape = RoundedCornerShape(30.dp),
                         colors = TextFieldDefaults.outlinedTextFieldColors(
                             focusedBorderColor = MaterialTheme.colorScheme.primary,
-                            unfocusedBorderColor = MaterialTheme.colorScheme.onBackground,
-                        ),
+                            unfocusedBorderColor = MaterialTheme.colorScheme.onBackground
+                        )
                     )
 
                     val options = listOf("ml", "l")
@@ -134,7 +134,7 @@ fun WaterIntakeDialog(
                         expanded = expanded,
                         onExpandedChange = {
                             expanded = !expanded
-                        },
+                        }
                     ) {
                         OutlinedTextField(
                             modifier = Modifier.fillMaxWidth(),
@@ -146,27 +146,27 @@ fun WaterIntakeDialog(
                             label = { Text("ml") },
                             trailingIcon = {
                                 ExposedDropdownMenuDefaults.TrailingIcon(
-                                    expanded = expanded,
+                                    expanded = expanded
                                 )
                             },
                             shape = RoundedCornerShape(45.dp),
                             colors = TextFieldDefaults.outlinedTextFieldColors(
                                 focusedBorderColor = MaterialTheme.colorScheme.primary,
-                                unfocusedBorderColor = MaterialTheme.colorScheme.onBackground,
-                            ),
+                                unfocusedBorderColor = MaterialTheme.colorScheme.onBackground
+                            )
                         )
                         ExposedDropdownMenu(
                             expanded = expanded,
                             onDismissRequest = {
                                 expanded = false
-                            },
+                            }
                         ) {
                             options.forEach { selectionOption ->
                                 DropdownMenuItem(
                                     onClick = {
                                         onCurrentWaterIntakeFormTextChange(selectionOption)
                                         expanded = false
-                                    },
+                                    }
                                 ) {
                                     Text(text = selectionOption)
                                 }
@@ -180,7 +180,7 @@ fun WaterIntakeDialog(
                     .fillMaxWidth()
                     .padding(top = 10.dp)
                     .background(Color.White),
-                horizontalArrangement = Arrangement.SpaceAround,
+                horizontalArrangement = Arrangement.SpaceAround
             ) {
                 TextButton(onClick = {
                     openCustomDialog.value = false
@@ -189,7 +189,7 @@ fun WaterIntakeDialog(
                         "Cancel",
                         style = MaterialTheme.typography.labelMedium,
                         color = MaterialTheme.colorScheme.onBackground,
-                        modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
+                        modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
                     )
                 }
                 TextButton(onClick = {
@@ -200,7 +200,7 @@ fun WaterIntakeDialog(
                         "Okay",
                         style = MaterialTheme.typography.labelMedium,
                         color = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
+                        modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
                     )
                 }
             }

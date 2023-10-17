@@ -44,7 +44,7 @@ import androidx.compose.ui.unit.dp
 fun CustomCheckinDialog(
     openDialog: MutableState<Boolean>,
     title: String,
-    items: List<String>,
+    items: List<String>
 ) {
     val selectedValues = remember { mutableStateListOf<String>() }
     val isSelectedItem: (String) -> Boolean = { selectedValues.contains(it) }
@@ -58,31 +58,31 @@ fun CustomCheckinDialog(
 
     Card(
         shape = RoundedCornerShape(12.dp),
-        modifier = Modifier.padding(10.dp, 5.dp, 10.dp, 10.dp),
+        modifier = Modifier.padding(10.dp, 5.dp, 10.dp, 10.dp)
     ) {
         Column(
             Modifier
                 .padding(8.dp)
-                .background(Color.White),
+                .background(Color.White)
         ) {
             Text(
                 text = "Select $title",
-                modifier = Modifier.padding(8.dp),
+                modifier = Modifier.padding(8.dp)
             )
             items.forEach { item ->
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
-                        .padding(8.dp),
+                        .padding(8.dp)
                 ) {
                     Checkbox(
                         checked = isSelectedItem(item),
-                        onCheckedChange = { onChangeState(item, it) },
+                        onCheckedChange = { onChangeState(item, it) }
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = item,
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier.fillMaxWidth()
                     )
                 }
             }
@@ -92,7 +92,7 @@ fun CustomCheckinDialog(
                     .fillMaxWidth()
                     .padding(top = 10.dp)
                     .background(Color.White),
-                horizontalArrangement = Arrangement.SpaceAround,
+                horizontalArrangement = Arrangement.SpaceAround
             ) {
                 Card(
                     shape = RoundedCornerShape(20.dp),
@@ -102,14 +102,14 @@ fun CustomCheckinDialog(
                         .clickable {
                             openDialog.value = false
                         },
-                    colors = CardDefaults.cardColors(MaterialTheme.colorScheme.background),
+                    colors = CardDefaults.cardColors(MaterialTheme.colorScheme.background)
                 ) {
                     Text(
                         "Cancel",
                         style = MaterialTheme.typography.labelLarge,
                         color = MaterialTheme.colorScheme.onBackground,
                         modifier = Modifier.padding(10.dp),
-                        textAlign = TextAlign.Center,
+                        textAlign = TextAlign.Center
                     )
                 }
                 Card(
@@ -119,14 +119,14 @@ fun CustomCheckinDialog(
                         .clickable {
                             openDialog.value = false
                         },
-                    colors = CardDefaults.cardColors(MaterialTheme.colorScheme.primary),
+                    colors = CardDefaults.cardColors(MaterialTheme.colorScheme.primary)
                 ) {
                     Text(
                         "Okay",
                         style = MaterialTheme.typography.labelMedium,
                         color = MaterialTheme.colorScheme.onPrimary,
                         modifier = Modifier.padding(10.dp),
-                        textAlign = TextAlign.Center,
+                        textAlign = TextAlign.Center
                     )
                 }
             }

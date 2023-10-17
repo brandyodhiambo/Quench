@@ -24,7 +24,7 @@ import com.brandyodhiambo.statistics.data.mapper.toWeeklyStatistics
 import com.brandyodhiambo.statistics.data.mapper.toWeeklyStatisticsEntity
 
 class WeeklyStatisticsRepositoryImpl(
-    private val weeklyStatisticDao: WeeklyStatisticDao,
+    private val weeklyStatisticDao: WeeklyStatisticDao
 ) : WeeklyStatisticRepository {
     override suspend fun insertWeeklyStatistic(weeklyStatistic: WeeklyStatistics) {
         weeklyStatisticDao.insertWeeklyStatistic(weeklyStatistic.toWeeklyStatisticsEntity())

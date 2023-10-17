@@ -24,26 +24,22 @@ import androidx.compose.material.TextButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.brandyodhiambo.designsystem.theme.roboto
 
 @Composable
 fun EmptyDialog(
     onDismiss: () -> Unit,
-    onConfirmClick: () -> Unit,
+    onConfirmClick: () -> Unit
 ) {
     AlertDialog(
-        backgroundColor = Color.White,
+        backgroundColor = MaterialTheme.colorScheme.background,
         onDismissRequest = { onDismiss() },
         title = {
             Text(
                 text = "No Drinks",
                 textAlign = TextAlign.Center,
-                fontSize = 20.sp,
-                fontFamily = roboto,
+                style = MaterialTheme.typography.titleMedium
             )
         },
         text = {
@@ -51,14 +47,14 @@ fun EmptyDialog(
                 color = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 5.dp, bottom = 5.dp),
+                    .padding(top = 5.dp, bottom = 5.dp)
             )
             Text(
                 "You have no drinks in your list. Add a drink to get started.",
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
-                textAlign = TextAlign.Center,
+                textAlign = TextAlign.Center
             )
         },
         confirmButton = {
@@ -67,9 +63,9 @@ fun EmptyDialog(
             }) {
                 Text(
                     "Confirm",
-                    style = MaterialTheme.typography.labelLarge,
+                    style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.onBackground,
-                    modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
+                    modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
                 )
             }
         },
@@ -79,11 +75,11 @@ fun EmptyDialog(
             }) {
                 Text(
                     "Cancel",
-                    style = MaterialTheme.typography.labelLarge,
+                    style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.onBackground,
-                    modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
+                    modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
                 )
             }
-        },
+        }
     )
 }

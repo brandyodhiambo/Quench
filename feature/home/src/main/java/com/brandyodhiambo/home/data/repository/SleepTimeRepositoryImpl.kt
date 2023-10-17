@@ -24,7 +24,7 @@ import com.brandyodhiambo.home.data.mapper.toSleepTime
 import com.brandyodhiambo.home.data.mapper.toSleepTimeEntity
 
 class SleepTimeRepositoryImpl(
-    private val sleepTimeDao: SleepTimeDao,
+    private val sleepTimeDao: SleepTimeDao
 ) : SleepTimeRepository {
     override suspend fun insertSleepTime(sleepTime: SleepTime) {
         sleepTimeDao.insertSleepTime(sleepTime.toSleepTimeEntity())
@@ -36,7 +36,7 @@ class SleepTimeRepositoryImpl(
             id = entityResult.id,
             hours = entityResult.hour.toString(),
             minutes = entityResult.minute.toString(),
-            ampm = entityResult.ampm,
+            ampm = entityResult.ampm
         )
     }
 

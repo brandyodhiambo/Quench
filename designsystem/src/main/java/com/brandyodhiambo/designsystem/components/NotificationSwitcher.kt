@@ -68,7 +68,7 @@ fun NotificationSwitcher(
             .height(size)
             .clip(shape = parentShape)
             .clickable { onToggle() }
-            .background(color = if (isOn) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground)
+            .background(color = if (isOn) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f))
     ) {
         Box(
             modifier = Modifier
@@ -98,7 +98,7 @@ fun NotificationSwitcher(
                     modifier = Modifier.size(iconSize),
                     imageVector = Icons.Default.Notifications,
                     contentDescription = "Notification_icon",
-                    tint = if (isOn) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground
+                    tint = if (isOn) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f)
                 )
             }
 
@@ -112,7 +112,7 @@ fun NotificationSwitcher(
                     modifier = Modifier.size(iconSize),
                     imageVector = Icons.Default.Star,
                     contentDescription = "Notification_icon",
-                    tint = if (isOn) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.primary
+                    tint = if (isOn) MaterialTheme.colorScheme.onBackground.copy(alpha = 0.02f) else MaterialTheme.colorScheme.primary
                 )
             }
         }

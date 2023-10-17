@@ -24,7 +24,7 @@ import com.brandyodhiambo.statistics.data.mapper.toMonthlyStatistics
 import com.brandyodhiambo.statistics.data.mapper.toMonthlyStatisticsEntity
 
 class MonthlyStatisticsRepositoryImpl(
-    private val monthlyStatisticalDao: MonthlyStatisticsDao,
+    private val monthlyStatisticalDao: MonthlyStatisticsDao
 ) : MonthlyStatisticsRepository {
     override suspend fun insertMonthlyStatistics(monthlyStatistics: MonthlyStatistics) {
         monthlyStatisticalDao.insertMonthlyStatistic(monthlyStatistics.toMonthlyStatisticsEntity())

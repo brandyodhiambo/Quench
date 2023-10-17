@@ -24,7 +24,7 @@ import com.brandyodhiambo.home.data.mapper.toAchievement
 import com.brandyodhiambo.home.data.mapper.toAchievementsEntity
 
 class AchievementRepositoryImpl(
-    private val achievementDao: AchievementDao,
+    private val achievementDao: AchievementDao
 ) : AchievementRepository {
     override suspend fun insertAchievement(achievement: Achievement) {
         achievementDao.insertAchievement(achievement.toAchievementsEntity())

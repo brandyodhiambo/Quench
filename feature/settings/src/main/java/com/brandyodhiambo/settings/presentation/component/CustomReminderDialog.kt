@@ -37,7 +37,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -47,7 +46,7 @@ import androidx.compose.ui.window.Dialog
 fun CustomReminderDialog(
     openDialog: MutableState<Boolean>,
     title: String,
-    items: List<String>,
+    items: List<String>
 ) {
     val selectedValue = remember { mutableStateOf("") }
     val isSelectedItem: (String) -> Boolean = { selectedValue.value == it }
@@ -55,16 +54,16 @@ fun CustomReminderDialog(
 
     Card(
         shape = RoundedCornerShape(12.dp),
-        modifier = Modifier.padding(10.dp, 5.dp, 10.dp, 10.dp),
+        modifier = Modifier.padding(10.dp, 5.dp, 10.dp, 10.dp)
     ) {
         Column(
             Modifier
                 .padding(8.dp)
-                .background(MaterialTheme.colorScheme.background),
+                .background(MaterialTheme.colorScheme.background)
         ) {
             Text(
                 text = "Select $title",
-                modifier = Modifier.padding(8.dp),
+                modifier = Modifier.padding(8.dp)
             )
             items.forEach { item ->
                 Row(
@@ -73,18 +72,18 @@ fun CustomReminderDialog(
                         .selectable(
                             selected = isSelectedItem(item),
                             onClick = { onChangeState(item) },
-                            role = Role.RadioButton,
+                            role = Role.RadioButton
                         )
-                        .padding(8.dp),
+                        .padding(8.dp)
                 ) {
                     RadioButton(
                         selected = isSelectedItem(item),
-                        onClick = null,
+                        onClick = null
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = item,
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier.fillMaxWidth()
                     )
                 }
             }
@@ -94,7 +93,7 @@ fun CustomReminderDialog(
                     .fillMaxWidth()
                     .padding(top = 10.dp)
                     .background(MaterialTheme.colorScheme.background),
-                horizontalArrangement = Arrangement.SpaceAround,
+                horizontalArrangement = Arrangement.SpaceAround
             ) {
                 Card(
                     shape = RoundedCornerShape(20.dp),
@@ -106,16 +105,16 @@ fun CustomReminderDialog(
                         },
                     colors = CardDefaults.cardColors(
                         MaterialTheme.colorScheme.onBackground.copy(
-                            alpha = 0.12f,
-                        ),
-                    ),
+                            alpha = 0.12f
+                        )
+                    )
                 ) {
                     Text(
                         "Cancel",
                         style = MaterialTheme.typography.labelMedium,
                         color = MaterialTheme.colorScheme.onBackground,
                         modifier = Modifier.padding(10.dp),
-                        textAlign = TextAlign.Center,
+                        textAlign = TextAlign.Center
                     )
                 }
                 Card(
@@ -125,14 +124,14 @@ fun CustomReminderDialog(
                         .clickable {
                             openDialog.value = false
                         },
-                    colors = CardDefaults.cardColors(MaterialTheme.colorScheme.primary),
+                    colors = CardDefaults.cardColors(MaterialTheme.colorScheme.primary)
                 ) {
                     Text(
                         "Okay",
                         style = MaterialTheme.typography.labelMedium,
                         color = MaterialTheme.colorScheme.onPrimary,
                         modifier = Modifier.padding(10.dp),
-                        textAlign = TextAlign.Center,
+                        textAlign = TextAlign.Center
                     )
                 }
             }
@@ -149,8 +148,8 @@ fun CustomReminderDialog(
                             "Thursday",
                             "Friday",
                             "Saturday",
-                            "Sunday",
-                        ),
+                            "Sunday"
+                        )
                     )
                 }
             }

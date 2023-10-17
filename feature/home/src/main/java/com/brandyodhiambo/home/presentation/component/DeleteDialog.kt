@@ -24,12 +24,8 @@ import androidx.compose.material.TextButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.brandyodhiambo.designsystem.theme.roboto
 
 @Composable
 fun DeleteDialog(
@@ -38,19 +34,19 @@ fun DeleteDialog(
     onConfirmClick: (Int) -> Unit
 ) {
     AlertDialog(
-        backgroundColor = Color.White,
+        backgroundColor = MaterialTheme.colorScheme.background,
         onDismissRequest = { onDismiss() },
         title = {
             Text(
                 text = "Delete Drink",
                 textAlign = TextAlign.Center,
-                fontSize = 20.sp,
-                fontFamily = roboto
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onBackground
             )
         },
         text = {
             Divider(
-                color = MaterialTheme.colorScheme.onBackground,
+                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 5.dp, bottom = 5.dp)
@@ -69,8 +65,8 @@ fun DeleteDialog(
             }) {
                 Text(
                     "Confirm",
-                    style = MaterialTheme.typography.labelLarge,
-                    color = Color.Black,
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onBackground,
                     modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
                 )
             }
@@ -81,8 +77,8 @@ fun DeleteDialog(
             }) {
                 Text(
                     "Cancel",
-                    style = MaterialTheme.typography.labelLarge,
-                    color = Color.Black,
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onBackground,
                     modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
                 )
             }

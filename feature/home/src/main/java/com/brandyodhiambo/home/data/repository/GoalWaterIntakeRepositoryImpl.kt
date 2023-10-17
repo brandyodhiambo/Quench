@@ -43,8 +43,8 @@ class GoalWaterIntakeRepositoryImpl(
     }
 
     override fun getGoalWaterIntake(): LiveData<GoalWaterIntake?> {
-        return goalWaterIntakeDao.getGoalWaterIntake().map { goalWaterIntakeEntity->
-            goalWaterIntakeEntity.toGoalWaterIntake()
+        return goalWaterIntakeDao.getGoalWaterIntake().map { goalWaterIntakeEntity ->
+            goalWaterIntakeEntity?.toGoalWaterIntake()
         }
     }
 }

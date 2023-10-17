@@ -33,25 +33,23 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.brandyodhiambo.common.domain.model.Day
 import com.brandyodhiambo.common.util.toInitials
 import com.brandyodhiambo.designsystem.components.NotificationSwitcher
@@ -63,6 +61,7 @@ interface NotificationNavigator {
     fun popBackStack()
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Destination
 @Composable
@@ -88,11 +87,19 @@ fun NotificationScreen(
     )
 
     Scaffold(
-        backgroundColor = MaterialTheme.colorScheme.primary,
+        containerColor = MaterialTheme.colorScheme.primary,
         topBar = {
             TopAppBar(
-                title = { Text(text = "Notification", color = MaterialTheme.colorScheme.onPrimary, fontSize = 16.sp) },
-                backgroundColor = MaterialTheme.colorScheme.onBackground,
+                title = {
+                    Text(
+                        text = "Notification",
+                        color = MaterialTheme.colorScheme.onPrimary,
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primary
+                ),
                 navigationIcon = {
                     IconButton(onClick = {
                         navigator.popBackStack()
@@ -136,8 +143,8 @@ fun AddReminder(navigator: NotificationNavigator) {
     Card(
         modifier = Modifier
             .fillMaxWidth(),
-        elevation = 4.dp,
-        shape = RoundedCornerShape(8.dp)
+        shape = MaterialTheme.shapes.medium,
+        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.background)
     ) {
         Row(
             modifier = Modifier
@@ -148,12 +155,15 @@ fun AddReminder(navigator: NotificationNavigator) {
         ) {
             Text(
                 text = "Add New Reminder",
-                color = Color.Gray,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.SemiBold
+                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
+                style = MaterialTheme.typography.labelLarge
             )
             IconButton(onClick = { navigator.navigateToReminderScreen() }) {
-                Icon(imageVector = Icons.Default.Add, tint = Color.Gray, contentDescription = null)
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    tint = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
+                    contentDescription = null
+                )
             }
         }
     }
@@ -166,8 +176,8 @@ fun ReminderNotificationTime(reminder: Reminder) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(bottom = 8.dp),
-        elevation = 4.dp,
-        shape = RoundedCornerShape(8.dp)
+        shape = MaterialTheme.shapes.medium,
+        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.background)
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -175,9 +185,9 @@ fun ReminderNotificationTime(reminder: Reminder) {
                 .fillMaxSize()
                 .background(
                     if (reminder.isOn) {
-                        MaterialTheme.colorScheme.onPrimary
+                        MaterialTheme.colorScheme.background
                     } else {
-                        Color.LightGray
+                        MaterialTheme.colorScheme.background.copy(alpha = 0.2f)
                     }
                 )
                 .padding(4.dp)
@@ -196,12 +206,11 @@ fun ReminderNotificationTime(reminder: Reminder) {
                     Text(
                         text = reminder.time,
                         color = if (reminder.isOn) {
-                            Color.Black
+                            MaterialTheme.colorScheme.background
                         } else {
-                            Color.Gray
+                            MaterialTheme.colorScheme.background.copy(alpha = 0.2f)
                         },
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.SemiBold
+                        style = MaterialTheme.typography.labelMedium
                     )
                     LazyRow() {
                         items(reminder.days) { day ->
@@ -247,9 +256,12 @@ fun WeeksReminder(day: Day, reminder: Reminder) {
         ) {
             Text(
                 text = day.day.toInitials(),
-                fontSize = 12.sp,
-                textAlign = TextAlign.Center,
-                fontWeight = FontWeight.SemiBold
+                color = if (day.isOn && reminder.isOn) {
+                    MaterialTheme.colorScheme.primary
+                } else {
+                    MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f)
+                },
+                style = MaterialTheme.typography.labelMedium
             )
         }
     }

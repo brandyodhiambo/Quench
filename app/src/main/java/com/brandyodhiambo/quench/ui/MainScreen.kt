@@ -51,38 +51,38 @@ import kotlinx.coroutines.launch
 @Destination
 fun MainScreen(
     navigator: DestinationsNavigator,
-    settingsNavigator: SettingsNavigator,
+    settingsNavigator: SettingsNavigator
 ) {
     Scaffold { paddingValue ->
         val tabs = listOf(
             TabItem.Home(navigator = navigator),
             TabItem.Statistic(navigator = navigator),
-            TabItem.Settings(navigator = settingsNavigator),
+            TabItem.Settings(navigator = settingsNavigator)
         )
         val pagerState = rememberPagerState()
 
         Column(
             modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             TopAppBar(
                 title = {
                     Text(
                         text = "Quench",
                         style = MaterialTheme.typography.titleLarge,
-                        color = MaterialTheme.colorScheme.onPrimary,
+                        color = MaterialTheme.colorScheme.onPrimary
                     )
                 },
                 modifier = Modifier.fillMaxWidth(),
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimary,
-                ),
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary
+                )
             )
             CustomTab(tabs = tabs, pagerState = pagerState)
             TabContent(
                 tabs = tabs,
-                pagerState = pagerState,
+                pagerState = pagerState
             )
         }
     }
@@ -92,11 +92,11 @@ fun MainScreen(
 @Composable
 fun TabContent(
     tabs: List<TabItem>,
-    pagerState: PagerState,
+    pagerState: PagerState
 ) {
     HorizontalPager(count = tabs.size, state = pagerState) { page ->
         tabs[page].screen(
-            onClick = { },
+            onClick = { }
         )
     }
 }
@@ -105,7 +105,7 @@ fun TabContent(
 @Composable
 fun CustomTab(
     tabs: List<TabItem>,
-    pagerState: PagerState,
+    pagerState: PagerState
 ) {
     val scope = rememberCoroutineScope()
 
@@ -116,15 +116,17 @@ fun CustomTab(
         indicator = { tabPositions ->
             TabRowDefaults.Indicator(
                 Modifier.pagerTabIndicatorOffset(pagerState, tabPositions),
+                color = MaterialTheme.colorScheme.onPrimary
             )
-        },
+        }
     ) {
         tabs.forEachIndexed { index, tabItem ->
             LeadingIconTab(
                 icon = {
                     Icon(
                         painter = painterResource(id = tabItem.icon),
-                        contentDescription = "",
+                        tint = MaterialTheme.colorScheme.onPrimary,
+                        contentDescription = ""
                     )
                 },
                 selected = pagerState.currentPage == index,
@@ -138,9 +140,10 @@ fun CustomTab(
                         text = tabItem.title,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
-                        style = MaterialTheme.typography.titleMedium,
+                        style = MaterialTheme.typography.titleSmall,
+                        color = MaterialTheme.colorScheme.onPrimary
                     )
-                },
+                }
             )
         }
     }

@@ -15,7 +15,6 @@
  */
 package com.brandyodhiambo.home.presentation.component
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -25,9 +24,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -40,28 +41,28 @@ import com.brandyodhiambo.common.R
 @Composable
 fun CongratulationsDialog(
     onOkayClicked: () -> Unit,
-    onCancelClicked: () -> Unit,
+    onCancelClicked: () -> Unit
 ) {
     val context = LocalContext.current
     Card(
         modifier = Modifier.padding(10.dp, 5.dp, 10.dp, 10.dp),
         shape = RoundedCornerShape(12.dp),
-        elevation = 8.dp,
+        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.background)
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth()
         ) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(300.dp),
+                    .height(300.dp)
             ) {
-                Image(
+                Icon(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(300.dp),
                     painter = painterResource(id = R.drawable.congratulations),
-                    contentDescription = null,
+                    contentDescription = null
                 )
             }
 
@@ -70,16 +71,16 @@ fun CongratulationsDialog(
                     .fillMaxWidth()
                     .padding(top = 10.dp)
                     .background(Color.White),
-                horizontalArrangement = Arrangement.SpaceAround,
+                horizontalArrangement = Arrangement.SpaceAround
             ) {
                 TextButton(onClick = {
                     onCancelClicked()
                 }) {
                     Text(
                         "Cancel",
-                        style = MaterialTheme.typography.labelLarge,
-                        color = Color.Black,
-                        modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onBackground,
+                        modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
                     )
                 }
                 TextButton(onClick = {
@@ -87,9 +88,9 @@ fun CongratulationsDialog(
                 }) {
                     Text(
                         "Okay",
-                        style = MaterialTheme.typography.labelLarge,
+                        style = MaterialTheme.typography.labelMedium,
                         color = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
+                        modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
                     )
                 }
             }

@@ -24,7 +24,7 @@ import com.brandyodhiambo.home.data.mapper.toIdealWaterIntake
 import com.brandyodhiambo.home.data.mapper.toIdealWaterIntakeEntity
 
 class IdealWaterInkateRepositoryImpl(
-    private val idealWaterIntakeDao: IdealWaterIntakeDao,
+    private val idealWaterIntakeDao: IdealWaterIntakeDao
 ) : IdealWaterIntakeRepository {
 
     override suspend fun insertIdealWaterIntake(idealWaterIntake: IdealWaterIntake) {
@@ -36,7 +36,7 @@ class IdealWaterInkateRepositoryImpl(
         idealWaterIntakeDao.updateIdealIntake(
             entityData.id,
             entityData.waterIntake.toString(),
-            entityData.form,
+            entityData.form
         )
     }
 
@@ -50,7 +50,7 @@ class IdealWaterInkateRepositoryImpl(
 
     override fun getIdealWaterIntake(): LiveData<IdealWaterIntake?> {
         return idealWaterIntakeDao.getIdealWaterIntake().map { idealWaterIntakeEntity ->
-            idealWaterIntakeEntity.toIdealWaterIntake()
+            idealWaterIntakeEntity?.toIdealWaterIntake()
         }
     }
 }

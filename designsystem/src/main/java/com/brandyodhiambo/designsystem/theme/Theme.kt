@@ -46,7 +46,7 @@ private val LightColors = lightColorScheme(
     secondaryContainer = PrimaryColor,
     onSecondaryContainer = Color.White,
     error = ErrorColor,
-    onError = OnErrorColor,
+    onError = OnErrorColor
 )
 
 private val DarkColors = darkColorScheme(
@@ -65,13 +65,13 @@ private val DarkColors = darkColorScheme(
     secondaryContainer = PrimaryColor,
     onSecondaryContainer = Color.White,
     error = ErrorColor,
-    onError = OnErrorColor,
+    onError = OnErrorColor
 )
 
 @Composable
 fun QuenchTheme(
     theme: Int,
-    content: @Composable () -> Unit,
+    content: @Composable () -> Unit
 ) {
     val autoColors = if (isSystemInDarkTheme()) DarkColors else LightColors
 
@@ -97,10 +97,10 @@ fun QuenchTheme(
 
     SideEffect {
         systemUiController.setSystemBarsColor(
-            color = colors.primary,
+            color = colors.primary
         )
         systemUiController.setNavigationBarColor(
-            color = colors.background,
+            color = colors.background
         )
     }
 
@@ -108,7 +108,7 @@ fun QuenchTheme(
         colorScheme = colors,
         typography = Typography,
         shapes = Shapes,
-        content = content,
+        content = content
     )
 }
 
@@ -117,18 +117,18 @@ private fun supportsDynamicTheming() = Build.VERSION.SDK_INT >= Build.VERSION_CO
 
 // To be used to set the preferred theme inside settings
 enum class Theme(
-    val themeValue: Int,
+    val themeValue: Int
 ) {
     MATERIAL_YOU(
-        themeValue = 12,
+        themeValue = 12
     ),
     FOLLOW_SYSTEM(
-        themeValue = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM,
+        themeValue = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
     ),
     LIGHT_THEME(
-        themeValue = AppCompatDelegate.MODE_NIGHT_NO,
+        themeValue = AppCompatDelegate.MODE_NIGHT_NO
     ),
     DARK_THEME(
-        themeValue = AppCompatDelegate.MODE_NIGHT_YES,
-    ),
+        themeValue = AppCompatDelegate.MODE_NIGHT_YES
+    )
 }

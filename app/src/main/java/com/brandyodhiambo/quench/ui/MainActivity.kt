@@ -61,24 +61,24 @@ class MainActivity : ComponentActivity() {
         setContent {
             createChannel(this)
             QuenchTheme(
-                theme = Theme.FOLLOW_SYSTEM.themeValue,
+                theme = Theme.FOLLOW_SYSTEM.themeValue
             ) {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background,
+                    color = MaterialTheme.colors.background
                 ) {
                     startAchievementOnetimeWorkRequest(applicationContext)
                     startDailyOnetimeWorkRequest(applicationContext)
                     startMonthlyOnetimeWorkRequest(applicationContext)
                     startWeeklyOnetimeWorkRequest(applicationContext)
 
-                    val reminderTimeFromDb = viewModel.reminderTime.observeAsState()
-                    val hours = reminderTimeFromDb.value?.hour ?: 0
-                    val minutes = reminderTimeFromDb.value?.minute ?: 0
+                    val reminderTimeFromDb = viewModel.reminderTime?.observeAsState()
+                    val hours = reminderTimeFromDb?.value?.hour ?: 0
+                    val minutes = reminderTimeFromDb?.value?.minute ?: 0
                     val scheduler = AlarmSchedularImpl(this)
                     val alarmItem = AlarmData(
                         time = LocalDateTime.now().withHour(hours).withMinute(minutes),
-                        message = getString(R.string.it_s_time_to_drink_water),
+                        message = getString(R.string.it_s_time_to_drink_water)
                     )
                     alarmItem.let(scheduler::schedule)
                     val navController = rememberAnimatedNavController()
@@ -90,9 +90,9 @@ class MainActivity : ComponentActivity() {
                         engine = navHostEngine,
                         dependenciesContainerBuilder = {
                             dependency(
-                                currentNavigator(),
+                                currentNavigator()
                             )
-                        },
+                        }
                     )
                 }
             }
@@ -103,7 +103,7 @@ class MainActivity : ComponentActivity() {
 fun DestinationScope<*>.currentNavigator(): FeatureNavigator {
     return FeatureNavigator(
         navController = navController,
-        navGraph = navBackStackEntry.destination.navGraph(),
+        navGraph = navBackStackEntry.destination.navGraph()
     )
 }
 

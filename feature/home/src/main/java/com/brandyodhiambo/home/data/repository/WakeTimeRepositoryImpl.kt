@@ -24,7 +24,7 @@ import com.brandyodhiambo.home.data.mapper.toWakeTime
 import com.brandyodhiambo.home.data.mapper.toWakeTimeEntity
 
 class WakeTimeRepositoryImpl(
-    private val wakeTimeDao: WakeTimeDao,
+    private val wakeTimeDao: WakeTimeDao
 ) : WakeTimeRepository {
     override suspend fun insertWakeTime(wakeTime: WakeTime) {
         wakeTimeDao.insertWakeTime(wakeTime.toWakeTimeEntity())
@@ -36,7 +36,7 @@ class WakeTimeRepositoryImpl(
             id = entityData.id,
             hours = entityData.hour.toString(),
             minutes = entityData.minute.toString(),
-            ampm = entityData.ampm,
+            ampm = entityData.ampm
         )
     }
 

@@ -15,8 +15,6 @@
  */
 package com.brandyodhiambo.home.presentation.component
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -31,10 +29,11 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
@@ -43,16 +42,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.brandyodhiambo.common.R
 import com.vanpra.composematerialdialogs.MaterialDialog
 import com.vanpra.composematerialdialogs.MaterialDialogState
@@ -118,11 +114,10 @@ fun SelectDrinkComposable(
     Card(
         shape = RoundedCornerShape(10.dp),
         modifier = Modifier.padding(10.dp, 5.dp, 5.dp, 5.dp),
-        elevation = 8.dp
+        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.background)
     ) {
         Column(
             modifier
-                .background(MaterialTheme.colorScheme.background)
                 .padding(8.dp)
         ) {
             Text(
@@ -133,7 +128,8 @@ fun SelectDrinkComposable(
                     .fillMaxWidth(),
                 maxLines = 2,
                 style = MaterialTheme.typography.titleMedium,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
+                color = MaterialTheme.colorScheme.onBackground
             )
             Spacer(modifier = Modifier.height(12.dp))
             LazyVerticalGrid(columns = GridCells.Fixed(count = 4)) {
@@ -151,8 +147,7 @@ fun SelectDrinkComposable(
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .padding(top = 10.dp)
-                    .background(Color.White),
+                    .padding(top = 10.dp),
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
                 TextButton(onClick = {
@@ -160,7 +155,7 @@ fun SelectDrinkComposable(
                 }) {
                     Text(
                         "Cancel",
-                        style = MaterialTheme.typography.labelLarge,
+                        style = MaterialTheme.typography.labelMedium,
                         color = MaterialTheme.colorScheme.onBackground,
                         modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
                     )
@@ -171,7 +166,7 @@ fun SelectDrinkComposable(
                 }) {
                     Text(
                         "Okay",
-                        style = MaterialTheme.typography.labelLarge,
+                        style = MaterialTheme.typography.labelMedium,
                         color = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
                     )
@@ -214,9 +209,9 @@ fun SelectCard(
             modifier = Modifier
                 .padding(top = 5.dp),
             maxLines = 2,
-            fontSize = 14.sp,
-            fontWeight = FontWeight.W300,
-            overflow = TextOverflow.Ellipsis
+            style = MaterialTheme.typography.labelMedium,
+            overflow = TextOverflow.Ellipsis,
+            color = MaterialTheme.colorScheme.onBackground
         )
         if (openTimeDialog.showing) {
             TimeDialog(
@@ -239,10 +234,16 @@ fun TimeDialog(
         dialogState = openDialog,
         backgroundColor = MaterialTheme.colorScheme.background.copy(alpha = 0.67f),
         buttons = {
-            positiveButton(text = "Ok", textStyle = TextStyle(color = MaterialTheme.colorScheme.primary)) {
+            positiveButton(
+                text = "Ok",
+                textStyle = TextStyle(color = MaterialTheme.colorScheme.primary)
+            ) {
                 onCurrentSelectedDrinkTime(pickedTime.format(DateTimeFormatter.ofPattern("HH:mm a")))
             }
-            negativeButton(text = "Cancel", textStyle = TextStyle(color = MaterialTheme.colorScheme.primary))
+            negativeButton(
+                text = "Cancel",
+                textStyle = TextStyle(color = MaterialTheme.colorScheme.onBackground)
+            )
         }
     ) {
         timepicker(

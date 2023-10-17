@@ -24,7 +24,7 @@ import com.brandyodhiambo.home.data.mapper.toSelectedDrink
 import com.brandyodhiambo.home.data.mapper.toSelectedDrinkEntity
 
 class SelectedDrinkRepositoryImpl(
-    private val selectedDrinkDao: SelectedDrinkDao,
+    private val selectedDrinkDao: SelectedDrinkDao
 ) : SelectedDrinkRepository {
     override fun getSelectedDrink(): LiveData<List<SelectedDrink>> {
         return selectedDrinkDao.getSelectedDrink().map { selectedDrinkEntity ->

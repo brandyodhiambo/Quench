@@ -15,7 +15,6 @@
  */
 package com.brandyodhiambo.designsystem.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -25,21 +24,21 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.brandyodhiambo.designsystem.theme.roboto
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun CircularButton(
     backgroundColor: Color,
+    contentColor: Color,
     title: String,
     icon: Int,
     onClick: () -> Unit
@@ -58,12 +57,17 @@ fun CircularButton(
             verticalArrangement = Arrangement.Center,
             modifier = Modifier.padding(4.dp)
         ) {
-            Image(
+            Icon(
                 painter = painterResource(id = icon),
+                tint = contentColor,
                 contentDescription = null
             )
             Spacer(modifier = Modifier.height(8.dp))
-            Text(text = title, fontSize = 12.sp, fontFamily = roboto, fontWeight = FontWeight.Bold)
+            Text(
+                text = title,
+                style = MaterialTheme.typography.bodySmall,
+                color = contentColor
+            )
         }
     }
 }

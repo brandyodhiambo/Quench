@@ -57,10 +57,10 @@ fun TimeSetterDialog(
     onCurrentPickerValueChanged: (Hours) -> Unit,
     onDismiss: () -> Unit,
     onAllDayClicked: () -> Unit,
-    onConfirmClick: () -> Unit,
+    onConfirmClick: () -> Unit
 ) {
     AlertDialog(
-        backgroundColor = Color.White,
+        backgroundColor = MaterialTheme.colorScheme.background,
         onDismissRequest = { onDismiss() },
         title = {
             Image(
@@ -68,12 +68,12 @@ fun TimeSetterDialog(
                 contentDescription = null,
                 contentScale = ContentScale.Fit,
                 colorFilter = ColorFilter.tint(
-                    color = MaterialTheme.colorScheme.primary,
+                    color = MaterialTheme.colorScheme.primary
                 ),
                 modifier = Modifier
                     .padding(top = 35.dp)
                     .height(70.dp)
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
 
             )
         },
@@ -88,20 +88,21 @@ fun TimeSetterDialog(
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                     style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onBackground
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 TimePickerForDialogInHours(
                     currentPickerValueText = currentPickerValueText,
                     onPickerValueChange = {
                         onCurrentPickerValueChanged(it)
-                    },
+                    }
                 )
                 Row(
                     Modifier
                         .fillMaxWidth()
                         .padding(top = 10.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
                         text = "Reminder Time",
@@ -111,6 +112,7 @@ fun TimeSetterDialog(
                         fontWeight = FontWeight.Bold,
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis,
+                        color = MaterialTheme.colorScheme.onBackground
                     )
                     TextButton(onClick = {
                         onAllDayClicked()
@@ -122,14 +124,14 @@ fun TimeSetterDialog(
                             modifier = Modifier
                                 .padding(top = 5.dp),
                             maxLines = 2,
-                            overflow = TextOverflow.Ellipsis,
+                            overflow = TextOverflow.Ellipsis
                         )
                     }
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 LazyRow(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     items(reminderDays) { singleDay ->
                         DayItem(
@@ -138,7 +140,7 @@ fun TimeSetterDialog(
                             onClick = {
                                 singleDay.isSelected = !singleDay.isSelected
                                 // get the selected day and add it to the list
-                            },
+                            }
                         )
                     }
                 }
@@ -150,9 +152,9 @@ fun TimeSetterDialog(
             }) {
                 Text(
                     "Confirm",
-                    style = MaterialTheme.typography.labelLarge,
+                    style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.onBackground,
-                    modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
+                    modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
                 )
             }
         },
@@ -162,19 +164,19 @@ fun TimeSetterDialog(
             }) {
                 Text(
                     "Cancel",
-                    style = MaterialTheme.typography.labelLarge,
+                    style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.onBackground,
-                    modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
+                    modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
                 )
             }
-        },
+        }
     )
 }
 
 @Composable
 fun TimePickerForDialogInHours(
     currentPickerValueText: Hours,
-    onPickerValueChange: (Hours) -> Unit,
+    onPickerValueChange: (Hours) -> Unit
 ) {
     HoursNumberPicker(
         dividersColor = MaterialTheme.colorScheme.onBackground,
@@ -188,15 +190,16 @@ fun TimePickerForDialogInHours(
                 modifier = Modifier.padding(horizontal = 8.dp),
                 textAlign = TextAlign.Center,
                 text = ":",
+                color = MaterialTheme.colorScheme.onBackground
             )
         },
         minutesDivider = {
             Text(
                 modifier = Modifier.padding(horizontal = 8.dp),
                 textAlign = TextAlign.Center,
-                text = " ",
+                text = " "
             )
-        },
+        }
     )
 }
 
@@ -211,17 +214,17 @@ fun DayItem(color: Color, text: String, onClick: () -> Unit = {}) {
             .clickable {
                 onClick()
             },
-        elevation = 8.dp,
+        elevation = 8.dp
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
+            verticalArrangement = Arrangement.Center
         ) {
             Text(
                 text = text,
                 textAlign = TextAlign.Center,
                 color = color,
-                style = MaterialTheme.typography.labelMedium,
+                style = MaterialTheme.typography.labelMedium
 
             )
         }

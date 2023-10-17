@@ -51,7 +51,7 @@ fun CircularRating(
     color: Color = MaterialTheme.colorScheme.primary,
     strokeWidth: Dp = 8.dp,
     animationDuration: Int = 1000,
-    animDelay: Int = 0,
+    animDelay: Int = 0
 ) {
     var animationPlayed by remember {
         mutableStateOf(false)
@@ -61,8 +61,8 @@ fun CircularRating(
         targetValue = if (animationPlayed) percentage else 0f,
         animationSpec = tween(
             durationMillis = animationDuration,
-            delayMillis = animDelay,
-        ),
+            delayMillis = animDelay
+        )
     )
 
     LaunchedEffect(key1 = true) {
@@ -71,32 +71,32 @@ fun CircularRating(
 
     Box(
         contentAlignment = Alignment.Center,
-        modifier = Modifier.size(radius * 2f),
+        modifier = Modifier.size(radius * 2f)
     ) {
         Canvas(
             modifier = Modifier
-                .size(radius * 2f),
+                .size(radius * 2f)
         ) {
             drawArc(
                 color = color,
                 startAngle = 90f,
                 sweepAngle = (360 * (currentPercentage.value * 0.01)).toFloat(),
                 useCenter = false,
-                style = Stroke(strokeWidth.toPx(), cap = StrokeCap.Round),
+                style = Stroke(strokeWidth.toPx(), cap = StrokeCap.Round)
             )
         }
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
                 text = "$drunk /$goal ml",
                 color = MaterialTheme.colorScheme.primary,
-                style = MaterialTheme.typography.labelMedium,
+                style = MaterialTheme.typography.labelMedium
             )
             Text(
                 text = " You have completed ${(currentPercentage.value * number).toInt()}% of daily target",
-                color = Color.Gray,
-                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f),
+                style = MaterialTheme.typography.labelSmall
             )
         }
     }
