@@ -16,7 +16,6 @@
 package com.brandyodhiambo.home.presentation.component
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -35,7 +34,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -104,11 +102,11 @@ val selectedDrinks = listOf(
 @Composable
 fun SelectDrinkComposable(
     modifier: Modifier = Modifier,
-    openDialog: MutableState<Boolean>,
     onCurrentSelectedDrinkTime: (String) -> Unit,
     onCurrentSelectedDrinkSize: (String) -> Unit,
     onCurrentSelectedDrinkIcon: (Int) -> Unit,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    onOpenDialog:(Boolean)->Unit
 ) {
     val openTimeDialog = rememberMaterialDialogState()
     Card(
@@ -151,7 +149,7 @@ fun SelectDrinkComposable(
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
                 TextButton(onClick = {
-                    openDialog.value = false
+                    onOpenDialog(false)
                 }) {
                     Text(
                         "Cancel",
@@ -161,7 +159,7 @@ fun SelectDrinkComposable(
                     )
                 }
                 TextButton(onClick = {
-                    openDialog.value = false
+                    onOpenDialog(false)
                     onClick()
                 }) {
                     Text(

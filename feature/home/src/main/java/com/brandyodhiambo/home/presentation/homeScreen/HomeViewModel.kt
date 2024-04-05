@@ -45,6 +45,13 @@ class HomeViewModel @Inject constructor(
     private val levelRepository: LevelRepository,
     private val reminderTimeRepository: ReminderTimeRepository
 ) : ViewModel() {
+
+    private val _selectedId = mutableStateOf(0)
+    val selectedId:State<Int> = _selectedId
+    fun setSelectedId(value:Int){
+        _selectedId.value = value
+    }
+
     /*
      * ideal water intake value and functions
      * */
@@ -86,6 +93,49 @@ class HomeViewModel @Inject constructor(
     var goalWaterForm: State<String> = _goalWaterForm
     fun setGoalWaterForm(value: String) {
         _goalWaterForm.value = value
+    }
+
+
+    private val _openTimeDialog =  mutableStateOf(false)
+    val openTimeDialog:State<Boolean> = _openTimeDialog
+    fun setOpenTimeDialog(value:Boolean){
+        _openTimeDialog.value = value
+    }
+
+    private val _openDeleteDialog =  mutableStateOf(false)
+    val openDeleteDialog:State<Boolean> = _openDeleteDialog
+    fun setOpenDeleteDialog(value:Boolean){
+        _openDeleteDialog.value = value
+    }
+
+    private val _openCongratulationsDialog =  mutableStateOf(false)
+    val openCongratulationsDialog:State<Boolean> = _openCongratulationsDialog
+    fun setOpenCongratulationsDialog(value:Boolean){
+        _openCongratulationsDialog.value = value
+    }
+
+    private val _openEmptyStateDialog =  mutableStateOf(false)
+    val openEmptyStateDialog:State<Boolean> = _openEmptyStateDialog
+    fun setOpenEmptyStateDialog(value:Boolean){
+        _openEmptyStateDialog.value = value
+    }
+
+    private val _openGoalDialog =  mutableStateOf(false)
+    val openGoalDialog:State<Boolean> = _openGoalDialog
+    fun setOpenGoalDialog(value:Boolean){
+        _openGoalDialog.value = value
+    }
+
+    private val _idealWaterIntakeDialog =  mutableStateOf(false)
+    val idealWaterIntakeDialog:State<Boolean> = _idealWaterIntakeDialog
+    fun setIdealWaterIntakeDialog(value:Boolean){
+        _idealWaterIntakeDialog.value = value
+    }
+
+    private val _selectedDrinkDialog =  mutableStateOf(false)
+    val selectedDrinkDialog:State<Boolean> = _selectedDrinkDialog
+    fun setselectedDrinkDialog(value:Boolean){
+        _selectedDrinkDialog.value = value
     }
 
     val goalWaterIntakeFromDb = goalWaterIntakeRepository.getGoalWaterIntake()

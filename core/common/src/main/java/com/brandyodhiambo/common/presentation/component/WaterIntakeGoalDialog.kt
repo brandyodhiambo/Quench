@@ -34,11 +34,10 @@ import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -57,13 +56,12 @@ import com.brandyodhiambo.common.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WaterIntakeDialog(
-    modifier: Modifier = Modifier,
-    openCustomDialog: MutableState<Boolean>,
     currentWaterIntakeText: String,
     currentWaterIntakeFormText: String,
     onCurrentWaterIntakeTextChange: (String) -> Unit,
     onCurrentWaterIntakeFormTextChange: (String) -> Unit,
-    onOkayClick: () -> Unit
+    onOkayClick: () -> Unit,
+    onCustomDialogChange:(Boolean)->Unit
 
 ) {
     Card(
@@ -121,9 +119,9 @@ fun WaterIntakeDialog(
                             )
                         },
                         shape = RoundedCornerShape(30.dp),
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
+                        colors = OutlinedTextFieldDefaults.colors(
                             focusedBorderColor = MaterialTheme.colorScheme.primary,
-                            unfocusedBorderColor = MaterialTheme.colorScheme.onBackground
+                            unfocusedBorderColor = MaterialTheme.colorScheme.onBackground,
                         )
                     )
 
@@ -150,9 +148,9 @@ fun WaterIntakeDialog(
                                 )
                             },
                             shape = RoundedCornerShape(45.dp),
-                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                            colors = OutlinedTextFieldDefaults.colors(
                                 focusedBorderColor = MaterialTheme.colorScheme.primary,
-                                unfocusedBorderColor = MaterialTheme.colorScheme.onBackground
+                                unfocusedBorderColor = MaterialTheme.colorScheme.onBackground,
                             )
                         )
                         ExposedDropdownMenu(
@@ -183,7 +181,7 @@ fun WaterIntakeDialog(
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
                 TextButton(onClick = {
-                    openCustomDialog.value = false
+                    onCustomDialogChange(false)
                 }) {
                     Text(
                         "Cancel",
@@ -193,7 +191,7 @@ fun WaterIntakeDialog(
                     )
                 }
                 TextButton(onClick = {
-                    openCustomDialog.value = false
+                    onCustomDialogChange(false)
                     onOkayClick()
                 }) {
                     Text(

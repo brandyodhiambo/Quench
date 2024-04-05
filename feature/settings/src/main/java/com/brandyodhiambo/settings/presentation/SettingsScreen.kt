@@ -50,8 +50,6 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.brandyodhiambo.common.R
-import com.brandyodhiambo.common.domain.model.GoalWaterIntake
-import com.brandyodhiambo.common.presentation.component.WaterIntakeDialog
 import com.brandyodhiambo.home.presentation.homeScreen.HomeViewModel
 import com.brandyodhiambo.settings.presentation.component.CustomReminderDialog
 import com.ramcosta.composedestinations.annotation.Destination
@@ -71,8 +69,6 @@ fun SettingScreen(
     val openTimeDialog = remember { mutableStateOf(false) }
     val openWaterUnitDialog = remember { mutableStateOf(false) }
     val openWeightUnitDialog = remember { mutableStateOf(false) }
-
-    val context = LocalContext.current
 
     Scaffold(
         containerColor = MaterialTheme.colorScheme.primary
@@ -104,7 +100,7 @@ fun SettingScreen(
 
             if (openIntakeDialog.value) {
                 Dialog(onDismissRequest = { openIntakeDialog.value }) {
-                    WaterIntakeDialog(
+                 /*   WaterIntakeDialog(
                         openCustomDialog = openIntakeDialog,
                         currentWaterIntakeText = homeViewModel.goalWaterIntakeValue.value,
                         currentWaterIntakeFormText = homeViewModel.goalWaterForm.value,
@@ -121,7 +117,7 @@ fun SettingScreen(
                             )
                             homeViewModel.insertGoalWaterIntake(goalWaterIntakeToInsert)
                         }
-                    )
+                    )*/
                 }
             }
             if (openTimeDialog.value) {

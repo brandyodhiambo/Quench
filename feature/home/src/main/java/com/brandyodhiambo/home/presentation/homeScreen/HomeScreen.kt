@@ -44,11 +44,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -65,6 +62,7 @@ import com.brandyodhiambo.common.domain.model.Level
 import com.brandyodhiambo.common.domain.model.ReminderTime
 import com.brandyodhiambo.common.domain.model.SelectedDrink
 import com.brandyodhiambo.common.presentation.component.WaterIntakeDialog
+import com.brandyodhiambo.common.util.incrementProgressCircle
 import com.brandyodhiambo.designsystem.components.CircularButton
 import com.brandyodhiambo.home.presentation.component.CircularRating
 import com.brandyodhiambo.home.presentation.component.CongratulationsDialog
@@ -73,6 +71,7 @@ import com.brandyodhiambo.home.presentation.component.EmptyDialog
 import com.brandyodhiambo.home.presentation.component.IdealIntakeGoalDialog
 import com.brandyodhiambo.home.presentation.component.SelectDrinkComposable
 import com.brandyodhiambo.home.presentation.component.TimeSetterDialog
+import com.chargemap.compose.numberpicker.Hours
 import com.ramcosta.composedestinations.annotation.Destination
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -81,13 +80,13 @@ import com.ramcosta.composedestinations.annotation.Destination
 fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel()
 ) {
-    val openTimeDialog = remember { mutableStateOf(false) }
-    val openDeleteDialog = remember { mutableStateOf(false) }
-    val openCongratulationsDialog = remember { mutableStateOf(false) }
-    val openEmptyStateDialog = remember { mutableStateOf(false) }
-    val openGoalDialog = remember { mutableStateOf(false) }
-    val idealWaterIntakeDialog = remember { mutableStateOf(false) }
-    val selectedDrinkDialog = remember { mutableStateOf(false) }
+    val openTimeDialog = viewModel.openTimeDialog.value
+    val openDeleteDialog = viewModel.openDeleteDialog.value
+    val openCongratulationsDialog = viewModel.openCongratulationsDialog.value
+    val openEmptyStateDialog = viewModel.openEmptyStateDialog.value
+    val openGoalDialog = viewModel.openGoalDialog.value
+    val idealWaterIntakeDialog = viewModel.idealWaterIntakeDialog.value
+    val selectedDrinkDialog = viewModel.selectedDrinkDialog.value
 
     val selectedDrinksFromDB = viewModel.selectedDrinkFromDB.observeAsState(initial = emptyList())
     val idealWaterIntake = viewModel.idealWaterIntakeFromDb.observeAsState()
@@ -100,12 +99,270 @@ fun HomeScreen(
 
     val amountTaken = levelFromDb.value?.amountTaken ?: 0f
     val waterTaken = levelFromDb.value?.waterTaken ?: 0
-    var selectedId = 0
+    val selectedId = viewModel.selectedId.value
 
     val reminderTimeFromDb = viewModel.reminderTime.observeAsState()
     val hour = reminderTimeFromDb.value?.hour
     val minute = reminderTimeFromDb.value?.minute
 
+    HomeScreenContent(
+        waterIntake = waterIntake,
+        waterIntakeForm = waterIntakeForm,
+        goalForm = goalForm,
+        goalWaterIntake = goalWaterIntake,
+        amountTaken = amountTaken,
+        hour = hour,
+        minute = minute,
+        waterTaken = waterTaken,
+        selectedDrinksFromDB = selectedDrinksFromDB,
+        selectedId = selectedId,
+        currentPickerValueText = viewModel.reminderTimePickerValue.value,
+        reminderDays = viewModel.reminderDays.value,
+        currentWaterIntakeText = viewModel.goalWaterIntakeValue.value,
+        currentWaterIntakeFormText = viewModel.goalWaterForm.value,
+        currentIdealIntakeText = viewModel.idealWaterIntakeValue.value,
+        currentIdealIntakeFormText = viewModel.idealWaterForm.value,
+        openEmptyStateDialog = openEmptyStateDialog,
+        openDeleteDialog = openDeleteDialog,
+        openCongratulationsDialog = openCongratulationsDialog,
+        openTimeDialog = openTimeDialog,
+        openGoalDialog = openGoalDialog,
+        idealWaterIntakeDialog = idealWaterIntakeDialog,
+        selectedDrinkDialog = selectedDrinkDialog,
+        onGoalDialogChange = {
+            viewModel.setOpenGoalDialog(it)
+        },
+        onIdealWaterIntakeDialogChange = {
+            viewModel.setIdealWaterIntakeDialog(it)
+        },
+        onAddLevelClick = {
+            if (selectedDrinksFromDB.value.isEmpty()) {
+                viewModel.setOpenEmptyStateDialog(true)
+                return@HomeScreenContent
+            }
+            val (amount, taken) = incrementProgressCircle(
+                selectedDrinksFromDB = selectedDrinksFromDB,
+                goalWaterIntake = goalWaterIntake,
+                amountTakenFromDb = viewModel.levelFromDB.value?.amountTaken ?: 0f,
+                waterTakenLevelFromDb = viewModel.levelFromDB.value?.waterTaken ?: 0,
+                onSelectedDrinkDeleted = {
+                    viewModel.deleteOneSelectedDrink(it)
+                }
+            )
+            viewModel.deleteAllLevels()
+            viewModel.insertLevel(
+                Level(
+                    amountTaken = amount,
+                    waterTaken = taken
+                )
+            )
+        },
+        onOpenTimeDialog = {
+            viewModel.setOpenTimeDialog(it)
+        },
+        onSelectedDrinkDialog = {
+            viewModel.setselectedDrinkDialog(it)
+        },
+        onDeleteIconClick = { selectedDrink ->
+            selectedDrink.id?.let { id ->
+                viewModel.setSelectedId(id)
+                viewModel.setOpenDeleteDialog(true)
+            }
+        },
+        onConfirmEmptyDialog = {
+            viewModel.setOpenEmptyStateDialog(false)
+            viewModel.setselectedDrinkDialog(true)
+        },
+        onDismissEmptyDialog = { viewModel.setOpenEmptyStateDialog(false) },
+        onDismissDeleteDialog = { viewModel.setOpenDeleteDialog(false) },
+        onConfirmDeleteDialog = { id ->
+            viewModel.deleteOneSelectedDrink(id)
+            viewModel.setOpenDeleteDialog(false)
+        },
+        onOpenCongratulationDialog = {
+            viewModel.setOpenCongratulationsDialog(it)
+        },
+        onDismissCongratulationDialog = {
+            viewModel.setOpenCongratulationsDialog(false)
+        },
+        onConfirmCongratulationDialog = {
+            viewModel.setOpenCongratulationsDialog(false)
+        },
+        onDismissTimeDialog = { viewModel.setOpenTimeDialog(false) },
+        onCurrentPickerValueChanged = {
+            viewModel.reminderTimePickerValue.value = it
+        },
+        onAllDayClicked = {
+            viewModel.onAllDaySelected(
+                isAllDay = true
+            )
+            viewModel.onReminderDays(
+                days = listOf(
+                    Days("M", viewModel.isAllDaySelected.value),
+                    Days("T", viewModel.isAllDaySelected.value),
+                    Days("W", viewModel.isAllDaySelected.value),
+                    Days("T", viewModel.isAllDaySelected.value),
+                    Days("F", viewModel.isAllDaySelected.value),
+                    Days("S", viewModel.isAllDaySelected.value),
+                    Days("S", viewModel.isAllDaySelected.value)
+                )
+            )
+        },
+        onConfirmTimeDialog = {
+            viewModel.setOpenTimeDialog(false)
+            val ampm: String = if (viewModel.reminderTimePickerValue.value.hours in 0..12) {
+                "AM"
+            } else {
+                "PM"
+            }
+            viewModel.onReminderTimeSelected(
+                hours = viewModel.reminderTimePickerValue.value.hours,
+                minutes = viewModel.reminderTimePickerValue.value.minutes,
+                amPm = ampm,
+                isReapeated = false,
+                isAllDay = viewModel.isAllDaySelected.value,
+                days = viewModel.reminderDays.value
+            )
+            if (viewModel.reminderTime.value != null) {
+                viewModel.deleteAllRemindTime()
+            }
+            viewModel.insertRemindTime(
+                ReminderTime(
+                    hour = viewModel.reminderSelectedTime.value.hour,
+                    minute = viewModel.reminderSelectedTime.value.minute,
+                    ampm = viewModel.reminderSelectedTime.value.ampm,
+                    isRepeated = false,
+                    isAllDay = viewModel.isAllDaySelected.value,
+                    days = viewModel.reminderDays.value
+                )
+            )
+        },
+        onCurrentWaterIntakeTextChange = {
+            viewModel.setGoalWaterIntakeValue(it)
+        },
+        onCurrentWaterIntakeFormTextChange = {
+            viewModel.setGoalWaterForm(it)
+        },
+        onConfirmGoalDialog = {
+            val goalWaterIntakeToInsert = GoalWaterIntake(
+                waterIntake = viewModel.goalWaterIntakeValue.value.toInt(),
+                form = viewModel.goalWaterForm.value
+            )
+            viewModel.insertGoalWaterIntake(goalWaterIntakeToInsert)
+        },
+        onCustomDialogChange = {
+            viewModel.setOpenGoalDialog(it)
+        },
+        onDismissGoalDialog = {
+            viewModel.setOpenGoalDialog(false)
+        },
+        onCurrentIdealIntakeTextChange = {
+            viewModel.setIdealWaterIntakeValue(it)
+        },
+        onCurrentIdealIntakeFormTextChange = {
+            viewModel.setIdealWaterForm(it)
+        },
+        onConfirmIdealDialog = {
+            val idealWaterIntakeToInsert = IdealWaterIntake(
+                waterIntake = viewModel.idealWaterIntakeValue.value.toInt(),
+                form = viewModel.idealWaterForm.value
+            )
+            viewModel.insertIdealWaterIntake(idealWaterIntakeToInsert)
+        },
+        onIdealCustomDialog = {
+            viewModel.setIdealWaterIntakeDialog(it)
+        },
+        onDismissIdealDialog = {
+            viewModel.setIdealWaterIntakeDialog(false)
+        },
+        onCurrentSelectedDrinkTime = {
+            viewModel.setSelectedTime(it)
+        },
+        onCurrentSelectedDrinkIcon = {
+            viewModel.setSelectedIcon(it)
+        },
+        onCurrentSelectedDrinkSize = {
+            viewModel.setSize(it)
+        },
+        onConfirmSelectedDrinkDialog = {
+            viewModel.insertSelectedDrink(
+                SelectedDrink(
+                    drinkValue = viewModel.size.value,
+                    icon = viewModel.selectedIcon.value,
+                    time = viewModel.selectedTime.value
+                )
+            )
+        },
+        onOpenDialog = {
+            viewModel.setselectedDrinkDialog(it)
+        },
+        onDismissSelectedDrinkDialog = {
+            viewModel.setselectedDrinkDialog(false)
+        }
+    )
+}
+
+@Composable
+fun HomeScreenContent(
+    waterIntake: Int,
+    waterIntakeForm: String,
+    goalForm: String,
+    goalWaterIntake: Int,
+    amountTaken: Float,
+    hour: Int?,
+    minute: Int?,
+    waterTaken: Int,
+    selectedDrinksFromDB: State<List<SelectedDrink>>,
+    selectedId: Int,
+    currentPickerValueText: Hours,
+    reminderDays: List<Days>,
+    currentWaterIntakeText: String,
+    currentWaterIntakeFormText: String,
+    currentIdealIntakeText: String,
+    currentIdealIntakeFormText: String,
+    openEmptyStateDialog: Boolean,
+    openDeleteDialog: Boolean,
+    openCongratulationsDialog: Boolean,
+    openTimeDialog: Boolean,
+    openGoalDialog: Boolean,
+    idealWaterIntakeDialog: Boolean,
+    selectedDrinkDialog: Boolean,
+    onGoalDialogChange: (Boolean) -> Unit,
+    onIdealWaterIntakeDialogChange: (Boolean) -> Unit,
+    onOpenTimeDialog: (Boolean) -> Unit,
+    onSelectedDrinkDialog: (Boolean) -> Unit,
+    onAddLevelClick: () -> Unit,
+    onDeleteIconClick: (SelectedDrink) -> Unit,
+    onDismissEmptyDialog: () -> Unit,
+    onConfirmEmptyDialog: () -> Unit,
+    onDismissDeleteDialog: () -> Unit,
+    onConfirmDeleteDialog: (Int) -> Unit,
+    onOpenCongratulationDialog: (Boolean) -> Unit,
+    onDismissCongratulationDialog: () -> Unit,
+    onConfirmCongratulationDialog: () -> Unit,
+    onAllDayClicked: () -> Unit,
+    onDismissTimeDialog: () -> Unit,
+    onConfirmTimeDialog: () -> Unit,
+    onCurrentPickerValueChanged: (Hours) -> Unit,
+    onCurrentWaterIntakeTextChange: (String) -> Unit,
+    onCurrentWaterIntakeFormTextChange: (String) -> Unit,
+    onDismissGoalDialog: () -> Unit,
+    onConfirmGoalDialog: () -> Unit,
+    onCustomDialogChange: (Boolean) -> Unit,
+    onCurrentIdealIntakeTextChange: (String) -> Unit,
+    onCurrentIdealIntakeFormTextChange: (String) -> Unit,
+    onIdealCustomDialog: (Boolean) -> Unit,
+    onDismissIdealDialog: () -> Unit,
+    onConfirmIdealDialog: () -> Unit,
+    onCurrentSelectedDrinkTime: (String) -> Unit,
+    onCurrentSelectedDrinkIcon: (Int) -> Unit,
+    onCurrentSelectedDrinkSize: (String) -> Unit,
+    onOpenDialog: (Boolean) -> Unit,
+    onDismissSelectedDrinkDialog: () -> Unit,
+    onConfirmSelectedDrinkDialog: () -> Unit,
+
+
+    ) {
     Scaffold(
         containerColor = MaterialTheme.colorScheme.primary
     ) { paddingValues ->
@@ -117,40 +374,23 @@ fun HomeScreen(
             LazyColumn {
                 item {
                     WaterIntake(
-                        openGoalDialog = openGoalDialog,
-                        idealWaterIntakeDialog = idealWaterIntakeDialog,
                         waterIntake = waterIntake,
                         form = waterIntakeForm,
                         goalForm = goalForm,
-                        goalWaterIntake = goalWaterIntake
+                        goalWaterIntake = goalWaterIntake,
+                        onGoalDialogChange = onGoalDialogChange,
+                        onIdealWaterIntakeDialogChange = onIdealWaterIntakeDialogChange
                     )
                 }
                 item {
                     WaterRecord(
-                        openDialog = openTimeDialog,
-                        selectedDrinkDialog = selectedDrinkDialog,
                         amountTaken = amountTaken,
                         time = if (hour != null && minute != null) "$hour:$minute" else "Add Time",
                         waterTaken = waterTaken,
                         goalWaterIntake = goalWaterIntake,
-                        onAddLevelClick = {
-                            if (selectedDrinksFromDB.value.isEmpty()) {
-                                openEmptyStateDialog.value = true
-                                return@WaterRecord
-                            }
-                            val (amount, taken) = incrementProgressCircle(
-                                selectedDrinksFromDB = selectedDrinksFromDB,
-                                goalWaterIntake = goalWaterIntake,
-                                viewModel = viewModel
-                            )
-                            viewModel.deleteAllLevels()
-                            viewModel.insertLevel(
-                                Level(
-                                    amountTaken = amount,
-                                    waterTaken = taken
-                                )
-                            )
-                        }
+                        onAddLevelClick = onAddLevelClick,
+                        onOpenTimeDialog = onOpenTimeDialog,
+                        onSelectedDrinkDialog = onSelectedDrinkDialog
                     )
                 }
                 item {
@@ -158,181 +398,91 @@ fun HomeScreen(
                 }
 
                 items(selectedDrinksFromDB.value) {
-                    WaterIntakeTimeAndLevel(intake = it, onDeleteIconClick = { selectedDrink ->
-                        selectedDrink.id?.let { id ->
-                            selectedId = id
-                            openDeleteDialog.value = true
-                        }
-                    })
-                }
-            }
-
-            if (openEmptyStateDialog.value) {
-                Dialog(onDismissRequest = { openEmptyStateDialog.value = false }) {
-                    EmptyDialog(
-                        onConfirmClick = {
-                            openEmptyStateDialog.value = false
-                            selectedDrinkDialog.value = true
-                        },
-                        onDismiss = { openEmptyStateDialog.value = false }
+                    WaterIntakeTimeAndLevel(
+                        intake = it,
+                        onDeleteIconClick = onDeleteIconClick
                     )
                 }
             }
 
-            if (openDeleteDialog.value) {
-                Dialog(onDismissRequest = { openDeleteDialog.value = false }) {
+            if (openEmptyStateDialog) {
+                Dialog(onDismissRequest = onDismissEmptyDialog) {
+                    EmptyDialog(
+                        onConfirmClick = onConfirmEmptyDialog,
+                        onDismiss = onDismissEmptyDialog
+                    )
+                }
+            }
+
+            if (openDeleteDialog) {
+                Dialog(onDismissRequest = onDismissDeleteDialog) {
                     DeleteDialog(
                         id = selectedId,
-                        onDismiss = { openDeleteDialog.value = false },
-                        onConfirmClick = { id ->
-                            viewModel.deleteOneSelectedDrink(id)
-                            openDeleteDialog.value = false
-                        }
+                        onDismiss = onDismissDeleteDialog,
+                        onConfirmClick = onConfirmDeleteDialog
                     )
                 }
             }
             if ((waterTaken >= goalWaterIntake) && (goalWaterIntake != 0)) {
-                openCongratulationsDialog.value = true
+                onOpenCongratulationDialog(true)
             }
 
-            if (openCongratulationsDialog.value) {
-                Dialog(onDismissRequest = { openCongratulationsDialog.value }) {
+            if (openCongratulationsDialog) {
+                Dialog(onDismissRequest = onDismissCongratulationDialog) {
                     CongratulationsDialog(
-                        onCancelClicked = {
-                            openCongratulationsDialog.value = false
-                        },
-                        onOkayClicked = {
-                            openCongratulationsDialog.value = false
-                        }
+                        onCancelClicked = onDismissCongratulationDialog,
+                        onOkayClicked = onConfirmCongratulationDialog
                     )
                 }
             }
 
-            if (openTimeDialog.value) {
-                Dialog(onDismissRequest = { openTimeDialog.value }) {
+            if (openTimeDialog) {
+                Dialog(onDismissRequest = onDismissTimeDialog) {
                     TimeSetterDialog(
-                        currentPickerValueText = viewModel.reminderTimePickerValue.value,
-                        reminderDays = viewModel.reminderDays.value,
-                        onDismiss = { openTimeDialog.value = false },
-                        onCurrentPickerValueChanged = {
-                            viewModel.reminderTimePickerValue.value = it
-                        },
-                        onAllDayClicked = {
-                            viewModel.onAllDaySelected(
-                                isAllDay = true
-                            )
-                            viewModel.reminderDays.value = listOf(
-                                Days("M", viewModel.isAllDaySelected.value),
-                                Days("T", viewModel.isAllDaySelected.value),
-                                Days("W", viewModel.isAllDaySelected.value),
-                                Days("T", viewModel.isAllDaySelected.value),
-                                Days("F", viewModel.isAllDaySelected.value),
-                                Days("S", viewModel.isAllDaySelected.value),
-                                Days("S", viewModel.isAllDaySelected.value)
-                            )
-                        },
-                        onConfirmClick = {
-                            openTimeDialog.value = false
-                            var ampm = ""
-                            ampm = if (viewModel.reminderTimePickerValue.value.hours in 0..12) {
-                                "AM"
-                            } else {
-                                "PM"
-                            }
-                            viewModel.onReminderTimeSelected(
-                                hours = viewModel.reminderTimePickerValue.value.hours,
-                                minutes = viewModel.reminderTimePickerValue.value.minutes,
-                                amPm = ampm,
-                                isReapeated = false,
-                                isAllDay = viewModel.isAllDaySelected.value,
-                                days = viewModel.reminderDays.value
-                            )
-                            if (viewModel.reminderTime.value != null) {
-                                viewModel.deleteAllRemindTime()
-                            }
-                            viewModel.insertRemindTime(
-                                ReminderTime(
-                                    hour = viewModel.reminderSelectedTime.value.hour,
-                                    minute = viewModel.reminderSelectedTime.value.minute,
-                                    ampm = viewModel.reminderSelectedTime.value.ampm,
-                                    isRepeated = false,
-                                    isAllDay = viewModel.isAllDaySelected.value,
-                                    days = viewModel.reminderDays.value
-                                )
-                            )
-                        }
+                        currentPickerValueText = currentPickerValueText,
+                        reminderDays = reminderDays,
+                        onDismiss = onDismissTimeDialog,
+                        onCurrentPickerValueChanged = onCurrentPickerValueChanged,
+                        onAllDayClicked = onAllDayClicked,
+                        onConfirmClick = onConfirmTimeDialog
                     )
                 }
             }
 
-            if (openGoalDialog.value) {
-                Dialog(onDismissRequest = { openGoalDialog.value }) {
+            if (openGoalDialog) {
+                Dialog(onDismissRequest = onDismissGoalDialog) {
                     WaterIntakeDialog(
-                        openCustomDialog = openGoalDialog,
-                        currentWaterIntakeText = viewModel.goalWaterIntakeValue.value,
-                        currentWaterIntakeFormText = viewModel.goalWaterForm.value,
-                        onCurrentWaterIntakeTextChange = {
-                            viewModel.setGoalWaterIntakeValue(it)
-                        },
-                        onCurrentWaterIntakeFormTextChange = {
-                            viewModel.setGoalWaterForm(it)
-                        },
-                        onOkayClick = {
-                            val goalWaterIntakeToInsert = GoalWaterIntake(
-                                waterIntake = viewModel.goalWaterIntakeValue.value.toInt(),
-                                form = viewModel.goalWaterForm.value
-                            )
-                            viewModel.insertGoalWaterIntake(goalWaterIntakeToInsert)
-                        }
+                        currentWaterIntakeText = currentWaterIntakeText,
+                        currentWaterIntakeFormText = currentWaterIntakeFormText,
+                        onCurrentWaterIntakeTextChange = onCurrentWaterIntakeTextChange,
+                        onCurrentWaterIntakeFormTextChange = onCurrentWaterIntakeFormTextChange,
+                        onOkayClick = onConfirmGoalDialog,
+                        onCustomDialogChange = onCustomDialogChange
                     )
                 }
             }
 
-            if (idealWaterIntakeDialog.value) {
-                Dialog(onDismissRequest = { idealWaterIntakeDialog.value }) {
+            if (idealWaterIntakeDialog) {
+                Dialog(onDismissRequest = onDismissIdealDialog) {
                     IdealIntakeGoalDialog(
-                        idealCustomDialog = idealWaterIntakeDialog,
-                        currentIdealIntakeText = viewModel.idealWaterIntakeValue.value,
-                        currentIdealIntakeFormText = viewModel.idealWaterForm.value,
-                        onCurrentIdealIntakeTextChange = {
-                            viewModel.setIdealWaterIntakeValue(it)
-                        },
-                        onCurrentIdealIntakeFormTextChange = {
-                            viewModel.setIdealWaterForm(it)
-                        },
-                        onOkayClick = {
-                            val idealWaterIntakeToInsert = IdealWaterIntake(
-                                waterIntake = viewModel.idealWaterIntakeValue.value.toInt(),
-                                form = viewModel.idealWaterForm.value
-                            )
-                            viewModel.insertIdealWaterIntake(idealWaterIntakeToInsert)
-                        }
+                        currentIdealIntakeText = currentIdealIntakeText,
+                        currentIdealIntakeFormText = currentIdealIntakeFormText,
+                        onCurrentIdealIntakeTextChange = onCurrentIdealIntakeTextChange,
+                        onCurrentIdealIntakeFormTextChange = onCurrentIdealIntakeFormTextChange,
+                        onOkayClick = onConfirmIdealDialog,
+                        onIdealCustomDialog = onIdealCustomDialog
                     )
                 }
             }
 
-            if (selectedDrinkDialog.value) {
-                Dialog(onDismissRequest = { selectedDrinkDialog.value }) {
+            if (selectedDrinkDialog) {
+                Dialog(onDismissRequest = onDismissSelectedDrinkDialog) {
                     SelectDrinkComposable(
-                        openDialog = selectedDrinkDialog,
-                        onCurrentSelectedDrinkTime = {
-                            viewModel.setSelectedTime(it)
-                        },
-                        onCurrentSelectedDrinkIcon = {
-                            viewModel.setSelectedIcon(it)
-                        },
-                        onCurrentSelectedDrinkSize = {
-                            viewModel.setSize(it)
-                        },
-                        onClick = {
-                            viewModel.insertSelectedDrink(
-                                SelectedDrink(
-                                    drinkValue = viewModel.size.value,
-                                    icon = viewModel.selectedIcon.value,
-                                    time = viewModel.selectedTime.value
-                                )
-                            )
-                        }
+                        onCurrentSelectedDrinkTime = onCurrentSelectedDrinkTime,
+                        onCurrentSelectedDrinkIcon = onCurrentSelectedDrinkIcon,
+                        onCurrentSelectedDrinkSize = onCurrentSelectedDrinkSize,
+                        onClick = onConfirmSelectedDrinkDialog,
+                        onOpenDialog = onOpenDialog
                     )
                 }
             }
@@ -340,58 +490,14 @@ fun HomeScreen(
     }
 }
 
-private fun incrementProgressCircle(
-    selectedDrinksFromDB: State<List<SelectedDrink>>,
-    goalWaterIntake: Int,
-    viewModel: HomeViewModel
-): Pair<Float, Int> {
-    // getting the last selected drink
-    var amountTaken = viewModel.levelFromDB.value?.amountTaken ?: 0f
-    var waterTakenFromDb = viewModel.levelFromDB.value?.waterTaken ?: 0
-
-    // if there is no selected drink, return
-    if (selectedDrinksFromDB.value.isEmpty()) {
-        return Pair(0f, 0)
-    }
-
-    // getting the last selected drink from the list of selected drinks from db
-    val lastSelectedDrink = selectedDrinksFromDB.value.first()
-    val waterTakenId = lastSelectedDrink.id
-    val waterTaken = lastSelectedDrink.drinkValue.removeSuffix("ml").toInt()
-
-    // if the water taken is 0 or the goal water intake is 0, return
-    if (waterTaken == 0 || goalWaterIntake == 0) {
-        return Pair(0f, 0)
-    }
-
-    // if the amount taken is 0, then calculate the amount taken
-    if (amountTaken == 0f) {
-        amountTaken = (waterTaken.toFloat() / goalWaterIntake.toFloat()) * 100
-    } else {
-        amountTaken += (waterTaken.toFloat() / goalWaterIntake.toFloat()) * 100
-    }
-
-    // if the water taken from db is 0, then calculate the water taken from db
-    if (waterTakenFromDb == 0) {
-        waterTakenFromDb = waterTaken
-    } else {
-        waterTakenFromDb += waterTaken
-    }
-
-    if (waterTakenId != null) {
-        viewModel.deleteOneSelectedDrink(waterTakenId)
-    }
-    return Pair(amountTaken, waterTakenFromDb)
-}
-
 @Composable
 fun WaterIntake(
-    openGoalDialog: MutableState<Boolean>,
-    idealWaterIntakeDialog: MutableState<Boolean>,
     waterIntake: Int,
     form: String,
     goalForm: String,
-    goalWaterIntake: Int
+    goalWaterIntake: Int,
+    onGoalDialogChange: (Boolean) -> Unit,
+    onIdealWaterIntakeDialogChange: (Boolean) -> Unit
 ) {
     Card(
         modifier = Modifier
@@ -419,7 +525,7 @@ fun WaterIntake(
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier.clickable {
-                        idealWaterIntakeDialog.value = true
+                        onIdealWaterIntakeDialogChange(true)
                     }
                 ) {
                     Text(
@@ -451,7 +557,7 @@ fun WaterIntake(
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier.clickable {
-                        openGoalDialog.value = true
+                        onGoalDialogChange(true)
                     }
                 ) {
                     Text(
@@ -472,13 +578,13 @@ fun WaterIntake(
 
 @Composable
 fun WaterRecord(
-    openDialog: MutableState<Boolean>,
     amountTaken: Float,
     waterTaken: Int,
     time: String,
     goalWaterIntake: Int,
-    selectedDrinkDialog: MutableState<Boolean>,
-    onAddLevelClick: () -> Unit
+    onSelectedDrinkDialog: (Boolean) -> Unit,
+    onAddLevelClick: () -> Unit,
+    onOpenTimeDialog: (Boolean) -> Unit
 ) {
     Card(
         modifier = Modifier
@@ -511,7 +617,7 @@ fun WaterRecord(
                     icon = R.drawable.ic_clock,
                     title = time,
                     onClick = {
-                        openDialog.value = true
+                        onOpenTimeDialog(true)
                     }
                 )
                 CircularButton(
@@ -529,7 +635,7 @@ fun WaterRecord(
                     icon = R.drawable.ic_glass,
                     title = "Add Drink",
                     onClick = {
-                        selectedDrinkDialog.value = true
+                        onSelectedDrinkDialog(true)
                     }
                 )
             }

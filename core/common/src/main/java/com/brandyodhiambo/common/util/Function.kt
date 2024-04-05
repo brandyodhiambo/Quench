@@ -15,7 +15,9 @@
  */
 package com.brandyodhiambo.common.util
 
+import androidx.compose.runtime.State
 import androidx.lifecycle.LiveData
+import com.brandyodhiambo.common.domain.model.SelectedDrink
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.first
@@ -72,4 +74,50 @@ suspend fun <T> LiveData<T>.awaitValue(): T = withContext(Dispatchers.Default) {
             removeObserver(observer)
         }
     }
+}
+
+fun incrementProgressCircle(
+    selectedDrinksFromDB: State<List<SelectedDrink>>,
+    goalWaterIntake: Int,
+    amountTakenFromDb: Float,
+    waterTakenLevelFromDb: Int,
+    onSelectedDrinkDeleted:(Int)->Unit
+): Pair<Float, Int> {
+    // getting the last selected drink
+    var amountTaken = amountTakenFromDb
+    var waterTakenFromDb = waterTakenLevelFromDb
+
+    // if there is no selected drink, return
+    if (selectedDrinksFromDB.value.isEmpty()) {
+        return Pair(0f, 0)
+    }
+
+    // getting the last selected drink from the list of selected drinks from db
+    val lastSelectedDrink = selectedDrinksFromDB.value.first()
+    val waterTakenId = lastSelectedDrink.id
+    val waterTaken = lastSelectedDrink.drinkValue.removeSuffix("ml").toInt()
+
+    // if the water taken is 0 or the goal water intake is 0, return
+    if (waterTaken == 0 || goalWaterIntake == 0) {
+        return Pair(0f, 0)
+    }
+
+    // if the amount taken is 0, then calculate the amount taken
+    if (amountTaken == 0f) {
+        amountTaken = (waterTaken.toFloat() / goalWaterIntake.toFloat()) * 100
+    } else {
+        amountTaken += (waterTaken.toFloat() / goalWaterIntake.toFloat()) * 100
+    }
+
+    // if the water taken from db is 0, then calculate the water taken from db
+    if (waterTakenFromDb == 0) {
+        waterTakenFromDb = waterTaken
+    } else {
+        waterTakenFromDb += waterTaken
+    }
+
+    if (waterTakenId != null) {
+        onSelectedDrinkDeleted(waterTakenId)
+    }
+    return Pair(amountTaken, waterTakenFromDb)
 }

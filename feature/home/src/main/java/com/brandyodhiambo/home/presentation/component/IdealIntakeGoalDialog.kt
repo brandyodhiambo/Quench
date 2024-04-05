@@ -37,7 +37,6 @@ import androidx.compose.material.TextButton
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -59,12 +58,12 @@ import com.brandyodhiambo.common.R
 @Composable
 fun IdealIntakeGoalDialog(
     modifier: Modifier = Modifier,
-    idealCustomDialog: MutableState<Boolean>,
     currentIdealIntakeText: String,
     currentIdealIntakeFormText: String,
     onCurrentIdealIntakeFormTextChange: (String) -> Unit,
     onCurrentIdealIntakeTextChange: (String) -> Unit,
-    onOkayClick: () -> Unit
+    onOkayClick: () -> Unit,
+    onIdealCustomDialog:(Boolean)->Unit
 ) {
     Card(
         shape = RoundedCornerShape(10.dp),
@@ -189,7 +188,7 @@ fun IdealIntakeGoalDialog(
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
                 TextButton(onClick = {
-                    idealCustomDialog.value = false
+                    onIdealCustomDialog(false)
                 }) {
                     Text(
                         "Cancel",
@@ -199,7 +198,7 @@ fun IdealIntakeGoalDialog(
                     )
                 }
                 TextButton(onClick = {
-                    idealCustomDialog.value = false
+                    onIdealCustomDialog(false)
                     onOkayClick()
                 }) {
                     Text(
