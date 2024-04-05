@@ -13,7 +13,7 @@ plugins {
     id("com.android.library") version ("7.4.2") apply false
     id("org.jetbrains.kotlin.android") version ("1.9.23") apply false
 
-    id("org.jlleitschuh.gradle.ktlint") version "11.3.1" apply false
+    id("org.jlleitschuh.gradle.ktlint") version "12.1.0" apply false
     id("com.diffplug.spotless") version "6.25.0" apply false
 }
 
