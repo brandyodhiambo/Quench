@@ -2,7 +2,9 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
-    id("dagger.hilt.android.plugin")
+    kotlin("kapt")
+    id("com.google.dagger.hilt.android")
+
 }
 
 apply {
@@ -39,7 +41,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = Versions.compose_version
+        kotlinCompilerExtensionVersion = Versions.compose_compiler
     }
 
     buildFeatures {
@@ -48,7 +50,8 @@ android {
 }
 
 dependencies {
-    implementation("androidx.compose.animation:animation:1.6.5")
-    implementation("androidx.compose.animation:animation-core:1.6.5")
-    implementation("androidx.compose.animation:animation-graphics:1.6.5")
+    implementation("androidx.compose.compiler:compiler:${Versions.compose_compiler}")
+    implementation("androidx.compose.animation:animation:${Versions.compose_version}")
+    implementation("androidx.compose.animation:animation-core:${Versions.compose_version}")
+
 }

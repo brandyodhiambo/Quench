@@ -2,7 +2,6 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
-    id("dagger.hilt.android.plugin")
     id("kotlin-parcelize")
     id("com.google.devtools.ksp") version ("1.9.23-1.0.20")
 }
@@ -13,6 +12,7 @@ apply {
 
 android {
     compileSdk = AndroidConfig.compileSdk
+    namespace = AndroidConfig.applicationId
 
     applicationVariants.all {
         kotlin.sourceSets {
@@ -55,7 +55,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = Versions.compose_version
+        kotlinCompilerExtensionVersion = Versions.compose_compiler
     }
     packagingOptions {
         resources {
