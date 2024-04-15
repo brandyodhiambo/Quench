@@ -1,11 +1,9 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    id("kotlin-kapt")
-    kotlin("kapt")
-    id("com.google.dagger.hilt.android")
+    id("dagger.hilt.android.plugin")
     id("kotlin-parcelize")
-    id("com.google.devtools.ksp") version ("1.9.23-1.0.20")
+    id("com.google.devtools.ksp")
 }
 
 apply {
@@ -34,8 +32,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     buildFeatures {
         compose = true
@@ -44,7 +42,7 @@ android {
         kotlinCompilerExtensionVersion = Versions.compose_compiler
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = AndroidConfig.javaVersion
     }
 }
 

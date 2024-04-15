@@ -5,4 +5,5 @@ object AndroidConfig {
     const val compileSdk = 34
     const val versionCode = 3
     const val versionName = "0.0.3"
+    const val javaVersion = "17"
 }
