@@ -27,7 +27,7 @@ import com.ramcosta.composedestinations.spec.DestinationSpec
 import com.ramcosta.composedestinations.spec.NavGraphSpec
 import com.ramcosta.composedestinations.spec.Route
 
-object NavGraphs {
+object QuenchNavGraphs {
     val splash = object : NavGraphSpec {
         override val route: String = "splash"
         override val startRoute: Route = SplashScreenDestination routedIn this
@@ -36,6 +36,7 @@ object NavGraphs {
             SleepAndWakeTimeScreenDestination
         ).routedIn(this).associateBy { it.route }
     }
+
     val home = object : NavGraphSpec {
         override val route: String = "home"
         override val startRoute: Route = MainScreenDestination routedIn this
@@ -43,7 +44,7 @@ object NavGraphs {
             HomeScreenDestination,
             MainScreenDestination
         ).routedIn(this).associateBy { it.route }
-    }
+   }
 
     val settings = object : NavGraphSpec {
         override val route: String = "settings"

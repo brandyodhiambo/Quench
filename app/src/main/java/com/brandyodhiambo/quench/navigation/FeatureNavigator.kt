@@ -37,7 +37,7 @@ class FeatureNavigator(
     AddReminderNavigator {
     override fun navigateToNotificationScreen() {
         navController.navigate(
-            NavGraphs.settings.route
+            QuenchNavGraphs.settings.route
         )
     }
 
@@ -55,9 +55,9 @@ class FeatureNavigator(
 
     override fun navigateToMainScreen() {
         navController.navigate(
-            NavGraphs.home.route
+            QuenchNavGraphs.home.route
         ) {
-            popUpTo(NavGraphs.splash.route) {
+            popUpTo(QuenchNavGraphs.splash.route) {
                 inclusive = true
             }
         }

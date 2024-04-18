@@ -6,4 +6,5 @@ object AndroidConfig {
     const val versionCode = 3
     const val versionName = "0.0.3"
     const val javaVersion = "17"
+    const val ksp = "1.9.22-1.0.17"
 }

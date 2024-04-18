@@ -31,6 +31,7 @@ import com.brandyodhiambo.designsystem.components.Loader
 import com.brandyodhiambo.home.presentation.sleepWakeScreen.SleepWakeViewModel
 import com.brandyodhiambo.quench.R
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.annotation.RootNavGraph
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
@@ -42,7 +43,7 @@ interface SplashScreenNavigator {
 }
 
 @Composable
-@Destination(start = true)
+@Destination
 fun SplashScreen(
     navigator: SplashScreenNavigator,
     viewModel: SleepWakeViewModel = hiltViewModel()

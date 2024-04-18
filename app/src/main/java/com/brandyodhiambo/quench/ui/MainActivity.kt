@@ -28,13 +28,14 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.compose.rememberNavController
 import com.brandyodhiambo.common.domain.model.AlarmData
 import com.brandyodhiambo.designsystem.theme.QuenchTheme
 import com.brandyodhiambo.designsystem.theme.Theme
 import com.brandyodhiambo.home.presentation.homeScreen.HomeViewModel
 import com.brandyodhiambo.quench.R
 import com.brandyodhiambo.quench.navigation.FeatureNavigator
-import com.brandyodhiambo.quench.navigation.NavGraphs
+import com.brandyodhiambo.quench.navigation.QuenchNavGraphs
 import com.brandyodhiambo.quench.util.AlarmSchedularImpl
 import com.brandyodhiambo.quench.util.createChannel
 import com.brandyodhiambo.statistics.worker.startAchievementOnetimeWorkRequest
@@ -43,6 +44,7 @@ import com.brandyodhiambo.statistics.worker.startMonthlyOnetimeWorkRequest
 import com.brandyodhiambo.statistics.worker.startWeeklyOnetimeWorkRequest
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.ramcosta.composedestinations.DestinationsNavHost
+import com.ramcosta.composedestinations.navigation.DependenciesContainerBuilder
 import com.ramcosta.composedestinations.navigation.dependency
 import com.ramcosta.composedestinations.rememberNavHostEngine
 import com.ramcosta.composedestinations.scope.DestinationScope
@@ -81,11 +83,11 @@ class MainActivity : ComponentActivity() {
                         message = getString(R.string.it_s_time_to_drink_water)
                     )
                     alarmItem.let(scheduler::schedule)
-                    val navController = rememberAnimatedNavController()
+                    val navController = rememberNavController()
                     val navHostEngine = rememberNavHostEngine()
 
                     DestinationsNavHost(
-                        navGraph = NavGraphs.root,
+                        navGraph = QuenchNavGraphs.root,
                         navController = navController,
                         engine = navHostEngine,
                         dependenciesContainerBuilder = {
@@ -100,7 +102,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-fun DestinationScope<*>.currentNavigator(): FeatureNavigator {
+fun DependenciesContainerBuilder<*>.currentNavigator(): FeatureNavigator {
     return FeatureNavigator(
         navController = navController,
         navGraph = navBackStackEntry.destination.navGraph()
@@ -109,7 +111,7 @@ fun DestinationScope<*>.currentNavigator(): FeatureNavigator {
 
 fun NavDestination.navGraph(): NavGraphSpec {
     hierarchy.forEach { destination ->
-        NavGraphs.root.nestedNavGraphs.forEach { navGraph ->
+        QuenchNavGraphs.root.nestedNavGraphs.forEach { navGraph ->
             if (destination.route == navGraph.route) {
                 return navGraph
             }

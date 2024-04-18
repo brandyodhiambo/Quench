@@ -50,25 +50,10 @@ dependencies {
     implementation(project(Module.designsystem))
     implementation(project(Module.common))
 
-    // RamCosta Navigation
-    implementation("io.github.raamcosta.compose-destinations:core:1.10.2")
     implementation(project(mapOf("path" to ":feature:home")))
-    ksp("io.github.raamcosta.compose-destinations:ksp:1.10.2")
 
-    // Navigation animation
-    implementation("com.google.accompanist:accompanist-navigation-animation:0.34.0")
-}
-
-kotlin {
-    sourceSets {
-        debug {
-            kotlin.srcDir("build/generated/ksp/debug/kotlin")
-        }
-        release {
-            kotlin.srcDir("build/generated/ksp/release/kotlin")
-        }
     }
-}
+
 
 ksp {
     arg("compose-destinations.mode", "destinations")
