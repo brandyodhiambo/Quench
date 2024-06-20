@@ -15,7 +15,13 @@
  */
 package com.brandyodhiambo.home.presentation.homeScreen
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -44,15 +50,22 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.brandyodhiambo.common.R
 import com.brandyodhiambo.common.domain.model.Days
@@ -62,6 +75,7 @@ import com.brandyodhiambo.common.domain.model.Level
 import com.brandyodhiambo.common.domain.model.ReminderTime
 import com.brandyodhiambo.common.domain.model.SelectedDrink
 import com.brandyodhiambo.common.presentation.component.WaterIntakeDialog
+import com.brandyodhiambo.common.util.RequestNotificationPermission
 import com.brandyodhiambo.common.util.incrementProgressCircle
 import com.brandyodhiambo.designsystem.components.CircularButton
 import com.brandyodhiambo.home.presentation.component.CircularRating
@@ -302,6 +316,7 @@ fun HomeScreen(
     )
 }
 
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 fun HomeScreenContent(
     waterIntake: Int,
@@ -360,12 +375,13 @@ fun HomeScreenContent(
     onOpenDialog: (Boolean) -> Unit,
     onDismissSelectedDrinkDialog: () -> Unit,
     onConfirmSelectedDrinkDialog: () -> Unit,
-
-
     ) {
+
     Scaffold(
         containerColor = MaterialTheme.colorScheme.primary
     ) { paddingValues ->
+
+        RequestNotificationPermission()
         Box(
             modifier = Modifier
                 .fillMaxSize()
