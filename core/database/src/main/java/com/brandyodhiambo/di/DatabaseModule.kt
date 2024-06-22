@@ -95,6 +95,10 @@ object DatabaseModule {
 
     @Provides
     @Singleton
+    fun provideTimeFormateDao(database: QuenchDatabase) = database.timeFormateDao()
+
+    @Provides
+    @Singleton
     fun provideGson(): Gson {
         return Gson()
     }

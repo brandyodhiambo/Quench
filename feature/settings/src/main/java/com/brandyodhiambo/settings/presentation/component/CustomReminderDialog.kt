@@ -44,9 +44,9 @@ import androidx.compose.ui.window.Dialog
 
 @Composable
 fun CustomReminderDialog(
-    openDialog: MutableState<Boolean>,
     title: String,
-    items: List<String>
+    items: List<String>,
+    onCustomReminderDialog:()->Unit,
 ) {
     val selectedValue = remember { mutableStateOf("") }
     val isSelectedItem: (String) -> Boolean = { selectedValue.value == it }
@@ -101,7 +101,7 @@ fun CustomReminderDialog(
                         .fillMaxWidth(0.5f)
                         .padding(10.dp)
                         .clickable {
-                            openDialog.value = false
+                            onCustomReminderDialog()
                         },
                     colors = CardDefaults.cardColors(
                         MaterialTheme.colorScheme.onBackground.copy(
@@ -122,7 +122,7 @@ fun CustomReminderDialog(
                     modifier = Modifier
                         .padding(10.dp)
                         .clickable {
-                            openDialog.value = false
+                            onCustomReminderDialog()
                         },
                     colors = CardDefaults.cardColors(MaterialTheme.colorScheme.primary)
                 ) {
@@ -137,9 +137,8 @@ fun CustomReminderDialog(
             }
 
             if (selectedValue.value == "Custom") {
-                Dialog(onDismissRequest = { openDialog.value = false }) {
+                Dialog(onDismissRequest = { onCustomReminderDialog() }) {
                     CustomCheckinDialog(
-                        openDialog = openDialog,
                         title = "Custom",
                         items = listOf(
                             "Monday",
@@ -149,7 +148,8 @@ fun CustomReminderDialog(
                             "Friday",
                             "Saturday",
                             "Sunday"
-                        )
+                        ),
+                        onCustomCheckDialog = onCustomReminderDialog
                     )
                 }
             }

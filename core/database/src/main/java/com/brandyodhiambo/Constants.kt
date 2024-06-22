@@ -24,6 +24,7 @@ object Constants {
     const val REMINDER_TABLE = "reminder_table"
     const val GOAL_TABLE = "goal_table"
     const val SELECTED_DRINK_TABLE = "selected_drink_table"
+    const val TIME_FORMATE_TABLE = "time_formate_table"
 
     const val LEVEL_TABLE = "level_table"
     const val REPORT_TABLE = "report_table"

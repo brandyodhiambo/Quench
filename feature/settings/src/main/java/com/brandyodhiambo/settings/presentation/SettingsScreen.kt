@@ -30,6 +30,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -50,6 +51,10 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.brandyodhiambo.common.R
+import com.brandyodhiambo.common.domain.model.GoalWaterIntake
+import com.brandyodhiambo.common.domain.model.IdealWaterIntake
+import com.brandyodhiambo.common.presentation.component.WaterIntakeDialog
+import com.brandyodhiambo.home.presentation.component.IdealIntakeGoalDialog
 import com.brandyodhiambo.home.presentation.homeScreen.HomeViewModel
 import com.brandyodhiambo.settings.presentation.component.CustomReminderDialog
 import com.ramcosta.composedestinations.annotation.Destination
@@ -63,13 +68,100 @@ interface SettingsNavigator {
 @Composable
 fun SettingScreen(
     navigator: SettingsNavigator,
-    homeViewModel: HomeViewModel = hiltViewModel()
+    homeViewModel: HomeViewModel = hiltViewModel(),
+    settingViewModel: SettingsViewModel = hiltViewModel()
 ) {
-    val openIntakeDialog = remember { mutableStateOf(false) }
-    val openTimeDialog = remember { mutableStateOf(false) }
-    val openWaterUnitDialog = remember { mutableStateOf(false) }
-    val openWeightUnitDialog = remember { mutableStateOf(false) }
+    val openIntakeDialog = homeViewModel.openGoalDialog.value
+    val openTimeDialog = settingViewModel.openTimeDialog.value
+    val openWaterUnitDialog = settingViewModel.openWaterUnitDialog.value
+    val openWeightUnitDialog = settingViewModel.openWeightUnitDialog.value
 
+
+    SettingScreenContent(
+        openIntakeDialog = openIntakeDialog,
+        openTimeDialog = openTimeDialog,
+        openWaterUnitDialog = openWaterUnitDialog,
+        openWeightUnitDialog = openWeightUnitDialog,
+        currentWaterIntakeText = homeViewModel.goalWaterIntakeValue.value,
+        currentWaterIntakeFormText = homeViewModel.goalWaterForm.value,
+        currentIntake = homeViewModel.goalWaterIntakeValue.value,
+        currentForm = homeViewModel.goalWaterForm.value,
+        onCurrentWaterIntakeTextChange = {
+            homeViewModel.setGoalWaterIntakeValue(it)
+        },
+        onCurrentWaterIntakeFormTextChange = {
+            homeViewModel.setGoalWaterForm(it)
+        },
+        onConfirmGoalDialog = {
+            val goalWaterIntakeToInsert = GoalWaterIntake(
+                waterIntake = homeViewModel.goalWaterIntakeValue.value.toInt(),
+                form = homeViewModel.goalWaterForm.value
+            )
+            homeViewModel.insertGoalWaterIntake(goalWaterIntakeToInsert)
+        },
+        onCustomDialogChange = {
+            homeViewModel.setOpenGoalDialog(it)
+        },
+        onDismissGoalDialog = {
+            homeViewModel.setOpenGoalDialog(false)
+        },
+        onGoalDialog = {
+            homeViewModel.setOpenGoalDialog(it)
+        },
+        onOpenTimeFormatDialog = {
+            settingViewModel.setOpenTimeDialog(it)
+        },
+        onOpenWaterUnitDialog = {
+            settingViewModel.setOpenWaterUnitDialog(it)
+        },
+        onOpenWeightUnitDialog = {
+            settingViewModel.setOpenWeightUnitDialog(it)
+        },
+        onNavigate = {
+            navigator.navigateToNotificationScreen()
+        },
+        onDismissTimeDialog = {
+            settingViewModel.setOpenTimeDialog(false)
+        },
+        onDismissWaterUnitDialog= {
+            settingViewModel.setOpenWaterUnitDialog(false)
+        },
+        onDismissWeightUnitDialog = {
+            settingViewModel.setOpenWeightUnitDialog(false)
+
+        }
+    )
+
+
+}
+
+
+@Composable
+fun SettingScreenContent(
+    modifier: Modifier = Modifier,
+    openIntakeDialog: Boolean,
+    openTimeDialog: Boolean,
+    openWaterUnitDialog: Boolean,
+    openWeightUnitDialog: Boolean,
+    currentIntake: String,
+    currentForm: String,
+    currentWaterIntakeText: String,
+    currentWaterIntakeFormText: String,
+    onCurrentWaterIntakeTextChange: (String) -> Unit,
+    onCurrentWaterIntakeFormTextChange: (String) -> Unit,
+    onDismissGoalDialog: () -> Unit,
+    onConfirmGoalDialog: () -> Unit,
+    onCustomDialogChange: (Boolean) -> Unit,
+    onGoalDialog: (Boolean) -> Unit,
+    onOpenWeightUnitDialog: (Boolean) -> Unit,
+    onOpenTimeFormatDialog: (Boolean) -> Unit,
+    onOpenWaterUnitDialog: (Boolean) -> Unit,
+    onNavigate: () -> Unit,
+    onDismissTimeDialog:()->Unit,
+    onDismissWaterUnitDialog:()->Unit,
+    onDismissWeightUnitDialog:()->Unit,
+
+    ) {
     Scaffold(
         containerColor = MaterialTheme.colorScheme.primary
     ) { paddingValues ->
@@ -81,74 +173,66 @@ fun SettingScreen(
             LazyColumn {
                 item {
                     UnitsWaterIntake(
-                        openTimeFormatDialog = openTimeDialog,
-                        openWaterUnitDialog = openWaterUnitDialog,
-                        openWeightUnitDialog = openWeightUnitDialog
+                        onOpenWeightUnitDialog = onOpenWeightUnitDialog,
+                        onOpenTimeFormatDialog = onOpenTimeFormatDialog,
+                        onOpenWaterUnitDialog = onOpenWaterUnitDialog,
                     )
                 }
                 item {
                     Goals(
-                        openDialog = openIntakeDialog,
-                        currentIntake = homeViewModel.goalWaterIntakeValue.value,
-                        currentForm = homeViewModel.goalWaterForm.value
+                        currentIntake = currentIntake,
+                        currentForm = currentForm,
+                        onGoalDialog = onGoalDialog
                     )
                 }
                 item {
-                    ReminderWaterIntake(navigator = navigator)
+                    ReminderWaterIntake(
+                        onNavigate = onNavigate
+                    )
                 }
             }
 
-            if (openIntakeDialog.value) {
-                Dialog(onDismissRequest = { openIntakeDialog.value }) {
-                 /*   WaterIntakeDialog(
-                        openCustomDialog = openIntakeDialog,
-                        currentWaterIntakeText = homeViewModel.goalWaterIntakeValue.value,
-                        currentWaterIntakeFormText = homeViewModel.goalWaterForm.value,
-                        onCurrentWaterIntakeTextChange = {
-                            homeViewModel.setGoalWaterIntakeValue(it)
-                        },
-                        onCurrentWaterIntakeFormTextChange = {
-                            homeViewModel.setGoalWaterForm(it)
-                        },
-                        onOkayClick = {
-                            val goalWaterIntakeToInsert = GoalWaterIntake(
-                                waterIntake = homeViewModel.goalWaterIntakeValue.value.toInt(),
-                                form = homeViewModel.goalWaterForm.value
-                            )
-                            homeViewModel.insertGoalWaterIntake(goalWaterIntakeToInsert)
-                        }
-                    )*/
+            if (openIntakeDialog) {
+                Dialog(onDismissRequest = onDismissGoalDialog) {
+                    WaterIntakeDialog(
+                        currentWaterIntakeText = currentWaterIntakeText,
+                        currentWaterIntakeFormText = currentWaterIntakeFormText,
+                        onCurrentWaterIntakeTextChange = onCurrentWaterIntakeTextChange,
+                        onCurrentWaterIntakeFormTextChange = onCurrentWaterIntakeFormTextChange,
+                        onOkayClick = onConfirmGoalDialog,
+                        onCustomDialogChange = onCustomDialogChange
+                    )
                 }
             }
-            if (openTimeDialog.value) {
-                Dialog(onDismissRequest = { openTimeDialog.value }) {
+            if (openTimeDialog) {
+                Dialog(onDismissRequest = { onDismissTimeDialog() }) {
                     val time = listOf("12 Hour", "24 Hour")
                     CustomReminderDialog(
-                        openDialog = openTimeDialog,
                         items = time,
-                        title = "Time Format"
+                        title = "Time Format",
+                        onCustomReminderDialog = onDismissTimeDialog
                     )
                 }
             }
 
-            if (openWaterUnitDialog.value) {
-                Dialog(onDismissRequest = { openWaterUnitDialog.value }) {
+            if (openWaterUnitDialog) {
+                Dialog(onDismissRequest = {onDismissWaterUnitDialog()}) {
                     val waterUnit = listOf("ml", "oz", "cup", "pint", "gallon", "liter")
                     CustomReminderDialog(
-                        openDialog = openWaterUnitDialog,
                         items = waterUnit,
-                        title = "Water Unit"
+                        title = "Water Unit",
+                        onCustomReminderDialog = onDismissWaterUnitDialog
                     )
                 }
             }
 
-            if (openWeightUnitDialog.value) {
-                Dialog(onDismissRequest = { openWeightUnitDialog.value }) {
+            if (openWeightUnitDialog) {
+                Dialog(onDismissRequest = { onDismissWeightUnitDialog() }) {
                     val weightUnit = listOf("kg", "lb", "oz")
                     CustomReminderDialog(
-                        openDialog = openWeightUnitDialog,
                         items = weightUnit,
-                        title = "Weight Unit"
+                        title = "Weight Unit",
+                        onCustomReminderDialog = onDismissWeightUnitDialog
                     )
                 }
             }
@@ -158,9 +242,9 @@ fun SettingScreen(
 
 @Composable
 fun UnitsWaterIntake(
-    openTimeFormatDialog: MutableState<Boolean>,
-    openWaterUnitDialog: MutableState<Boolean>,
-    openWeightUnitDialog: MutableState<Boolean>
+    onOpenWeightUnitDialog: (Boolean) -> Unit,
+    onOpenTimeFormatDialog: (Boolean) -> Unit,
+    onOpenWaterUnitDialog: (Boolean) -> Unit,
 ) {
     Card(
         modifier = Modifier
@@ -184,7 +268,7 @@ fun UnitsWaterIntake(
                     color = MaterialTheme.colorScheme.onBackground
                 )
 
-                TextButton(onClick = { openWaterUnitDialog.value = true }) {
+                TextButton(onClick = { onOpenWaterUnitDialog(true) }) {
                     Text(
                         text = "ml",
                         fontSize = 16.sp,
@@ -193,12 +277,12 @@ fun UnitsWaterIntake(
                     )
                 }
             }
-            Divider(
+            HorizontalDivider(
                 modifier = Modifier
                     .height(1.dp)
                     .padding(start = 8.dp, end = 8.dp),
-                color = Color.Gray,
-                thickness = 1.dp
+                thickness = 1.dp,
+                color = Color.Gray
             )
             Row(
                 modifier = Modifier
@@ -213,7 +297,7 @@ fun UnitsWaterIntake(
                     color = MaterialTheme.colorScheme.onBackground
                 )
 
-                TextButton(onClick = { openWeightUnitDialog.value = true }) {
+                TextButton(onClick = { onOpenWeightUnitDialog(true) }) {
                     Text(
                         text = "Kg",
                         style = MaterialTheme.typography.labelMedium,
@@ -221,12 +305,12 @@ fun UnitsWaterIntake(
                     )
                 }
             }
-            Divider(
+            HorizontalDivider(
                 modifier = Modifier
                     .height(1.dp)
                     .padding(start = 8.dp, end = 8.dp),
-                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.12f),
-                thickness = 1.dp
+                thickness = 1.dp,
+                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.12f)
             )
             Row(
                 modifier = Modifier
@@ -240,9 +324,9 @@ fun UnitsWaterIntake(
                     style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.onBackground
                 )
-                TextButton(onClick = { openTimeFormatDialog.value = true }) {
+                TextButton(onClick = { onOpenTimeFormatDialog(true) }) {
                     Text(
-                        text = "12 hours",
+                        text = "24 hours",
                         style = MaterialTheme.typography.labelMedium,
                         color = MaterialTheme.colorScheme.primary
                     )
@@ -253,7 +337,7 @@ fun UnitsWaterIntake(
 }
 
 @Composable
-fun ReminderWaterIntake(navigator: SettingsNavigator) {
+fun ReminderWaterIntake(onNavigate:()->Unit) {
     val context = LocalContext.current
     Card(
         modifier = Modifier
@@ -317,7 +401,8 @@ fun ReminderWaterIntake(navigator: SettingsNavigator) {
                             ).show()
                         }
                     } catch (e: Exception) {
-                        Toast.makeText(context, "unable to set as Ringtone ", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "unable to set as Ringtone ", Toast.LENGTH_SHORT)
+                            .show()
                     }
                 }) {
                     Image(
@@ -350,7 +435,7 @@ fun ReminderWaterIntake(navigator: SettingsNavigator) {
                     )
                 }
                 IconButton(onClick = {
-                    navigator.navigateToNotificationScreen()
+                    onNavigate()
                 }) {
                     Image(
                         painter = painterResource(id = R.drawable.ic_chevron_right),
@@ -364,9 +449,9 @@ fun ReminderWaterIntake(navigator: SettingsNavigator) {
 
 @Composable
 fun Goals(
-    openDialog: MutableState<Boolean>,
     currentIntake: String,
-    currentForm: String
+    currentForm: String,
+    onGoalDialog: (Boolean) -> Unit
 ) {
     Card(
         modifier = Modifier
@@ -397,7 +482,7 @@ fun Goals(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween,
                     modifier = Modifier.clickable {
-                        openDialog.value = true
+                        onGoalDialog(true)
                     }
                 ) {
                     Text(

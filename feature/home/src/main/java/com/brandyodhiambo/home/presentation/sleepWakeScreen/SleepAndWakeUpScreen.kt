@@ -185,7 +185,7 @@ fun WakeTimePickerInHours(
     HoursNumberPicker(
         dividersColor = MaterialTheme.colorScheme.onBackground,
         value = currentPickerValueText,
-        hoursRange = 0..23,
+        hoursRange = 0..12,
         onValueChange = {
             onCurrentPickerValueTextChange(it)
             onTimeWakeSelected(it)

@@ -28,6 +28,7 @@ import com.brandyodhiambo.dao.MonthlyStatisticsDao
 import com.brandyodhiambo.dao.ReminderTimeDao
 import com.brandyodhiambo.dao.SelectedDrinkDao
 import com.brandyodhiambo.dao.SleepTimeDao
+import com.brandyodhiambo.dao.TimeFormateDao
 import com.brandyodhiambo.dao.WakeTimeDao
 import com.brandyodhiambo.dao.WeeklyStatisticDao
 import com.brandyodhiambo.entity.AchievementEntity
@@ -60,4 +61,5 @@ abstract class QuenchDatabase : RoomDatabase() {
     abstract fun weeklyStatisticsDao(): WeeklyStatisticDao
     abstract fun monthlyStatisticsDao(): MonthlyStatisticsDao
     abstract fun achievementDao(): AchievementDao
+    abstract fun timeFormateDao():TimeFormateDao
 }

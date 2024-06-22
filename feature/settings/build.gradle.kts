@@ -49,6 +49,8 @@ android {
 dependencies {
     implementation(project(Module.designsystem))
     implementation(project(Module.common))
+    implementation(project(Module.database))
+
 
     implementation(project(mapOf("path" to ":feature:home")))
 

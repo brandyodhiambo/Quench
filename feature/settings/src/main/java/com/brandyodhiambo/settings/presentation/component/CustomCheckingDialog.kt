@@ -42,7 +42,8 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun CustomCheckinDialog(
-    openDialog: MutableState<Boolean>,
+    //openDialog: MutableState<Boolean>,
+    onCustomCheckDialog:()->Unit,
     title: String,
     items: List<String>
 ) {
@@ -100,7 +101,7 @@ fun CustomCheckinDialog(
                         .fillMaxWidth(0.5f)
                         .padding(10.dp)
                         .clickable {
-                            openDialog.value = false
+                            onCustomCheckDialog()
                         },
                     colors = CardDefaults.cardColors(MaterialTheme.colorScheme.background)
                 ) {
@@ -117,7 +118,7 @@ fun CustomCheckinDialog(
                     modifier = Modifier
                         .padding(10.dp)
                         .clickable {
-                            openDialog.value = false
+                            onCustomCheckDialog()
                         },
                     colors = CardDefaults.cardColors(MaterialTheme.colorScheme.primary)
                 ) {

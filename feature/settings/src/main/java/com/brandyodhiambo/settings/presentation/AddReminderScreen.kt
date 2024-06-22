@@ -46,6 +46,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.brandyodhiambo.common.R
 import com.brandyodhiambo.designsystem.components.NotificationSwitcher
 import com.brandyodhiambo.settings.presentation.component.CustomReminderDialog
@@ -62,9 +63,10 @@ interface AddReminderNavigator {
 @Destination
 @Composable
 fun AddReminderScreen(
-    navigator: AddReminderNavigator
+    navigator: AddReminderNavigator,
+    settingsViewModel: SettingsViewModel = hiltViewModel()
 ) {
-    val repeateModeDialog = remember { mutableStateOf(false) }
+    val repeateModeDialog = settingsViewModel.repeatModeDialog.value
     Scaffold(
         topBar = {
             TopAppBarAddReminder(navigator = navigator)
@@ -129,7 +131,7 @@ fun AddReminderScreen(
                         style = MaterialTheme.typography.labelMedium,
                         color = MaterialTheme.colorScheme.onBackground
                     )
-                    IconButton(onClick = { repeateModeDialog.value = true }) {
+                    IconButton(onClick = { settingsViewModel.setRepeatModeDialog(true)}) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_chevron_right),
                             tint = MaterialTheme.colorScheme.onBackground,
@@ -179,13 +181,15 @@ fun AddReminderScreen(
                 )
             }
 
-            if (repeateModeDialog.value) {
-                Dialog(onDismissRequest = { repeateModeDialog.value }) {
+            if (repeateModeDialog) {
+                Dialog(onDismissRequest = { settingsViewModel.setRepeatModeDialog(false)}) {
                     val repeatMode = listOf("Once", "Mon to Fri", "Daily", "Custom")
                     CustomReminderDialog(
-                        openDialog = repeateModeDialog,
                         items = repeatMode,
-                        title = "Repeat Mode"
+                        title = "Repeat Mode",
+                        onCustomReminderDialog = {
+                            settingsViewModel.setRepeatModeDialog(value = false)
+                        }
                     )
                 }
             }
@@ -231,7 +235,10 @@ fun TopAppBarAddReminder(navigator: AddReminderNavigator) {
 @Composable
 fun ReminderTimePickerInHours() {
     Column(
-        modifier = Modifier.fillMaxWidth().height(200.dp).padding(16.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(200.dp)
+            .padding(16.dp),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
