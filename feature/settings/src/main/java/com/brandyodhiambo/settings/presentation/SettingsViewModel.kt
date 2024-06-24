@@ -3,8 +3,11 @@ package com.brandyodhiambo.settings.presentation
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.brandyodhiambo.common.domain.model.TimeFormate
 import com.brandyodhiambo.common.domain.repository.TimeFormateRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -33,6 +36,25 @@ class SettingsViewModel @Inject constructor(
     val repeatModeDialog: State<Boolean> = _repeatModeDialog
     fun setRepeatModeDialog(value:Boolean){
         _repeatModeDialog.value = value
+    }
+
+    private val _selectedTimeFormate =  mutableStateOf("12")
+    val selectedTimeFormate: State<String> = _selectedTimeFormate
+    fun onTimeFormatSelected(value:String){
+        _selectedTimeFormate.value = value
+    }
+
+    val timeFormateFromDb  = timeFormateRepository.getTimeFormate()
+
+    fun insertTimeFormate(timeFormate: TimeFormate){
+        viewModelScope.launch {
+            if(timeFormateFromDb.value != null){
+                timeFormateRepository.deleteAllTimeFormate()
+                timeFormateRepository.insertTimeFormate(timeFormate)
+            } else{
+                timeFormateRepository.insertTimeFormate(timeFormate)
+            }
+        }
     }
 
 }

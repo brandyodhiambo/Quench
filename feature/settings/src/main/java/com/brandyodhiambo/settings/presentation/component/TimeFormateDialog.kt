@@ -1,18 +1,3 @@
-/*
- * Copyright (C)2023 Brandy Odhiambo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.brandyodhiambo.settings.presentation.component
 
 import androidx.compose.foundation.background
@@ -32,24 +17,22 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
 
 @Composable
-fun CustomReminderDialog(
+fun TimeFormateDialog(
     title: String,
     items: List<String>,
-    onCustomReminderDialog:()->Unit,
+    selectedValue: String,
+    onChangeState: (String) -> Unit,
+    onRadioButtonClicked: (String) -> Unit,
+    onCustomReminderDialog: () -> Unit,
 ) {
-    val selectedValue = remember { mutableStateOf("") }
-    val isSelectedItem: (String) -> Boolean = { selectedValue.value == it }
-    val onChangeState: (String) -> Unit = { selectedValue.value = it }
+    val isSelectedItem: (String) -> Boolean = { selectedValue == it }
 
     Card(
         shape = RoundedCornerShape(12.dp),
@@ -100,6 +83,7 @@ fun CustomReminderDialog(
                         .fillMaxWidth(0.5f)
                         .padding(10.dp)
                         .clickable {
+                            onRadioButtonClicked(selectedValue)
                             onCustomReminderDialog()
                         },
                     colors = CardDefaults.cardColors(
@@ -131,24 +115,6 @@ fun CustomReminderDialog(
                         color = MaterialTheme.colorScheme.onPrimary,
                         modifier = Modifier.padding(10.dp),
                         textAlign = TextAlign.Center
-                    )
-                }
-            }
-
-            if (selectedValue.value == "Custom") {
-                Dialog(onDismissRequest = { onCustomReminderDialog() }) {
-                    CustomCheckinDialog(
-                        title = "Custom",
-                        items = listOf(
-                            "Monday",
-                            "Tuesday",
-                            "Wednesday",
-                            "Thursday",
-                            "Friday",
-                            "Saturday",
-                            "Sunday"
-                        ),
-                        onCustomCheckDialog = onCustomReminderDialog
                     )
                 }
             }

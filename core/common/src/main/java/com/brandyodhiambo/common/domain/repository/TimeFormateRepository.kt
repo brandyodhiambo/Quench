@@ -8,4 +8,5 @@ interface TimeFormateRepository {
     suspend fun insertTimeFormate(timeFormate: TimeFormate)
     fun getTimeFormate(): LiveData<TimeFormate?>
     suspend fun deleteTimeFormate(timeFormate: TimeFormate)
+    suspend fun deleteAllTimeFormate()
 }

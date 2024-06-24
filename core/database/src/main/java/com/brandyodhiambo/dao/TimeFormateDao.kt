@@ -18,4 +18,7 @@ interface TimeFormateDao {
 
     @Delete
     suspend fun deleteTimeFormate(timeFormateEntity: TimeFormateEntity)
+
+    @Query("DELETE FROM time_formate_table")
+    suspend fun deleteAllTimeFormate()
 }

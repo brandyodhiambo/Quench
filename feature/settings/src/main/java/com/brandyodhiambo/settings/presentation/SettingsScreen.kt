@@ -53,10 +53,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.brandyodhiambo.common.R
 import com.brandyodhiambo.common.domain.model.GoalWaterIntake
 import com.brandyodhiambo.common.domain.model.IdealWaterIntake
+import com.brandyodhiambo.common.domain.model.TimeFormate
 import com.brandyodhiambo.common.presentation.component.WaterIntakeDialog
 import com.brandyodhiambo.home.presentation.component.IdealIntakeGoalDialog
 import com.brandyodhiambo.home.presentation.homeScreen.HomeViewModel
 import com.brandyodhiambo.settings.presentation.component.CustomReminderDialog
+import com.brandyodhiambo.settings.presentation.component.TimeFormateDialog
 import com.ramcosta.composedestinations.annotation.Destination
 
 interface SettingsNavigator {
@@ -75,9 +77,11 @@ fun SettingScreen(
     val openTimeDialog = settingViewModel.openTimeDialog.value
     val openWaterUnitDialog = settingViewModel.openWaterUnitDialog.value
     val openWeightUnitDialog = settingViewModel.openWeightUnitDialog.value
+    val timeformate = settingViewModel.timeFormateFromDb.value
 
 
     SettingScreenContent(
+        timeFormate = timeformate ?: TimeFormate(12),
         openIntakeDialog = openIntakeDialog,
         openTimeDialog = openTimeDialog,
         openWaterUnitDialog = openWaterUnitDialog,
@@ -86,6 +90,16 @@ fun SettingScreen(
         currentWaterIntakeFormText = homeViewModel.goalWaterForm.value,
         currentIntake = homeViewModel.goalWaterIntakeValue.value,
         currentForm = homeViewModel.goalWaterForm.value,
+        selectedValue = settingViewModel.selectedTimeFormate.value,
+        onRadioButtonClicked = {
+            val insertTimeFormate = TimeFormate(
+                formate = it.toInt()
+            )
+            settingViewModel.insertTimeFormate(insertTimeFormate)
+        } ,
+        onChangeState = {
+            settingViewModel.onTimeFormatSelected(it)
+        },
         onCurrentWaterIntakeTextChange = {
             homeViewModel.setGoalWaterIntakeValue(it)
         },
@@ -139,6 +153,7 @@ fun SettingScreen(
 @Composable
 fun SettingScreenContent(
     modifier: Modifier = Modifier,
+    timeFormate: TimeFormate,
     openIntakeDialog: Boolean,
     openTimeDialog: Boolean,
     openWaterUnitDialog: Boolean,
@@ -160,6 +175,9 @@ fun SettingScreenContent(
     onDismissTimeDialog:()->Unit,
     onDismissWaterUnitDialog:()->Unit,
     onDismissWeightUnitDialog:()->Unit,
+    selectedValue: String,
+    onChangeState: (String) -> Unit,
+    onRadioButtonClicked: (String) -> Unit,
 
     ) {
     Scaffold(
@@ -173,6 +191,7 @@ fun SettingScreenContent(
             LazyColumn {
                 item {
                     UnitsWaterIntake(
+                        timeFormate = selectedValue,
                         onOpenWeightUnitDialog = onOpenWeightUnitDialog,
                         onOpenTimeFormatDialog = onOpenTimeFormatDialog,
                         onOpenWaterUnitDialog = onOpenWaterUnitDialog,
@@ -206,10 +225,13 @@ fun SettingScreenContent(
             }
             if (openTimeDialog) {
                 Dialog(onDismissRequest = { onDismissTimeDialog() }) {
-                    val time = listOf("12 Hour", "24 Hour")
-                    CustomReminderDialog(
+                    val time = listOf("12", "24")
+                    TimeFormateDialog(
                         items = time,
                         title = "Time Format",
+                        selectedValue = selectedValue,
+                        onChangeState = onChangeState,
+                        onRadioButtonClicked = onRadioButtonClicked,
                         onCustomReminderDialog = onDismissTimeDialog
                     )
                 }
@@ -242,6 +264,7 @@ fun SettingScreenContent(
 
 @Composable
 fun UnitsWaterIntake(
+    timeFormate: String,
     onOpenWeightUnitDialog: (Boolean) -> Unit,
     onOpenTimeFormatDialog: (Boolean) -> Unit,
     onOpenWaterUnitDialog: (Boolean) -> Unit,
@@ -326,7 +349,7 @@ fun UnitsWaterIntake(
                 )
                 TextButton(onClick = { onOpenTimeFormatDialog(true) }) {
                     Text(
-                        text = "24 hours",
+                        text = "$timeFormate hours",
                         style = MaterialTheme.typography.labelMedium,
                         color = MaterialTheme.colorScheme.primary
                     )

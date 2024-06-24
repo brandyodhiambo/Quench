@@ -24,4 +24,8 @@ class TimeFormateRepositoryImpl(
     override suspend fun deleteTimeFormate(timeFormate: TimeFormate) {
         timeFormateDao.deleteTimeFormate(timeFormate.toTimeFormateEntity())
     }
+
+    override suspend fun deleteAllTimeFormate() {
+        timeFormateDao.deleteAllTimeFormate()
+    }
 }

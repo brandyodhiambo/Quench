@@ -40,12 +40,13 @@ import com.brandyodhiambo.entity.MonthlyStatisticsEntity
 import com.brandyodhiambo.entity.ReminderTimeEntity
 import com.brandyodhiambo.entity.SelectedDrinkEntity
 import com.brandyodhiambo.entity.SleepTimeEntity
+import com.brandyodhiambo.entity.TimeFormateEntity
 import com.brandyodhiambo.entity.WakeTimeEntity
 import com.brandyodhiambo.entity.WeeklyStatisticsEntity
 
 @TypeConverters(Converter::class)
 @Database(
-    entities = [SelectedDrinkEntity::class, WakeTimeEntity::class, IdealWaterIntakeEntity::class, GoalWaterIntakeEntity::class, SleepTimeEntity::class, LevelEntity::class, ReminderTimeEntity::class, DailyStatisticsEntity::class, WeeklyStatisticsEntity::class, MonthlyStatisticsEntity::class, AchievementEntity::class],
+    entities = [SelectedDrinkEntity::class, WakeTimeEntity::class, IdealWaterIntakeEntity::class, GoalWaterIntakeEntity::class, SleepTimeEntity::class, LevelEntity::class, ReminderTimeEntity::class, DailyStatisticsEntity::class, WeeklyStatisticsEntity::class, MonthlyStatisticsEntity::class, AchievementEntity::class,TimeFormateEntity::class],
     version = 5,
     exportSchema = false
 )
