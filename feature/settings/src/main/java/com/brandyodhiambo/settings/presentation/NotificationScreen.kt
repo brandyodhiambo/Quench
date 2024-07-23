@@ -50,7 +50,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.brandyodhiambo.common.domain.model.Day
+import com.brandyodhiambo.common.domain.model.ReminderMode
 import com.brandyodhiambo.common.util.toInitials
 import com.brandyodhiambo.designsystem.components.NotificationSwitcher
 import com.ramcosta.composedestinations.annotation.Destination
@@ -69,13 +69,13 @@ fun NotificationScreen(
     navigator: NotificationNavigator
 ) {
     val days = listOf(
-        Day("Monday", true),
-        Day("Tuesday", true),
-        Day("Wednesday", true),
-        Day("Thursday", true),
-        Day("Friday", true),
-        Day("Saturday", true),
-        Day("Sunday", false)
+        ReminderMode("Monday", true),
+        ReminderMode("Tuesday", true),
+        ReminderMode("Wednesday", true),
+        ReminderMode("Thursday", true),
+        ReminderMode("Friday", true),
+        ReminderMode("Saturday", true),
+        ReminderMode("Sunday", false)
     )
 
     val reminder = listOf(
@@ -130,7 +130,7 @@ fun NotificationScreen(
                     }
                 } else {
                     items(reminder) { reminder ->
-                        ReminderNotificationTime(reminder = reminder)
+                        ReminderCardTime(reminder = reminder)
                     }
                 }
             }
@@ -171,7 +171,7 @@ fun AddReminder(navigator: NotificationNavigator) {
 }
 
 @Composable
-fun ReminderNotificationTime(reminder: Reminder) {
+fun ReminderCardTime(reminder: Reminder) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -206,15 +206,15 @@ fun ReminderNotificationTime(reminder: Reminder) {
                     Text(
                         text = reminder.time,
                         color = if (reminder.isOn) {
-                            MaterialTheme.colorScheme.background
+                            MaterialTheme.colorScheme.primary
                         } else {
-                            MaterialTheme.colorScheme.background.copy(alpha = 0.2f)
+                            MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)
                         },
                         style = MaterialTheme.typography.labelMedium
                     )
                     LazyRow() {
                         items(reminder.days) { day ->
-                            WeeksReminder(day = day, reminder = reminder)
+                            DaysReminder(day = day, reminder = reminder)
                         }
                     }
                 }
@@ -224,7 +224,7 @@ fun ReminderNotificationTime(reminder: Reminder) {
                     size = 30.dp,
                     padding = 5.dp,
                     onToggle = {
-                        !reminder.isOn
+                        reminder.isOn.not()
                     }
                 )
             }
@@ -233,7 +233,7 @@ fun ReminderNotificationTime(reminder: Reminder) {
 }
 
 @Composable
-fun WeeksReminder(day: Day, reminder: Reminder) {
+fun DaysReminder(day: ReminderMode, reminder: Reminder) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -269,6 +269,6 @@ fun WeeksReminder(day: Day, reminder: Reminder) {
 
 data class Reminder(
     val time: String,
-    val days: List<Day>,
+    val days: List<ReminderMode>,
     val isOn: Boolean
 )

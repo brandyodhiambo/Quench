@@ -15,7 +15,7 @@
  */
 package com.brandyodhiambo.common.domain.model
 
-data class Day(
+data class ReminderMode(
     val day: String,
     val isOn: Boolean
 )

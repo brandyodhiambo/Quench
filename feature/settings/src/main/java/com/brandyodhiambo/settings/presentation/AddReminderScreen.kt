@@ -49,7 +49,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.brandyodhiambo.common.R
 import com.brandyodhiambo.designsystem.components.NotificationSwitcher
-import com.brandyodhiambo.settings.presentation.component.CustomReminderDialog
+import com.brandyodhiambo.settings.presentation.component.CustomReminderModeDialog
 import com.chargemap.compose.numberpicker.AMPMHours
 import com.chargemap.compose.numberpicker.Hours
 import com.chargemap.compose.numberpicker.HoursNumberPicker
@@ -79,38 +79,12 @@ fun AddReminderScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(modifier = Modifier.height(20.dp))
+
+            // ReminderTime
             ReminderTimePickerInHours()
             Spacer(modifier = Modifier.height(8.dp))
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "Reminder Sound",
-                    style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onBackground
-                )
 
-                Row(
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = "Default Sound",
-                        style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.onBackground
-                    )
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_chevron_right),
-                            tint = MaterialTheme.colorScheme.onBackground,
-                            contentDescription = null
-                        )
-                    }
-                }
-            }
-            Spacer(modifier = Modifier.height(8.dp))
+            //Reminder Mode (once,mon to fri,custom,daily)
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -183,13 +157,21 @@ fun AddReminderScreen(
 
             if (repeateModeDialog) {
                 Dialog(onDismissRequest = { settingsViewModel.setRepeatModeDialog(false)}) {
-                    val repeatMode = listOf("Once", "Mon to Fri", "Daily", "Custom")
-                    CustomReminderDialog(
-                        items = repeatMode,
+                    val repeatModes = listOf("Once", "Mon to Fri", "Daily", "Custom")
+                    CustomReminderModeDialog(
+                        items = repeatModes,
+                        selectedValue = settingsViewModel.selectedReminderMode.value,
                         title = "Repeat Mode",
+                        isSelectedItem = {
+                            settingsViewModel.selectedReminderMode.value == it
+                        },
+                        onChangeState = {
+                            settingsViewModel.onReminderSelected(it)
+                        } ,
                         onCustomReminderDialog = {
                             settingsViewModel.setRepeatModeDialog(value = false)
-                        }
+                            // insert the reminder mode
+                        },
                     )
                 }
             }

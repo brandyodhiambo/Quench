@@ -42,15 +42,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 
 @Composable
-fun CustomReminderDialog(
+fun CustomReminderModeDialog(
     title: String,
+    selectedValue:String,
     items: List<String>,
+    isSelectedItem: (String) -> Boolean,
+    onChangeState: (String) -> Unit,
     onCustomReminderDialog:()->Unit,
 ) {
-    val selectedValue = remember { mutableStateOf("") }
-    val isSelectedItem: (String) -> Boolean = { selectedValue.value == it }
-    val onChangeState: (String) -> Unit = { selectedValue.value = it }
-
     Card(
         shape = RoundedCornerShape(12.dp),
         modifier = Modifier.padding(10.dp, 5.dp, 10.dp, 10.dp)
@@ -135,7 +134,7 @@ fun CustomReminderDialog(
                 }
             }
 
-            if (selectedValue.value == "Custom") {
+            if (selectedValue == "Custom") {
                 Dialog(onDismissRequest = { onCustomReminderDialog() }) {
                     CustomCheckinDialog(
                         title = "Custom",
@@ -148,7 +147,9 @@ fun CustomReminderDialog(
                             "Saturday",
                             "Sunday"
                         ),
-                        onCustomCheckDialog = onCustomReminderDialog
+                        onCustomCheckDialog = {
+                            // find a way to add the weeks in db that is selected
+                        }
                     )
                 }
             }

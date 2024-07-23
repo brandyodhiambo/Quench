@@ -30,34 +30,25 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.brandyodhiambo.common.R
 import com.brandyodhiambo.common.domain.model.GoalWaterIntake
-import com.brandyodhiambo.common.domain.model.IdealWaterIntake
 import com.brandyodhiambo.common.domain.model.TimeFormate
 import com.brandyodhiambo.common.presentation.component.WaterIntakeDialog
-import com.brandyodhiambo.home.presentation.component.IdealIntakeGoalDialog
 import com.brandyodhiambo.home.presentation.homeScreen.HomeViewModel
-import com.brandyodhiambo.settings.presentation.component.CustomReminderDialog
 import com.brandyodhiambo.settings.presentation.component.TimeFormateDialog
 import com.ramcosta.composedestinations.annotation.Destination
 
@@ -75,17 +66,11 @@ fun SettingScreen(
 ) {
     val openIntakeDialog = homeViewModel.openGoalDialog.value
     val openTimeDialog = settingViewModel.openTimeDialog.value
-    val openWaterUnitDialog = settingViewModel.openWaterUnitDialog.value
-    val openWeightUnitDialog = settingViewModel.openWeightUnitDialog.value
-    val timeformate = settingViewModel.timeFormateFromDb.value
 
 
     SettingScreenContent(
-        timeFormate = timeformate ?: TimeFormate(12),
         openIntakeDialog = openIntakeDialog,
         openTimeDialog = openTimeDialog,
-        openWaterUnitDialog = openWaterUnitDialog,
-        openWeightUnitDialog = openWeightUnitDialog,
         currentWaterIntakeText = homeViewModel.goalWaterIntakeValue.value,
         currentWaterIntakeFormText = homeViewModel.goalWaterForm.value,
         currentIntake = homeViewModel.goalWaterIntakeValue.value,
@@ -125,25 +110,12 @@ fun SettingScreen(
         onOpenTimeFormatDialog = {
             settingViewModel.setOpenTimeDialog(it)
         },
-        onOpenWaterUnitDialog = {
-            settingViewModel.setOpenWaterUnitDialog(it)
-        },
-        onOpenWeightUnitDialog = {
-            settingViewModel.setOpenWeightUnitDialog(it)
-        },
         onNavigate = {
             navigator.navigateToNotificationScreen()
         },
         onDismissTimeDialog = {
             settingViewModel.setOpenTimeDialog(false)
         },
-        onDismissWaterUnitDialog= {
-            settingViewModel.setOpenWaterUnitDialog(false)
-        },
-        onDismissWeightUnitDialog = {
-            settingViewModel.setOpenWeightUnitDialog(false)
-
-        }
     )
 
 
@@ -153,11 +125,8 @@ fun SettingScreen(
 @Composable
 fun SettingScreenContent(
     modifier: Modifier = Modifier,
-    timeFormate: TimeFormate,
     openIntakeDialog: Boolean,
     openTimeDialog: Boolean,
-    openWaterUnitDialog: Boolean,
-    openWeightUnitDialog: Boolean,
     currentIntake: String,
     currentForm: String,
     currentWaterIntakeText: String,
@@ -168,13 +137,9 @@ fun SettingScreenContent(
     onConfirmGoalDialog: () -> Unit,
     onCustomDialogChange: (Boolean) -> Unit,
     onGoalDialog: (Boolean) -> Unit,
-    onOpenWeightUnitDialog: (Boolean) -> Unit,
     onOpenTimeFormatDialog: (Boolean) -> Unit,
-    onOpenWaterUnitDialog: (Boolean) -> Unit,
     onNavigate: () -> Unit,
     onDismissTimeDialog:()->Unit,
-    onDismissWaterUnitDialog:()->Unit,
-    onDismissWeightUnitDialog:()->Unit,
     selectedValue: String,
     onChangeState: (String) -> Unit,
     onRadioButtonClicked: (String) -> Unit,
@@ -192,9 +157,7 @@ fun SettingScreenContent(
                 item {
                     UnitsWaterIntake(
                         timeFormate = selectedValue,
-                        onOpenWeightUnitDialog = onOpenWeightUnitDialog,
                         onOpenTimeFormatDialog = onOpenTimeFormatDialog,
-                        onOpenWaterUnitDialog = onOpenWaterUnitDialog,
                     )
                 }
                 item {
@@ -236,28 +199,6 @@ fun SettingScreenContent(
                     )
                 }
             }
-
-            if (openWaterUnitDialog) {
-                Dialog(onDismissRequest = {onDismissWaterUnitDialog()}) {
-                    val waterUnit = listOf("ml", "oz", "cup", "pint", "gallon", "liter")
-                    CustomReminderDialog(
-                        items = waterUnit,
-                        title = "Water Unit",
-                        onCustomReminderDialog = onDismissWaterUnitDialog
-                    )
-                }
-            }
-
-            if (openWeightUnitDialog) {
-                Dialog(onDismissRequest = { onDismissWeightUnitDialog() }) {
-                    val weightUnit = listOf("kg", "lb", "oz")
-                    CustomReminderDialog(
-                        items = weightUnit,
-                        title = "Weight Unit",
-                        onCustomReminderDialog = onDismissWeightUnitDialog
-                    )
-                }
-            }
         }
     }
 }
@@ -265,9 +206,7 @@ fun SettingScreenContent(
 @Composable
 fun UnitsWaterIntake(
     timeFormate: String,
-    onOpenWeightUnitDialog: (Boolean) -> Unit,
     onOpenTimeFormatDialog: (Boolean) -> Unit,
-    onOpenWaterUnitDialog: (Boolean) -> Unit,
 ) {
     Card(
         modifier = Modifier
@@ -278,63 +217,6 @@ fun UnitsWaterIntake(
         Column(
             modifier = Modifier.padding(8.dp)
         ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    text = "Water Unit",
-                    style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onBackground
-                )
-
-                TextButton(onClick = { onOpenWaterUnitDialog(true) }) {
-                    Text(
-                        text = "ml",
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.W300,
-                        color = MaterialTheme.colorScheme.primary
-                    )
-                }
-            }
-            HorizontalDivider(
-                modifier = Modifier
-                    .height(1.dp)
-                    .padding(start = 8.dp, end = 8.dp),
-                thickness = 1.dp,
-                color = Color.Gray
-            )
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    text = "Weight Unit",
-                    style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onBackground
-                )
-
-                TextButton(onClick = { onOpenWeightUnitDialog(true) }) {
-                    Text(
-                        text = "Kg",
-                        style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.primary
-                    )
-                }
-            }
-            HorizontalDivider(
-                modifier = Modifier
-                    .height(1.dp)
-                    .padding(start = 8.dp, end = 8.dp),
-                thickness = 1.dp,
-                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.12f)
-            )
             Row(
                 modifier = Modifier
                     .fillMaxWidth()

@@ -25,6 +25,7 @@ import com.brandyodhiambo.dao.GoalWaterIntakeDao
 import com.brandyodhiambo.dao.IdealWaterIntakeDao
 import com.brandyodhiambo.dao.LevelDao
 import com.brandyodhiambo.dao.MonthlyStatisticsDao
+import com.brandyodhiambo.dao.ReminderModeDao
 import com.brandyodhiambo.dao.ReminderTimeDao
 import com.brandyodhiambo.dao.SelectedDrinkDao
 import com.brandyodhiambo.dao.SleepTimeDao
@@ -37,6 +38,7 @@ import com.brandyodhiambo.entity.GoalWaterIntakeEntity
 import com.brandyodhiambo.entity.IdealWaterIntakeEntity
 import com.brandyodhiambo.entity.LevelEntity
 import com.brandyodhiambo.entity.MonthlyStatisticsEntity
+import com.brandyodhiambo.entity.ReminderModeEntity
 import com.brandyodhiambo.entity.ReminderTimeEntity
 import com.brandyodhiambo.entity.SelectedDrinkEntity
 import com.brandyodhiambo.entity.SleepTimeEntity
@@ -46,7 +48,7 @@ import com.brandyodhiambo.entity.WeeklyStatisticsEntity
 
 @TypeConverters(Converter::class)
 @Database(
-    entities = [SelectedDrinkEntity::class, WakeTimeEntity::class, IdealWaterIntakeEntity::class, GoalWaterIntakeEntity::class, SleepTimeEntity::class, LevelEntity::class, ReminderTimeEntity::class, DailyStatisticsEntity::class, WeeklyStatisticsEntity::class, MonthlyStatisticsEntity::class, AchievementEntity::class,TimeFormateEntity::class],
+    entities = [SelectedDrinkEntity::class, WakeTimeEntity::class, IdealWaterIntakeEntity::class, GoalWaterIntakeEntity::class, SleepTimeEntity::class, LevelEntity::class, ReminderTimeEntity::class, DailyStatisticsEntity::class, WeeklyStatisticsEntity::class, MonthlyStatisticsEntity::class, AchievementEntity::class,TimeFormateEntity::class,ReminderModeEntity::class],
     version = 5,
     exportSchema = false
 )
@@ -63,4 +65,5 @@ abstract class QuenchDatabase : RoomDatabase() {
     abstract fun monthlyStatisticsDao(): MonthlyStatisticsDao
     abstract fun achievementDao(): AchievementDao
     abstract fun timeFormateDao():TimeFormateDao
+    abstract fun reminderModeDao():ReminderModeDao
 }

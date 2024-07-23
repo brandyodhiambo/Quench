@@ -99,6 +99,10 @@ object DatabaseModule {
 
     @Provides
     @Singleton
+    fun provideReminderModeDao(database:QuenchDatabase) = database.reminderModeDao()
+
+    @Provides
+    @Singleton
     fun provideGson(): Gson {
         return Gson()
     }
