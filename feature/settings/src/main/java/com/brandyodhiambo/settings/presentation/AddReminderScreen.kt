@@ -48,6 +48,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.brandyodhiambo.common.R
+import com.brandyodhiambo.common.domain.model.ReminderMode
+import com.brandyodhiambo.common.util.getCurrentDay
 import com.brandyodhiambo.designsystem.components.NotificationSwitcher
 import com.brandyodhiambo.settings.presentation.component.CustomReminderModeDialog
 import com.chargemap.compose.numberpicker.AMPMHours
@@ -69,7 +71,20 @@ fun AddReminderScreen(
     val repeateModeDialog = settingsViewModel.repeatModeDialog.value
     Scaffold(
         topBar = {
-            TopAppBarAddReminder(navigator = navigator)
+            TopAppBarAddReminder(navigator = navigator, onSave = {
+                settingsViewModel.insertReminderMode(
+                    ReminderMode(
+                        mode = settingsViewModel.selectedMode.value,
+                        days = settingsViewModel.selectedCustomDays.value,
+                        isOn = true,
+                        isDeleted = settingsViewModel.isDeleted.value ,
+                        isVibrated = settingsViewModel.isVibrated.value,
+                        hour = settingsViewModel.hour.value,
+                        minutes = settingsViewModel.minutes.value,
+                        ampm = settingsViewModel.ampm.value,
+                    )
+                )
+            })
         }
     ) { paddingValue ->
         Column(
@@ -81,10 +96,22 @@ fun AddReminderScreen(
             Spacer(modifier = Modifier.height(20.dp))
 
             // ReminderTime
-            ReminderTimePickerInHours()
+            ReminderTimePickerInHours(
+                currentPickerValueText = settingsViewModel.timePickerValue.value,
+                onCurrentPickerValueTextChange = {
+                    settingsViewModel.timePickerValue.value = it
+                },
+                onTimeSleepSelected = {
+                    var ampm = ""
+                    ampm = if (it.hours in 0..12) {
+                        "AM"
+                    } else {
+                        "PM"
+                    }
+                    settingsViewModel.onTimeSelected(it.hours, it.minutes, ampm)
+                }
+            )
             Spacer(modifier = Modifier.height(8.dp))
-
-            //Reminder Mode (once,mon to fri,custom,daily)
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -101,7 +128,7 @@ fun AddReminderScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "Mon to Fri",
+                        text = settingsViewModel.selectedMode.value,
                         style = MaterialTheme.typography.labelMedium,
                         color = MaterialTheme.colorScheme.onBackground
                     )
@@ -127,10 +154,11 @@ fun AddReminderScreen(
                     color = MaterialTheme.colorScheme.onBackground
                 )
                 NotificationSwitcher(
-                    isOn = true,
+                    isOn = settingsViewModel.isVibrated.value,
                     size = 35.dp,
                     padding = 5.dp,
                     onToggle = {
+                        settingsViewModel.setIsVibrated(settingsViewModel.isVibrated.value.not())
                     }
                 )
             }
@@ -147,10 +175,11 @@ fun AddReminderScreen(
                     color = MaterialTheme.colorScheme.onBackground
                 )
                 NotificationSwitcher(
-                    isOn = false,
+                    isOn = settingsViewModel.isDeleted.value,
                     size = 35.dp,
                     padding = 5.dp,
                     onToggle = {
+                        settingsViewModel.setIsDeleted(settingsViewModel.isDeleted.value.not())
                     }
                 )
             }
@@ -160,18 +189,38 @@ fun AddReminderScreen(
                     val repeatModes = listOf("Once", "Mon to Fri", "Daily", "Custom")
                     CustomReminderModeDialog(
                         items = repeatModes,
-                        selectedValue = settingsViewModel.selectedReminderMode.value,
+                        selectedValue = settingsViewModel.selectedMode.value,
                         title = "Repeat Mode",
                         isSelectedItem = {
-                            settingsViewModel.selectedReminderMode.value == it
+                            settingsViewModel.selectedMode.value == it
                         },
                         onChangeState = {
-                            settingsViewModel.onReminderSelected(it)
+                            settingsViewModel.onSelectedMode(it)
                         } ,
                         onCustomReminderDialog = {
                             settingsViewModel.setRepeatModeDialog(value = false)
-                            // insert the reminder mode
-                        },
+                            when (settingsViewModel.selectedMode.value) {
+                                "Once" -> {
+                                    val currentDay = getCurrentDay()
+                                    settingsViewModel.onSelectedDayChangeState(listOf(currentDay))
+                                }
+                                "Mon to Fri" -> {
+                                    val weekdays = listOf("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
+                                    settingsViewModel.onSelectedDayChangeState(weekdays)
+                                }
+                                "Daily" -> {
+                                    val allDays = listOf("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday")
+                                    settingsViewModel.onSelectedDayChangeState(allDays)
+                                }
+                                "Custom" -> {
+                                    //selectedCustomDays
+                                    settingsViewModel.onSelectedDayChangeState(settingsViewModel.selectedCustomDays.value)
+                                }
+                            }
+                                                 },
+                        onSelectedDaysChangeState = {
+                            settingsViewModel.onSelectedDayChangeState(it)
+                        }
                     )
                 }
             }
@@ -181,7 +230,7 @@ fun AddReminderScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopAppBarAddReminder(navigator: AddReminderNavigator) {
+fun TopAppBarAddReminder(navigator: AddReminderNavigator, onSave: ()->Unit) {
     TopAppBar(
         title = {
             Text(
@@ -200,7 +249,7 @@ fun TopAppBarAddReminder(navigator: AddReminderNavigator) {
             }
         },
         actions = {
-            TextButton(onClick = { /*TODO*/ }) {
+            TextButton(onClick = onSave) {
                 Text(
                     text = "Save",
                     style = MaterialTheme.typography.labelMedium,
@@ -215,7 +264,11 @@ fun TopAppBarAddReminder(navigator: AddReminderNavigator) {
 }
 
 @Composable
-fun ReminderTimePickerInHours() {
+fun ReminderTimePickerInHours(
+    currentPickerValueText: Hours,
+    onCurrentPickerValueTextChange: (Hours) -> Unit,
+    onTimeSleepSelected: (Hours) -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -224,12 +277,13 @@ fun ReminderTimePickerInHours() {
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        var pickerValue by remember { mutableStateOf<Hours>(AMPMHours(0, 0, AMPMHours.DayTime.AM)) }
         HoursNumberPicker(
             dividersColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f),
-            value = pickerValue,
+            value = currentPickerValueText,
+            hoursRange = 0..23,
             onValueChange = {
-                pickerValue = it
+                onCurrentPickerValueTextChange(it)
+                onTimeSleepSelected(it)
             },
             hoursDivider = {
                 Text(

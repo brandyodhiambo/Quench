@@ -16,6 +16,12 @@
 package com.brandyodhiambo.common.domain.model
 
 data class ReminderMode(
-    val day: String,
-    val isOn: Boolean
+    val mode:String,
+    val days: List<String>,
+    val isVibrated:Boolean,
+    val isDeleted: Boolean,
+    val hour:Int,
+    val minutes:Int,
+    val ampm:String,
+    val isOn:Boolean
 )

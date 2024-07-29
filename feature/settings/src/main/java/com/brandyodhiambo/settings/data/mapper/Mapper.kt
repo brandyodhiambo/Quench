@@ -7,7 +7,7 @@ import com.brandyodhiambo.entity.TimeFormateEntity
 
 internal fun TimeFormateEntity.toTimeFormate(): TimeFormate {
     return TimeFormate(
-       formate = formate
+        formate = formate
     )
 }
 
@@ -17,16 +17,28 @@ internal fun TimeFormate.toTimeFormateEntity(): TimeFormateEntity {
     )
 }
 
-internal fun ReminderModeEntity.toReminderMode():ReminderMode{
+internal fun ReminderModeEntity.toReminderMode(): ReminderMode {
     return ReminderMode(
-        day = day,
+        days = days,
+        mode = mode,
+        isVibrated = isVibrated,
+        isDeleted = isDeleted,
+        hour = hour,
+        minutes = minutes,
+        ampm = ampm,
         isOn = isOn
     )
 }
 
-internal fun ReminderMode.toReminderModeEntity():ReminderModeEntity{
+internal fun ReminderMode.toReminderModeEntity(): ReminderModeEntity {
     return ReminderModeEntity(
-        day = day,
+        days = days,
+        mode = mode,
+        isVibrated = isVibrated,
+        isDeleted = isDeleted,
+        hour = hour,
+        minutes = minutes,
+        ampm = ampm,
         isOn = isOn
     )
 }

@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import com.brandyodhiambo.common.domain.model.ReminderMode
 import com.brandyodhiambo.common.domain.model.TimeFormate
 
-interface TimeFormateRepository {
+interface SettingRepository {
 
     suspend fun insertTimeFormate(timeFormate: TimeFormate)
     fun getTimeFormate(): LiveData<TimeFormate?>
@@ -14,7 +14,7 @@ interface TimeFormateRepository {
 
     suspend fun insertReminderMode(reminderMode: ReminderMode)
     suspend fun updateReminderMode(reminderMode: ReminderMode)
-    fun getReminderMode():LiveData<ReminderMode?>
+    fun getReminderMode():LiveData<List<ReminderMode>?>
     suspend fun deleteReminderMode(reminderMode: ReminderMode)
     suspend fun deleteAllReminderMode()
 }

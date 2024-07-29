@@ -13,13 +13,23 @@ interface ReminderModeDao {
     suspend fun insertReminderMode(reminderModeEntity: ReminderModeEntity)
 
     @Query("SELECT *FROM reminder_mode_table")
-    fun getReminderMode(): LiveData<ReminderModeEntity?>
+    fun getReminderMode(): LiveData<List<ReminderModeEntity>?>
 
     @Delete
-    suspend fun deleteReminderMode(ReminderModeEntity: ReminderModeEntity)
+    suspend fun deleteReminderMode(reminderModeEntity: ReminderModeEntity)
 
-    @Query("UPDATE reminder_mode_table SET day = :day, isOn = :isOn WHERE id = :id")
-    suspend fun updateReminderMode(id: Int, day: String, isOn: Boolean)
+    @Query("UPDATE reminder_mode_table SET days = :days, hour =:hour, minutes = :minutes, ampm = :ampm,mode=:mode, isVibrated = :isVibrated, isDeleted = :isDeleted, isOn = :isOn WHERE id = :id")
+    suspend fun updateReminderMode(
+        id: Int,
+        days: List<String>,
+        mode:String,
+        hour:Int,
+        minutes:Int,
+        ampm:String,
+        isVibrated:Boolean,
+        isDeleted:Boolean,
+        isOn: Boolean
+    )
 
     @Query("DELETE FROM reminder_mode_table")
     suspend fun deleteAllReminderMode()

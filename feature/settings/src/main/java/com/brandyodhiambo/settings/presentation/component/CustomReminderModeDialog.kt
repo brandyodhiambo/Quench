@@ -48,6 +48,7 @@ fun CustomReminderModeDialog(
     items: List<String>,
     isSelectedItem: (String) -> Boolean,
     onChangeState: (String) -> Unit,
+    onSelectedDaysChangeState:(List<String>) -> Unit,
     onCustomReminderDialog:()->Unit,
 ) {
     Card(
@@ -147,8 +148,9 @@ fun CustomReminderModeDialog(
                             "Saturday",
                             "Sunday"
                         ),
-                        onCustomCheckDialog = {
-                            // find a way to add the weeks in db that is selected
+                        onCustomCheckDialog = { items->
+                            onSelectedDaysChangeState(items)
+                            onCustomReminderDialog()
                         }
                     )
                 }

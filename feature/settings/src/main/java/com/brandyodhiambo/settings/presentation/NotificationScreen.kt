@@ -68,21 +68,17 @@ interface NotificationNavigator {
 fun NotificationScreen(
     navigator: NotificationNavigator
 ) {
-    val days = listOf(
-        ReminderMode("Monday", true),
-        ReminderMode("Tuesday", true),
-        ReminderMode("Wednesday", true),
-        ReminderMode("Thursday", true),
-        ReminderMode("Friday", true),
-        ReminderMode("Saturday", true),
-        ReminderMode("Sunday", false)
-    )
-
     val reminder = listOf(
-        Reminder(time = "8:20 AM", days = days, isOn = true),
-        Reminder(time = "9:30 AM", days = days, isOn = false),
-        Reminder(time = "10:20 AM", days = days, isOn = true),
-        Reminder(time = "11:40 AM", days = days, isOn = true)
+        ReminderMode(
+            "Monday",
+            listOf("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"),
+            isDeleted = false,
+            isVibrated = false,
+            hour = 10,
+            minutes = 20,
+            ampm = "Am",
+            isOn = true
+        ),
 
     )
 
@@ -171,7 +167,7 @@ fun AddReminder(navigator: NotificationNavigator) {
 }
 
 @Composable
-fun ReminderCardTime(reminder: Reminder) {
+fun ReminderCardTime(reminder: ReminderMode) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -204,7 +200,7 @@ fun ReminderCardTime(reminder: Reminder) {
                         .padding(8.dp)
                 ) {
                     Text(
-                        text = reminder.time,
+                        text = "${reminder.hour}:${reminder.minutes} ${reminder.ampm}",
                         color = if (reminder.isOn) {
                             MaterialTheme.colorScheme.primary
                         } else {
@@ -214,7 +210,7 @@ fun ReminderCardTime(reminder: Reminder) {
                     )
                     LazyRow() {
                         items(reminder.days) { day ->
-                            DaysReminder(day = day, reminder = reminder)
+                            DaysReminder(day = day, isOn = reminder.isOn)
                         }
                     }
                 }
@@ -233,7 +229,7 @@ fun ReminderCardTime(reminder: Reminder) {
 }
 
 @Composable
-fun DaysReminder(day: ReminderMode, reminder: Reminder) {
+fun DaysReminder(day: String,isOn:Boolean) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -244,7 +240,7 @@ fun DaysReminder(day: ReminderMode, reminder: Reminder) {
                 .border(
                     border = BorderStroke(
                         2.dp,
-                        color = if (day.isOn && reminder.isOn) {
+                        color = if (isOn) {
                             MaterialTheme.colorScheme.primary
                         } else {
                             MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f)
@@ -255,8 +251,8 @@ fun DaysReminder(day: ReminderMode, reminder: Reminder) {
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = day.day.toInitials(),
-                color = if (day.isOn && reminder.isOn) {
+                text = day.toInitials(),
+                color = if (isOn) {
                     MaterialTheme.colorScheme.primary
                 } else {
                     MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f)
@@ -266,9 +262,3 @@ fun DaysReminder(day: ReminderMode, reminder: Reminder) {
         }
     }
 }
-
-data class Reminder(
-    val time: String,
-    val days: List<ReminderMode>,
-    val isOn: Boolean
-)
