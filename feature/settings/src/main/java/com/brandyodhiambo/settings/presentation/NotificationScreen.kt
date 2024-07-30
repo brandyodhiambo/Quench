@@ -47,12 +47,16 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.brandyodhiambo.common.domain.model.ReminderMode
 import com.brandyodhiambo.common.util.toInitials
+import com.brandyodhiambo.designsystem.components.Loader
 import com.brandyodhiambo.designsystem.components.NotificationSwitcher
+import com.brandyodhiambo.settings.R
 import com.ramcosta.composedestinations.annotation.Destination
 
 interface NotificationNavigator {
@@ -66,9 +70,10 @@ interface NotificationNavigator {
 @Destination
 @Composable
 fun NotificationScreen(
-    navigator: NotificationNavigator
+    navigator: NotificationNavigator,
+    settingsViewModel: SettingsViewModel = hiltViewModel()
 ) {
-    val reminder = listOf(
+    /*val reminder = listOf(
         ReminderMode(
             "Monday",
             listOf("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"),
@@ -80,8 +85,9 @@ fun NotificationScreen(
             isOn = true
         ),
 
-    )
+    )*/
 
+    val reminder = settingsViewModel.reminderModeFromDb.observeAsState().value
     Scaffold(
         containerColor = MaterialTheme.colorScheme.primary,
         topBar = {
@@ -120,9 +126,9 @@ fun NotificationScreen(
                 item {
                     AddReminder(navigator = navigator)
                 }
-                if (reminder.isEmpty()) {
+                if (reminder == null) {
                     item {
-                        // Loader(compositions = R.raw.clock)
+                         Loader(compositions = com.brandyodhiambo.home.R.raw.drink)
                     }
                 } else {
                     items(reminder) { reminder ->
@@ -221,6 +227,7 @@ fun ReminderCardTime(reminder: ReminderMode) {
                     padding = 5.dp,
                     onToggle = {
                         reminder.isOn.not()
+                        // update the reminder on database
                     }
                 )
             }
