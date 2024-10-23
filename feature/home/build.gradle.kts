@@ -52,11 +52,11 @@ dependencies {
     implementation(project(Module.database))
 
     // RamCosta Navigation
-    implementation("io.github.raamcosta.compose-destinations:core:1.10.2")
-    ksp("io.github.raamcosta.compose-destinations:ksp:1.10.2")
+    implementation("io.github.raamcosta.compose-destinations:core:1.11.7")
+    ksp("io.github.raamcosta.compose-destinations:ksp:1.11.7")
 
     // Navigation animation
-    implementation("com.google.accompanist:accompanist-navigation-animation:0.34.0")
+    implementation("com.google.accompanist:accompanist-navigation-animation:0.36.0")
 }
 
 
