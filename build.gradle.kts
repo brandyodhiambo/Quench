@@ -4,7 +4,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("com.diffplug.spotless:spotless-plugin-gradle:6.25.0")
+        classpath("com.diffplug.spotless:spotless-plugin-gradle:7.2.1")
     }
 } // Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
