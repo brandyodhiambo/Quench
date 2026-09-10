@@ -50,7 +50,7 @@ dependencies {
     implementation(project(Module.designsystem))
     implementation(project(Module.common))
     implementation(project(Module.database))
-    implementation("androidx.work:work-runtime-ktx:2.9.0")
+    implementation("androidx.work:work-runtime-ktx:2.11.2")
     implementation(project(mapOf("path" to ":feature:home")))
 
 
